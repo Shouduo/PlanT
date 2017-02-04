@@ -1,0 +1,23 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context="com.shouduo.plant.view.activity.MainActivity">
+
+    <item android:id="@+id/action_manage"
+          android:title="manage"
+          android:orderInCategory="100"
+          android:icon="@drawable/ic_building"
+          app:showAsAction="ifRoom" />
+
+    <item android:id="@+id/action_settings"
+          android:title="settings"
+          android:orderInCategory="100"
+          android:icon="@drawable/ic_settings"
+          app:showAsAction="never" />
+
+    <item android:id="@+id/action_about"
+          android:title="about"
+          android:orderInCategory="100"
+          android:icon="@drawable/ic_about"
+          app:showAsAction="never" />
+</menu>

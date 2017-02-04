@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<litepal>
+    <dbname value="PlantState"></dbname>
+
+    <version value="1"></version>
+
+    <list>
+        <mapping class="com.shouduo.plant.model.Hourly"></mapping>
+        <mapping class="com.shouduo.plant.model.Daily"></mapping>
+    </list>
+</litepal>

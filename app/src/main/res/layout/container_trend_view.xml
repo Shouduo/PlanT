@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorLine"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="196dp" />
+
+    <com.shouduo.plant.view.widget.trend.TrendRecyclerView
+        android:id="@+id/container_trend_view_recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <TextView
+        android:text="thx~"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/little_margin"
+        style="@style/subtitle_text"
+        tools:ignore="RtlHardcoded" />
+
+</RelativeLayout>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorRoot"
+    android:orientation="vertical"
+    tools:context=".view.activity.MainActivity">
+
+    <com.shouduo.plant.view.widget.SwipeSwitchLayout
+        android:id="@+id/activity_main_switchView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.shouduo.plant.view.widget.sky.SkyView
+            android:id="@+id/activity_main_skyView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <com.shouduo.plant.view.widget.VerticalSwipeRefreshView
+            android:id="@+id/activity_main_refreshView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.shouduo.plant.view.widget.VerticalNestedScrollView
+                android:id="@+id/activity_main_scrollView"
+                android:scrollbars="none"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <include layout="@layout/container_weather"/>
+
+            </com.shouduo.plant.view.widget.VerticalNestedScrollView>
+
+        </com.shouduo.plant.view.widget.VerticalSwipeRefreshView>
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/activity_main_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_marginTop="@dimen/status_bar_height"
+            android:background="@android:color/transparent"
+            app:theme="@style/GeometricWeatherTheme.AppbarTheme"
+            app:popupTheme="@style/GeometricWeatherTheme.AppbarPopupTheme"/>
+
+        <com.shouduo.plant.view.widget.InkPageIndicator
+            android:id="@+id/activity_main_indicator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:alpha="0"
+            app:layout_behavior=".view.widget.InkPageIndicatorBehavior"
+            app:dotDiameter="8dp"
+            app:dotGap="8dp"
+            app:animationDuration="300"
+            app:pageIndicatorColor="@color/colorTextSubtitle"
+            app:currentPageIndicatorColor="@color/colorPrimary"/>
+
+    </com.shouduo.plant.view.widget.SwipeSwitchLayout>
+
+
+</LinearLayout>
