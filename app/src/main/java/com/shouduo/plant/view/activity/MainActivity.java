@@ -283,7 +283,7 @@ public class MainActivity extends BaseActivity
             swipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(this, R.color.darkPrimary_1));
         }
 
-        Weather weather = new Weather().mockWeather();
+        Weather weather = new Weather().getWeather();
         History history = new History().mockHistory();
 
         trendView.setData(weather, history);

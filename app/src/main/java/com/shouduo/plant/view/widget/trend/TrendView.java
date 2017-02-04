@@ -10,7 +10,6 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -99,11 +98,11 @@ public class TrendView extends FrameLayout
                 MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY));
         setMeasuredDimension(width, height);
 
-        final String TAG = "TrendView";
-        Log.d(TAG, width + width + "");
-        Log.d(TAG, width + height + "");
-        Log.d(TAG, width + MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY) + "");
-        Log.d(TAG, width + MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY) + "");
+//        final String TAG = "TrendView";
+//        Log.d(TAG, width + width + "");
+//        Log.d(TAG, width + height + "");
+//        Log.d(TAG, width + MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY) + "");
+//        Log.d(TAG, width + MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY) + "");
     }
 
     /** data. */

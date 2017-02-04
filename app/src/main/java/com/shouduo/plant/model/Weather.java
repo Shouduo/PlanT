@@ -1,8 +1,18 @@
 package com.shouduo.plant.model;
 
+import android.util.Log;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.shouduo.plant.utils.HttpUtils;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import okhttp3.Call;
+import okhttp3.Response;
 
 /**
  * Created by 刘亨俊 on 17.2.1.
@@ -53,6 +63,42 @@ public class Weather {
         }
 
         return this;
+    }
+
+    public Weather getWeather() {
+        HttpUtils.sendOkHttpRequest("http://10.0.2.2/hourly.json", new okhttp3.Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d("Weather", "getWeather: fail");
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String responseData = response.body().string();
+                Log.d("Weather", responseData);
+                parseJSONWithGSON(responseData);
+            }
+        });
+
+        Random random = new Random();
+        for (int i = 0; i < 15; i++) {
+            int distance = random.nextInt(6) - 3;
+            Daily daily = new Daily();
+            daily.setTemps(new int[]{15 + distance, 10 + distance});
+            daily.setWeek("sat");
+            dailyList.add(daily);
+        }
+
+        return this;
+    }
+
+    public void parseJSONWithGSON(String jsonData){
+        Gson gson = new Gson();
+        hourlyList = gson.fromJson(jsonData, new TypeToken<List<Hourly>>(){}.getType());
+//        for (Hourly hourly : hourlyList) {
+//            Log.d("Weather", hourly.getTime() + "");
+//            Log.d("Weather", hourly.getTemp() + "");
+//            Log.d("Weather", hourly.getPrecipitation() + "");
+//        }
     }
 
 //    public static Weather buildWeatherPrimaryData(WeatherEntity entity) {

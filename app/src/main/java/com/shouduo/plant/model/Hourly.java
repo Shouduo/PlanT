@@ -36,6 +36,18 @@ public class Hourly {
         this.precipitation = precipitation;
     }
 
+    public String getTime() {
+        return time;
+    }
+
+    public int getTemp() {
+        return temp;
+    }
+
+    public int getPrecipitation() {
+        return precipitation;
+    }
+
     //    public Hourly buildHourly(Context c, NewHourlyResult result) {
 //        time = result.DateTime.split("T")[1].split(":")[0] + c.getString(R.string.of_clock);
 //        dayTime = result.IsDaylight;
