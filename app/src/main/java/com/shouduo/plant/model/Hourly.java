@@ -1,16 +1,20 @@
 package com.shouduo.plant.model;
 
+import org.litepal.crud.DataSupport;
+
 /**
  * Created by 刘亨俊 on 17.2.2.
  */
 
-public class Hourly {
+public class Hourly extends DataSupport{
     // data
     public String time;
 //    public boolean dayTime;
 //    public String weather;
 //    public String weatherKind;
+    public int hum;
     public int temp;
+    public int bright;
     public int precipitation;
 
     public Hourly() {

@@ -13,8 +13,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -54,14 +52,14 @@ public class MainActivity extends BaseActivity
 
     private TextView[] titleTexts;
 
-    private TextView refreshTime;
-    private FrameLayout locationIconBtn;
-    private ImageView locationIcon;
-    private TextView locationText;
+//    private TextView refreshTime;
+//    private FrameLayout locationIconBtn;
+//    private ImageView locationIcon;
+//    private TextView locationText;
 
-    private TextView overviewTitle;
+//    private TextView overviewTitle;
     private TrendView trendView;
-    private TextView lifeInfoTitle;
+//    private TextView lifeInfoTitle;
 //    private IndexListView indexListView;
 
     //data
@@ -189,21 +187,21 @@ public class MainActivity extends BaseActivity
 
 
     private void initWeatherCard() {
-        this.refreshTime = (TextView) findViewById(R.id.container_weather_time_text_live);
+//        this.refreshTime = (TextView) findViewById(R.id.container_weather_time_text_live);
 
-        findViewById(R.id.container_weather_locationContainer).setOnClickListener(this);
+//        findViewById(R.id.container_weather_locationContainer).setOnClickListener(this);
 
-        this.locationIconBtn = (FrameLayout) findViewById(R.id.container_weather_location_iconButton);
-        locationIconBtn.setOnClickListener(this);
-        this.locationIcon = (ImageView) findViewById(R.id.container_weather_location_icon);
-        this.locationText = (TextView) findViewById(R.id.container_weather_location_text_live);
+//        this.locationIconBtn = (FrameLayout) findViewById(R.id.container_weather_location_iconButton);
+//        locationIconBtn.setOnClickListener(this);
+//        this.locationIcon = (ImageView) findViewById(R.id.container_weather_location_icon);
+//        this.locationText = (TextView) findViewById(R.id.container_weather_location_text_live);
 
-        this.overviewTitle = (TextView) findViewById(R.id.container_weather_overviewTitle);
+//        this.overviewTitle = (TextView) findViewById(R.id.container_weather_overviewTitle);
 
-        this.trendView = (TrendView) findViewById(R.id.container_weather_trendView);
+        this.trendView = (TrendView) findViewById(R.id.container_humidity_trendView);
         ((TrendRecyclerView) findViewById(R.id.container_trend_view_recyclerView)).setSwitchLayout(swipeSwitchLayout);
 
-        this.lifeInfoTitle = (TextView) findViewById(R.id.container_weather_lifeInfoTitle);
+//        this.lifeInfoTitle = (TextView) findViewById(R.id.container_weather_lifeInfoTitle);
     }
 
     // reset.
@@ -262,8 +260,8 @@ public class MainActivity extends BaseActivity
         titleTexts[1].setText("world");
         titleTexts[2].setText("bye~");
 
-        refreshTime.setText("normal");
-        locationText.setText("dayday");
+//        refreshTime.setText("normal");
+//        locationText.setText("dayday");
 
 /*        if (weather.alertList.size() == 0) {
             locationIconBtn.setEnabled(false);
@@ -274,19 +272,22 @@ public class MainActivity extends BaseActivity
         }*/
 
         if (TimeUtils.getInstance(this).isDayTime()) {
-            overviewTitle.setTextColor(ContextCompat.getColor(this, R.color.lightPrimary_3));
-            lifeInfoTitle.setTextColor(ContextCompat.getColor(this, R.color.lightPrimary_3));
+//            overviewTitle.setTextColor(ContextCompat.getColor(this, R.color.lightPrimary_3));
+//            lifeInfoTitle.setTextColor(ContextCompat.getColor(this, R.color.lightPrimary_3));
             swipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(this, R.color.lightPrimary_3));
         } else {
-            overviewTitle.setTextColor(ContextCompat.getColor(this, R.color.darkPrimary_1));
-            lifeInfoTitle.setTextColor(ContextCompat.getColor(this, R.color.darkPrimary_1));
+//            overviewTitle.setTextColor(ContextCompat.getColor(this, R.color.darkPrimary_1));
+//            lifeInfoTitle.setTextColor(ContextCompat.getColor(this, R.color.darkPrimary_1));
             swipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(this, R.color.darkPrimary_1));
         }
 
-        Weather weather = new Weather().getWeather();
+
+        Weather weather = new Weather();
+        weather.getWeather();
+
         History history = new History().mockHistory();
 
-        trendView.setData(weather, history);
+        trendView.setData(weather.getWeatherFromDatabase(), history);
 //        trendView.setData(locationNow.weather, locationNow.history);
         trendView.setState(TrendItemView.DATA_TYPE_DAILY, false);
 //        indexListView.setData(locationNow.weather);
@@ -320,16 +321,16 @@ public class MainActivity extends BaseActivity
 
             case R.id.container_weather_touchLayout:
             case R.id.activity_main_toolbar:
-                skyView.onClickSky();
+
                 break;
 
-            case R.id.container_weather_location_iconButton:
-//                IntentHelper.startAlertActivity(this, locationNow.weather);
-                break;
+//            case R.id.container_weather_location_iconButton:
+//               IntentHelper.startAlertActivity(this, locationNow.weather);
+//                break;
 
-            case R.id.container_weather_locationContainer:
+//            case R.id.container_weather_locationContainer:
 //                IntentHelper.startManageActivityForResult(this);
-                break;
+//                break;
         }
     }
 
@@ -338,6 +339,12 @@ public class MainActivity extends BaseActivity
         switch (menuItem.getItemId()) {
             case R.id.action_manage:
 //                IntentHelper.startManageActivityForResult(this);
+                Weather weather = new Weather();
+                weather.getWeather();
+                History history = new History().mockHistory();
+                trendView.setData(weather.getWeatherFromDatabase(), history);
+//        trendView.setData(locationNow.weather, locationNow.history);
+                trendView.setState(TrendItemView.DATA_TYPE_DAILY, false);
                 break;
 
             case R.id.action_settings:

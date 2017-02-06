@@ -26,7 +26,9 @@ public class TrendRecyclerView extends RecyclerView {
 
     // data
     private History history;
+    private int highest, lowest;
     private int[] tempYs;
+//    private int TEMPY_OFFSET = 2;
     private boolean canScroll = false;
 
     private float MARGIN_BOTTOM;
@@ -100,7 +102,7 @@ public class TrendRecyclerView extends RecyclerView {
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(CHART_LINE_SIZE);
         paint.setColor(ContextCompat.getColor(getContext(), R.color.colorLine));
-        canvas.drawLine(
+        canvas.drawLine(        //绘制标度横线
                 0, tempYs[0],
                 getMeasuredWidth(), tempYs[0],
                 paint);
@@ -110,32 +112,32 @@ public class TrendRecyclerView extends RecyclerView {
                 paint);
 
 
-        paint.setStyle(Paint.Style.FILL);
-        paint.setTextSize(TEXT_SIZE);
-        paint.setTextAlign(Paint.Align.LEFT);
-        paint.setColor(ContextCompat.getColor(getContext(), R.color.colorTextGrey2nd));
-        canvas.drawText(
-                history.maxiTemp + "%",
-                2 * MARGIN_TEXT,
-                tempYs[0] - paint.getFontMetrics().bottom - MARGIN_TEXT,
-                paint);
-        canvas.drawText(
-                history.miniTemp + "%",
-                2 * MARGIN_TEXT,
-                tempYs[1] - paint.getFontMetrics().top + MARGIN_TEXT,
-                paint);
+//        paint.setStyle(Paint.Style.FILL);
+//        paint.setTextSize(TEXT_SIZE);
+//        paint.setTextAlign(Paint.Align.LEFT);       //标度于图标左侧
+//        paint.setColor(ContextCompat.getColor(getContext(), R.color.colorTextGrey2nd));
+//        canvas.drawText(        //绘制标度数据
+//                (highest - (highest - lowest) / 4) + "%",
+//                2 * MARGIN_TEXT,
+//                tempYs[0] - paint.getFontMetrics().bottom - MARGIN_TEXT,
+//                paint);
+//        canvas.drawText(
+//                (lowest + (highest -lowest) / 4) + "%",
+//                2 * MARGIN_TEXT,
+//                tempYs[1] - paint.getFontMetrics().top + MARGIN_TEXT,
+//                paint);
 
-        paint.setTextAlign(Paint.Align.RIGHT);
-        canvas.drawText(
-                "???",
-                getMeasuredWidth() - 2 * MARGIN_TEXT,
-                tempYs[0] - paint.getFontMetrics().bottom - MARGIN_TEXT,
-                paint);
-        canvas.drawText(
-                "???",
-                getMeasuredWidth() - 2 * MARGIN_TEXT,
-                tempYs[1] - paint.getFontMetrics().top + MARGIN_TEXT,
-                paint);
+//        paint.setTextAlign(Paint.Align.RIGHT);
+//        canvas.drawText(
+//                "???",
+//                getMeasuredWidth() - 2 * MARGIN_TEXT,
+//                tempYs[0] - paint.getFontMetrics().bottom - MARGIN_TEXT,
+//                paint);
+//        canvas.drawText(
+//                "???",
+//                getMeasuredWidth() - 2 * MARGIN_TEXT,
+//                tempYs[1] - paint.getFontMetrics().top + MARGIN_TEXT,
+//                paint);
     }
 
     public void setSwitchLayout(SwipeSwitchLayout v) {
@@ -162,8 +164,10 @@ public class TrendRecyclerView extends RecyclerView {
             tempYs = null;
             return;
         }
-        int highest = history.maxiTemp;
-        int lowest = history.miniTemp;
+//        int highest = history.maxiTemp;
+//        int lowest = history.miniTemp;
+        highest = -100;
+        lowest = 100;
         switch (state) {
             case TrendItemView.DATA_TYPE_DAILY:
 //                if (GeometricWeather.getInstance().isFahrenheit()) {
@@ -212,9 +216,9 @@ public class TrendRecyclerView extends RecyclerView {
 
         tempYs = new int[] {
                 (int) (TrendItemView.calcHeaderHeight(getContext()) + TrendItemView.calcDrawSpecHeight(getContext()) - MARGIN_BOTTOM
-                        - TrendItemView.calcDrawSpecUsableHeight(getContext()) * (history.maxiTemp - lowest) / (highest - lowest)),
+                        - TrendItemView.calcDrawSpecUsableHeight(getContext()) * 3 / 4),
                 (int) (TrendItemView.calcHeaderHeight(getContext()) + TrendItemView.calcDrawSpecHeight(getContext()) - MARGIN_BOTTOM
-                        - TrendItemView.calcDrawSpecUsableHeight(getContext()) * (history.miniTemp - lowest) / (highest - lowest))
+                        - TrendItemView.calcDrawSpecUsableHeight(getContext()) * 1 / 4)
         };
     }
 }
