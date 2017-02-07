@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.shouduo.plant.R;
-import com.shouduo.plant.model.History;
 import com.shouduo.plant.model.Weather;
 import com.shouduo.plant.utils.TimeUtils;
 
@@ -23,17 +22,17 @@ public class TrendAdapter extends RecyclerView.Adapter<TrendAdapter.ViewHolder> 
 
     // data
     private Weather weather;
-    private History history;
+//    private History history;
     private boolean dayTime;
     private int state;
     private int highest, lowest;
 
     /** <br> life cycle. */
 
-    public TrendAdapter(Context context, Weather weather, History history, OnTrendItemClickListener l) {
+    public TrendAdapter(Context context, Weather weather, OnTrendItemClickListener l) {
         this.context = context;
         this.listener = l;
-        this.setData(weather, history, TrendItemView.DATA_TYPE_DAILY);
+        this.setData(weather, TrendItemView.DATA_TYPE_DAILY);
     }
 
     /** <br> UI. */
@@ -77,9 +76,9 @@ public class TrendAdapter extends RecyclerView.Adapter<TrendAdapter.ViewHolder> 
 
     /** <br> data. */
 
-    public void setData(Weather weather, History history, int state) {
+    public void setData(Weather weather, int state) {
         this.weather = weather;
-        this.history = history;
+//        this.history = history;
         this.dayTime = TimeUtils.getInstance(context).isDayTime();
         this.state = state;
 
@@ -92,13 +91,10 @@ public class TrendAdapter extends RecyclerView.Adapter<TrendAdapter.ViewHolder> 
         } else {
             switch (state) {
                 case TrendItemView.DATA_TYPE_DAILY:
-                    if (history != null) {
-                        highest = history.maxiTemp;
-                        lowest = history.miniTemp;
-                    } else {
-                        highest = weather.dailyList.get(0).temps[0];
-                        lowest = weather.dailyList.get(0).temps[1];
-                    }
+
+                    highest = weather.dailyList.get(0).temps[0];
+                    lowest = weather.dailyList.get(0).temps[1];
+
                     for (int i = 0; i < weather.dailyList.size(); i ++) {
                         if (weather.dailyList.get(i).temps[0] > highest) {
                             highest = weather.dailyList.get(i).temps[0];
@@ -110,13 +106,10 @@ public class TrendAdapter extends RecyclerView.Adapter<TrendAdapter.ViewHolder> 
                     break;
 
                 case TrendItemView.DATA_TYPE_HOURLY:
-                    if (history != null) {
-                        highest = history.maxiTemp;
-                        lowest = history.miniTemp;
-                    } else {
-                        highest = weather.hourlyList.get(0).temp;
-                        lowest = weather.hourlyList.get(0).temp;
-                    }
+
+                    highest = weather.hourlyList.get(0).temp;
+                    lowest = weather.hourlyList.get(0).temp;
+
                     for (int i = 0; i < weather.hourlyList.size(); i ++) {
                         if (weather.hourlyList.get(i).temp > highest) {
                             highest = weather.hourlyList.get(i).temp;

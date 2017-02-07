@@ -16,7 +16,6 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.FrameLayout;
 
 import com.shouduo.plant.R;
-import com.shouduo.plant.model.History;
 import com.shouduo.plant.model.Weather;
 import com.shouduo.plant.utils.DisplayUtils;
 
@@ -32,7 +31,7 @@ public class TrendView extends FrameLayout
     // data
     private TrendAdapter adapter;
     private Weather weather;
-    private History history;
+//    private History history;
 
     private int state = TrendItemView.DATA_TYPE_DAILY;
 
@@ -70,7 +69,7 @@ public class TrendView extends FrameLayout
         View view = LayoutInflater.from(getContext()).inflate(R.layout.container_trend_view, null);
         addView(view);
 
-        this.adapter = new TrendAdapter(getContext(), null, null, this);
+        this.adapter = new TrendAdapter(getContext(), null, this);
 
         this.recyclerView = (TrendRecyclerView) findViewById(R.id.container_trend_view_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
@@ -107,10 +106,10 @@ public class TrendView extends FrameLayout
 
     /** data. */
 
-    public void setData(Weather weather, History history) {
+    public void setData(Weather weather) {
         if (weather != null) {
             this.weather = weather;
-            this.history = history;
+//            this.history = history;
         }
         recyclerView.scrollToPosition(weather.dailyList.size() - 1);
     }
@@ -127,10 +126,10 @@ public class TrendView extends FrameLayout
             viewOut.cancel();
             this.state = stateTo;
 
-            adapter.setData(weather, history, state);
+            adapter.setData(weather, state);
             adapter.notifyDataSetChanged();
 
-            recyclerView.setData(weather, history, state);
+            recyclerView.setData(weather, state);
         }
     }
 
@@ -160,10 +159,10 @@ public class TrendView extends FrameLayout
         public void onAnimationEnd(Animator animation) {
             animating = false;
 
-            adapter.setData(weather, history, state);
+            adapter.setData(weather, state);
             adapter.notifyDataSetChanged();
 
-            recyclerView.setData(weather, history, state);
+            recyclerView.setData(weather, state);
 
             viewIn.start();
         }

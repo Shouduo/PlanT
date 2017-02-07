@@ -18,7 +18,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.shouduo.plant.R;
-import com.shouduo.plant.model.History;
 import com.shouduo.plant.model.Weather;
 import com.shouduo.plant.utils.DisplayUtils;
 import com.shouduo.plant.utils.TimeUtils;
@@ -285,9 +284,9 @@ public class MainActivity extends BaseActivity
         Weather weather = new Weather();
         weather.getWeather();
 
-        History history = new History().mockHistory();
+//        History history = new History().mockHistory();
 
-        trendView.setData(weather.getWeatherFromDatabase(), history);
+        trendView.setData(weather.getWeatherFromDatabase());
 //        trendView.setData(locationNow.weather, locationNow.history);
         trendView.setState(TrendItemView.DATA_TYPE_DAILY, false);
 //        indexListView.setData(locationNow.weather);
@@ -341,8 +340,8 @@ public class MainActivity extends BaseActivity
 //                IntentHelper.startManageActivityForResult(this);
                 Weather weather = new Weather();
                 weather.getWeather();
-                History history = new History().mockHistory();
-                trendView.setData(weather.getWeatherFromDatabase(), history);
+//                History history = new History().mockHistory();
+                trendView.setData(weather.getWeatherFromDatabase());
 //        trendView.setData(locationNow.weather, locationNow.history);
                 trendView.setState(TrendItemView.DATA_TYPE_DAILY, false);
                 break;

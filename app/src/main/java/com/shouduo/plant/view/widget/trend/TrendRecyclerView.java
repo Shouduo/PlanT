@@ -10,7 +10,6 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 import com.shouduo.plant.R;
-import com.shouduo.plant.model.History;
 import com.shouduo.plant.model.Weather;
 import com.shouduo.plant.utils.DisplayUtils;
 import com.shouduo.plant.view.widget.SwipeSwitchLayout;
@@ -25,7 +24,7 @@ public class TrendRecyclerView extends RecyclerView {
     private Paint paint;
 
     // data
-    private History history;
+//    private History history;
     private int highest, lowest;
     private int[] tempYs;
 //    private int TEMPY_OFFSET = 2;
@@ -146,24 +145,21 @@ public class TrendRecyclerView extends RecyclerView {
 
     /** <br> data. */
 
-    public void setData(Weather weather, History history, int state) {
+    public void setData(Weather weather, int state) {
         if (weather == null) {
             return;
         }
-        this.history = history;
+//        this.history = history;
         if (state == TrendItemView.DATA_TYPE_DAILY) {
             canScroll = weather.dailyList.size() > 7;
         } else
             canScroll = state == TrendItemView.DATA_TYPE_HOURLY && weather.hourlyList.size() > 7;
-        calcTempYs(weather, history, state);
+        calcTempYs(weather, state);
         invalidate();
     }
 
-    private void calcTempYs(Weather weather, History history, int state) {
-        if (history == null) {
-            tempYs = null;
-            return;
-        }
+    private void calcTempYs(Weather weather, int state) {
+
 //        int highest = history.maxiTemp;
 //        int lowest = history.miniTemp;
         highest = -100;
