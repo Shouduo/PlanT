@@ -110,6 +110,7 @@ public class TrendItemView extends FrameLayout {
         this.paint = new Paint();
         paint.setAntiAlias(true);
         paint.setStrokeCap(Paint.Cap.ROUND);
+//        paint.setPathEffect(new CornerPathEffect(100));
 
         this.path = new Path();
 
@@ -252,8 +253,13 @@ public class TrendItemView extends FrameLayout {
 
                 path.reset();
                 path.moveTo(0, maxiTempYs[0]);
-                path.lineTo((float) (getMeasuredWidth() / 2.0), maxiTempYs[1]);
-                path.lineTo(getMeasuredWidth(), maxiTempYs[2]);
+//                path.lineTo((float) (getMeasuredWidth() / 2.0), maxiTempYs[1]);
+//                path.lineTo(getMeasuredWidth(), maxiTempYs[2]);
+//                path.quadTo((float) (getMeasuredWidth() / 2.0), maxiTempYs[1],
+//                        getMeasuredWidth(), maxiTempYs[2]);
+                path.cubicTo((float) (getMeasuredWidth() / 2.0), maxiTempYs[1],
+                        (float) (getMeasuredWidth() / 2.0), maxiTempYs[1],
+                        getMeasuredWidth(), maxiTempYs[2]);
                 canvas.drawPath(path, paint);
                 break;
         }
@@ -418,8 +424,10 @@ public class TrendItemView extends FrameLayout {
 
                 path.reset();
                 path.moveTo(0, maxiTempYs[0]);
-                path.lineTo((float) (getMeasuredWidth() / 2.0), maxiTempYs[1]);
-                path.lineTo(getMeasuredWidth(), maxiTempYs[2]);
+//                path.lineTo((float) (getMeasuredWidth() / 2.0), maxiTempYs[1]);
+//                path.lineTo(getMeasuredWidth(), maxiTempYs[2]);
+                path.quadTo((float) (getMeasuredWidth() / 2.0), maxiTempYs[1],
+                        getMeasuredWidth(), maxiTempYs[2]);
                 canvas.drawPath(path, paint);
                 break;
         }
@@ -524,8 +532,8 @@ public class TrendItemView extends FrameLayout {
                         - calcDrawSpecUsableHeight(getContext())
                         * (maxiTemps[i] - lowest)
                         / (highest - lowest));
-//            }
-        }
+            }
+//        }
 
         float[] miniTemps = new float[]{
                 0,

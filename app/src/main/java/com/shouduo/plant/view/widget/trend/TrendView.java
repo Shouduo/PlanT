@@ -18,6 +18,7 @@ import android.widget.FrameLayout;
 import com.shouduo.plant.R;
 import com.shouduo.plant.model.Weather;
 import com.shouduo.plant.utils.DisplayUtils;
+import com.shouduo.plant.view.widget.SwipeSwitchLayout;
 
 /**
  * Created by 刘亨俊 on 17.2.1.
@@ -27,6 +28,7 @@ public class TrendView extends FrameLayout
         implements TrendAdapter.OnTrendItemClickListener {
     // widget
     private TrendRecyclerView recyclerView;
+    private SwipeSwitchLayout swipeSwitchLayout;
 
     // data
     private TrendAdapter adapter;
@@ -84,6 +86,11 @@ public class TrendView extends FrameLayout
         viewOut.setInterpolator(new AccelerateDecelerateInterpolator());
         viewOut.addListener(viewOutListener);
         viewOut.setTarget(recyclerView);
+    }
+
+    public void setSwitchLayout(SwipeSwitchLayout switchLayout) {
+        this.swipeSwitchLayout = switchLayout;
+        recyclerView.setSwitchLayout(swipeSwitchLayout);
     }
 
     /** <br> UI. */

@@ -44,6 +44,8 @@ public class SwipeSwitchLayout extends CoordinatorLayout implements GestureDetec
     public static final int DIRECTION_LEFT = -1;
     public static final int DIRECTION_RIGHT = 1;
 
+    private static final String TAG = "SwipeSwitchLayout";
+
     /** <br> life cycle. */
 
     public SwipeSwitchLayout(Context context) {
@@ -78,7 +80,7 @@ public class SwipeSwitchLayout extends CoordinatorLayout implements GestureDetec
         setTranslation();
     }
 
-    private void getTarget() {
+    private void getTarget() {      //获取子布局VerticalSwipeRefreshView
         if (target == null) {
             for (int i = 0; i <getChildCount(); i ++) {
                 if (getChildAt(i) instanceof SwipeRefreshLayout) {

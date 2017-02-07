@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 
 import com.shouduo.plant.R;
@@ -34,6 +35,8 @@ public class TrendRecyclerView extends RecyclerView {
     private float CHART_LINE_SIZE = 1;
     private float TEXT_SIZE = 10;
     private float MARGIN_TEXT = 2;
+
+    private static final String TAG = "TrendRecyclerView";
 
     /** <br> life cycle. */
 
@@ -75,6 +78,7 @@ public class TrendRecyclerView extends RecyclerView {
                 case MotionEvent.ACTION_DOWN:
                     if (switchLayout != null) {
                         switchLayout.requestDisallowInterceptTouchEvent(true);
+                        Log.d(TAG, "onInterceptTouchEvent: override");
                     }
                     break;
 

@@ -28,7 +28,6 @@ import com.shouduo.plant.view.widget.VerticalNestedScrollView;
 import com.shouduo.plant.view.widget.VerticalSwipeRefreshView;
 import com.shouduo.plant.view.widget.sky.SkyView;
 import com.shouduo.plant.view.widget.trend.TrendItemView;
-import com.shouduo.plant.view.widget.trend.TrendRecyclerView;
 import com.shouduo.plant.view.widget.trend.TrendView;
 
 public class MainActivity extends BaseActivity
@@ -57,7 +56,9 @@ public class MainActivity extends BaseActivity
 //    private TextView locationText;
 
 //    private TextView overviewTitle;
-    private TrendView trendView;
+    private TrendView humidityTrendView;
+    private TrendView brightnessTrendView;
+    private TrendView TemperatureTrendView;
 //    private TextView lifeInfoTitle;
 //    private IndexListView indexListView;
 
@@ -197,8 +198,15 @@ public class MainActivity extends BaseActivity
 
 //        this.overviewTitle = (TextView) findViewById(R.id.container_weather_overviewTitle);
 
-        this.trendView = (TrendView) findViewById(R.id.container_humidity_trendView);
-        ((TrendRecyclerView) findViewById(R.id.container_trend_view_recyclerView)).setSwitchLayout(swipeSwitchLayout);
+        this.humidityTrendView = (TrendView) findViewById(R.id.container_humidity_trendView);
+        this.brightnessTrendView = (TrendView) findViewById(R.id.container_brightness_trendView);
+
+        humidityTrendView.setSwitchLayout(swipeSwitchLayout);
+        brightnessTrendView.setSwitchLayout(swipeSwitchLayout);
+
+
+
+//        ((TrendRecyclerView) findViewById(R.id.container_trend_view_recyclerView)).setSwitchLayout(swipeSwitchLayout);
 
 //        this.lifeInfoTitle = (TextView) findViewById(R.id.container_weather_lifeInfoTitle);
     }
@@ -286,10 +294,15 @@ public class MainActivity extends BaseActivity
 
 //        History history = new History().mockHistory();
 
-        trendView.setData(weather.getWeatherFromDatabase());
-//        trendView.setData(locationNow.weather, locationNow.history);
-        trendView.setState(TrendItemView.DATA_TYPE_DAILY, false);
+        humidityTrendView.setData(weather.getWeatherFromDatabase());
+        humidityTrendView.setState(TrendItemView.DATA_TYPE_DAILY, false);
+
+        brightnessTrendView.setData(weather.getWeatherFromDatabase());
+        brightnessTrendView.setState(TrendItemView.DATA_TYPE_DAILY, false);
+
+
 //        indexListView.setData(locationNow.weather);
+//        humidityTrendView.setData(locationNow.weather, locationNow.history);
 
         weatherContainer.setVisibility(View.VISIBLE);
         viewShowAnimator.start();
@@ -338,13 +351,13 @@ public class MainActivity extends BaseActivity
         switch (menuItem.getItemId()) {
             case R.id.action_manage:
 //                IntentHelper.startManageActivityForResult(this);
-                Weather weather = new Weather();
-                weather.getWeather();
-//                History history = new History().mockHistory();
-                trendView.setData(weather.getWeatherFromDatabase());
-//        trendView.setData(locationNow.weather, locationNow.history);
-                trendView.setState(TrendItemView.DATA_TYPE_DAILY, false);
-                break;
+//                Weather weather = new Weather();
+//                weather.getWeather();
+////                History history = new History().mockHistory();
+//                humidityTrendView.setData(weather.getWeatherFromDatabase());
+////        humidityTrendView.setData(locationNow.weather, locationNow.history);
+//                humidityTrendView.setState(TrendItemView.DATA_TYPE_DAILY, false);
+//                break;
 
             case R.id.action_settings:
                 skyView.setWeather();

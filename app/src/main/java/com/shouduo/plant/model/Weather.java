@@ -45,27 +45,27 @@ public class Weather {
 
     }
 
-    public Weather mockWeather() {
-
-        Random random = new Random();
-        for (int i = 0; i < 15; i++) {
-            int distance = random.nextInt(6) - 3;
-            Daily daily = new Daily();
-            daily.setTemps(new int[]{15 + distance, 10 + distance});
-            daily.setWeek("sat");
-            dailyList.add(daily);
-        }
-
-        for (int i = 0; i < 24; i++) {
-            Hourly hourly = new Hourly();
-            hourly.setTime("11:00");
-            hourly.setTemp(20);
-            hourly.setPrecipitation(30);
-            hourlyList.add(hourly);
-        }
-
-        return this;
-    }
+//    public Weather mockWeather() {
+//
+//        Random random = new Random();
+//        for (int i = 0; i < 15; i++) {
+//            int distance = random.nextInt(6) - 3;
+//            Daily daily = new Daily();
+//            daily.setTemps(new int[]{15 + distance, 10 + distance});
+//            daily.setWeek("sat");
+//            dailyList.add(daily);
+//        }
+//
+//        for (int i = 0; i < 24; i++) {
+//            Hourly hourly = new Hourly();
+//            hourly.setTime("11:00");
+//            hourly.setTemp(20);
+//            hourly.setPrecipitation(30);
+//            hourlyList.add(hourly);
+//        }
+//
+//        return this;
+//    }
 
     public void getWeather() {
         HttpUtils.sendOkHttpRequest("http://192.168.1.3/hourly.json", new okhttp3.Callback() {
@@ -99,8 +99,9 @@ public class Weather {
 
     public Weather getWeatherFromDatabase() {
         hourlyList = DataSupport.findAll(Hourly.class);
+
         Random random = new Random();
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < 12; i++) {
             int distance = random.nextInt(6) - 3;
             Daily daily = new Daily();
             daily.setTemps(new int[]{15 + distance, 10 + distance});
