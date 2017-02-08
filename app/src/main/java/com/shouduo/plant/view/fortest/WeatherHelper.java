@@ -178,12 +178,12 @@ public class WeatherHelper {
         }
     }*/
 /*
-    public static int getPrecipitation(int precipitation) {
-        if (precipitation < 3) {
+    public static int getConsume(int consume) {
+        if (consume < 3) {
             return 10;
-        } else if (precipitation < 6) {
+        } else if (consume < 6) {
             return 30;
-        } else if (precipitation < 9) {
+        } else if (consume < 9) {
             return 60;
         } else {
             return 90;

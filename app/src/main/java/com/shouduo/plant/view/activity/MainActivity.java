@@ -58,7 +58,7 @@ public class MainActivity extends BaseActivity
 //    private TextView overviewTitle;
     private TrendView humidityTrendView;
     private TrendView brightnessTrendView;
-    private TrendView TemperatureTrendView;
+    private TrendView temperatureTrendView;
 //    private TextView lifeInfoTitle;
 //    private IndexListView indexListView;
 
@@ -200,9 +200,11 @@ public class MainActivity extends BaseActivity
 
         this.humidityTrendView = (TrendView) findViewById(R.id.container_humidity_trendView);
         this.brightnessTrendView = (TrendView) findViewById(R.id.container_brightness_trendView);
+        this.temperatureTrendView = (TrendView) findViewById(R.id.container_temperature_trendView);
 
         humidityTrendView.setSwitchLayout(swipeSwitchLayout);
         brightnessTrendView.setSwitchLayout(swipeSwitchLayout);
+        temperatureTrendView.setSwitchLayout(swipeSwitchLayout);
 
 
 

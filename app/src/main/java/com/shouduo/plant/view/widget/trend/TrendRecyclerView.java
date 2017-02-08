@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 
 import com.shouduo.plant.R;
@@ -28,7 +27,7 @@ public class TrendRecyclerView extends RecyclerView {
 //    private History history;
     private int highest, lowest;
     private int[] tempYs;
-//    private int TEMPY_OFFSET = 2;
+    //    private int TEMPY_OFFSET = 2;
     private boolean canScroll = false;
 
     private float MARGIN_BOTTOM;
@@ -38,7 +37,9 @@ public class TrendRecyclerView extends RecyclerView {
 
     private static final String TAG = "TrendRecyclerView";
 
-    /** <br> life cycle. */
+    /**
+     * <br> life cycle.
+     */
 
     public TrendRecyclerView(Context context) {
         super(context);
@@ -69,7 +70,9 @@ public class TrendRecyclerView extends RecyclerView {
         this.MARGIN_TEXT = DisplayUtils.dpToPx(getContext(), (int) MARGIN_TEXT);
     }
 
-    /** <br> touch. */
+    /**
+     * <br> touch.
+     */
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent e) {
@@ -77,8 +80,7 @@ public class TrendRecyclerView extends RecyclerView {
             switch (e.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     if (switchLayout != null) {
-                        switchLayout.requestDisallowInterceptTouchEvent(true);
-                        Log.d(TAG, "onInterceptTouchEvent: override");
+                        switchLayout.requestDisallowInterceptTouchEvent(true);  //禁用switchLayout滑动
                     }
                     break;
 
@@ -93,7 +95,9 @@ public class TrendRecyclerView extends RecyclerView {
         return super.onInterceptTouchEvent(e);
     }
 
-    /** <br> UI. */
+    /**
+     * <br> UI.
+     */
 
     @Override
     public void onDraw(Canvas canvas) {
@@ -147,7 +151,9 @@ public class TrendRecyclerView extends RecyclerView {
         this.switchLayout = v;
     }
 
-    /** <br> data. */
+    /**
+     * <br> data.
+     */
 
     public void setData(Weather weather, int state) {
         if (weather == null) {
@@ -155,9 +161,15 @@ public class TrendRecyclerView extends RecyclerView {
         }
 //        this.history = history;
         if (state == TrendItemView.DATA_TYPE_DAILY) {
-            canScroll = weather.dailyList.size() > 7;
-        } else
-            canScroll = state == TrendItemView.DATA_TYPE_HOURLY && weather.hourlyList.size() > 7;
+            if (canScroll = weather.dailyList.size() > 7) {
+                scrollToPosition(weather.dailyList.size() - 1);
+            }
+        } else {
+            if (canScroll = state == TrendItemView.DATA_TYPE_HOURLY && weather.hourlyList.size() > 7) {
+                scrollToPosition(weather.hourlyList.size() - 1);
+            }
+        }
+
         calcTempYs(weather, state);
         invalidate();
     }
@@ -180,14 +192,14 @@ public class TrendRecyclerView extends RecyclerView {
 //                        }
 //                    }
 //                } else {
-                    for (int i = 0; i < weather.dailyList.size(); i ++) {
-                        if (weather.dailyList.get(i).temps[0] > highest) {
-                            highest = weather.dailyList.get(i).temps[0];
-                        }
-                        if (weather.dailyList.get(i).temps[1] < lowest) {
-                            lowest = weather.dailyList.get(i).temps[1];
-                        }
+                for (int i = 0; i < weather.dailyList.size(); i++) {
+                    if (weather.dailyList.get(i).temps[0] > highest) {
+                        highest = weather.dailyList.get(i).temps[0];
                     }
+                    if (weather.dailyList.get(i).temps[1] < lowest) {
+                        lowest = weather.dailyList.get(i).temps[1];
+                    }
+                }
 //                }
                 break;
 
@@ -202,19 +214,19 @@ public class TrendRecyclerView extends RecyclerView {
 //                        }
 //                    }
 //                } else {
-                    for (int i = 0; i < weather.hourlyList.size(); i ++) {
-                        if (weather.hourlyList.get(i).temp > highest) {
-                            highest = weather.hourlyList.get(i).temp;
-                        }
-                        if (weather.hourlyList.get(i).temp < lowest) {
-                            lowest = weather.hourlyList.get(i).temp;
-                        }
+                for (int i = 0; i < weather.hourlyList.size(); i++) {
+                    if (weather.hourlyList.get(i).temp > highest) {
+                        highest = weather.hourlyList.get(i).temp;
                     }
+                    if (weather.hourlyList.get(i).temp < lowest) {
+                        lowest = weather.hourlyList.get(i).temp;
+                    }
+                }
 //                }
                 break;
         }
 
-        tempYs = new int[] {
+        tempYs = new int[]{
                 (int) (TrendItemView.calcHeaderHeight(getContext()) + TrendItemView.calcDrawSpecHeight(getContext()) - MARGIN_BOTTOM
                         - TrendItemView.calcDrawSpecUsableHeight(getContext()) * 3 / 4),
                 (int) (TrendItemView.calcHeaderHeight(getContext()) + TrendItemView.calcDrawSpecHeight(getContext()) - MARGIN_BOTTOM

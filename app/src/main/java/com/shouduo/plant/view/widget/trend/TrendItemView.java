@@ -237,8 +237,11 @@ public class TrendItemView extends FrameLayout {
 
                 path.reset();
                 path.moveTo(0, maxiTempYs[0]);
-                path.lineTo((float) (getMeasuredWidth() / 2.0), maxiTempYs[1]);
-                path.lineTo(getMeasuredWidth(), maxiTempYs[2]);
+//                path.lineTo((float) (getMeasuredWidth() / 2.0), maxiTempYs[1]);
+//                path.lineTo(getMeasuredWidth(), maxiTempYs[2]);
+                path.cubicTo((float) (getMeasuredWidth() / 2.0), maxiTempYs[1],
+                        (float) (getMeasuredWidth() / 2.0), maxiTempYs[1],
+                        getMeasuredWidth(), maxiTempYs[2]);
                 path.lineTo(getMeasuredWidth(), getMeasuredHeight() - MARGIN_BOTTOM);
                 path.lineTo(0, getMeasuredHeight() - MARGIN_BOTTOM);
                 path.close();
@@ -320,8 +323,11 @@ public class TrendItemView extends FrameLayout {
 
                 path.reset();
                 path.moveTo(0, miniTempYs[0]);
-                path.lineTo((float) (getMeasuredWidth() / 2.0), miniTempYs[1]);
-                path.lineTo(getMeasuredWidth(), miniTempYs[2]);
+//                path.lineTo((float) (getMeasuredWidth() / 2.0), miniTempYs[1]);
+//                path.lineTo(getMeasuredWidth(), miniTempYs[2]);
+                path.cubicTo((float) (getMeasuredWidth() / 2.0), miniTempYs[1],
+                        (float) (getMeasuredWidth() / 2.0), miniTempYs[1],
+                        getMeasuredWidth(), miniTempYs[2]);
                 canvas.drawPath(path, paint);
                 break;
         }
@@ -408,8 +414,11 @@ public class TrendItemView extends FrameLayout {
 
                 path.reset();
                 path.moveTo(0, maxiTempYs[0]);
-                path.lineTo((float) (getMeasuredWidth() / 2.0), maxiTempYs[1]);
-                path.lineTo(getMeasuredWidth(), maxiTempYs[2]);
+//                path.lineTo((float) (getMeasuredWidth() / 2.0), maxiTempYs[1]);
+//                path.lineTo(getMeasuredWidth(), maxiTempYs[2]);
+                path.cubicTo((float) (getMeasuredWidth() / 2.0), maxiTempYs[1],
+                        (float) (getMeasuredWidth() / 2.0), maxiTempYs[1],
+                        getMeasuredWidth(), maxiTempYs[2]);
                 path.lineTo(getMeasuredWidth(), getMeasuredHeight() - MARGIN_BOTTOM);
                 path.lineTo(0, getMeasuredHeight() - MARGIN_BOTTOM);
                 path.close();
@@ -426,7 +435,8 @@ public class TrendItemView extends FrameLayout {
                 path.moveTo(0, maxiTempYs[0]);
 //                path.lineTo((float) (getMeasuredWidth() / 2.0), maxiTempYs[1]);
 //                path.lineTo(getMeasuredWidth(), maxiTempYs[2]);
-                path.quadTo((float) (getMeasuredWidth() / 2.0), maxiTempYs[1],
+                path.cubicTo((float) (getMeasuredWidth() / 2.0), maxiTempYs[1],
+                        (float) (getMeasuredWidth() / 2.0), maxiTempYs[1],
                         getMeasuredWidth(), maxiTempYs[2]);
                 canvas.drawPath(path, paint);
                 break;
@@ -449,7 +459,7 @@ public class TrendItemView extends FrameLayout {
         paint.setShadowLayer(0, 0, 0, Color.TRANSPARENT);
 
         paint.setColor(lineColors[1]);
-        paint.setAlpha((int) (255 * 0.1));
+        paint.setAlpha((int) (255 * 0.25));
         paint.setStyle(Paint.Style.FILL);
         canvas.drawRoundRect(
                 new RectF(
@@ -461,7 +471,7 @@ public class TrendItemView extends FrameLayout {
                 paint);
 
         if (temps[1] != 0) {
-            paint.setAlpha((int) (255 * 0.2));
+            paint.setAlpha((int) (255 * 0.25));
             paint.setTextAlign(Paint.Align.CENTER);
             paint.setTextSize(POP_TEXT_SIZE);
             canvas.drawText(
@@ -645,7 +655,7 @@ public class TrendItemView extends FrameLayout {
     public void setHourlyData(Weather weather, int position, int highest, int lowest) {
         this.temps = new int[]{
                 weather.hourlyList.get(position).temp,
-                weather.hourlyList.get(position).precipitation};
+                weather.hourlyList.get(position).consume};
         if (position == 0) {
             positionType = POSITION_TYPE_LEFT;
             setHourlyLeftData(weather, position, highest, lowest);
@@ -727,7 +737,7 @@ public class TrendItemView extends FrameLayout {
 
     private void serPrecipitationData(Weather weather, int position) {
         miniTempYs[0] = (int) (calcHeaderHeight(getContext()) + calcDrawSpecHeight(getContext()) - MARGIN_BOTTOM
-                - calcDrawSpecUsableHeight(getContext()) * weather.hourlyList.get(position).precipitation / 100.0);
+                - calcDrawSpecUsableHeight(getContext()) * weather.hourlyList.get(position).consume / 100.0);
     }
 
     // size.

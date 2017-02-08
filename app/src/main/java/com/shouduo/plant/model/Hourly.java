@@ -13,17 +13,17 @@ public class Hourly extends DataSupport{
 //    public String weather;
 //    public String weatherKind;
     public int hum;
-    public int temp;
     public int bright;
-    public int precipitation;
+    public int temp;
+    public int consume;
 
     public Hourly() {
     }
 
-    public Hourly(String time, int temp, int precipitation) {
+    public Hourly(String time, int temp, int consume) {
         this.time = time;
         this.temp = temp;
-        this.precipitation = precipitation;
+        this.consume = consume;
     }
 
     /** <br> life cycle. */
@@ -36,8 +36,8 @@ public class Hourly extends DataSupport{
         this.temp = temp;
     }
 
-    public void setPrecipitation(int precipitation) {
-        this.precipitation = precipitation;
+    public void setConsume(int consume) {
+        this.consume = consume;
     }
 
     public String getTime() {
@@ -48,8 +48,8 @@ public class Hourly extends DataSupport{
         return temp;
     }
 
-    public int getPrecipitation() {
-        return precipitation;
+    public int getConsume() {
+        return consume;
     }
 
     //    public Hourly buildHourly(Context c, NewHourlyResult result) {
@@ -58,7 +58,7 @@ public class Hourly extends DataSupport{
 //        weather = result.IconPhrase;
 //        weatherKind = WeatherHelper.getNewWeatherKind(result.WeatherIcon);
 //        temp = (int) result.Temperature.Value;
-//        precipitation = result.PrecipitationProbability;
+//        consume = result.PrecipitationProbability;
 //        return this;
 //    }
 //
@@ -68,7 +68,7 @@ public class Hourly extends DataSupport{
 //        weather = entity.weather;
 //        weatherKind = entity.weatherKind;
 //        temp = entity.temp;
-//        precipitation = entity.precipitation;
+//        consume = entity.consume;
 //        return this;
 //    }
 

@@ -60,7 +60,7 @@ public class Weather {
 //            Hourly hourly = new Hourly();
 //            hourly.setTime("11:00");
 //            hourly.setTemp(20);
-//            hourly.setPrecipitation(30);
+//            hourly.setConsume(30);
 //            hourlyList.add(hourly);
 //        }
 //

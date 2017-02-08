@@ -118,7 +118,7 @@ public class TrendView extends FrameLayout
             this.weather = weather;
 //            this.history = history;
         }
-        recyclerView.scrollToPosition(weather.dailyList.size() - 1);
+//        recyclerView.scrollToPosition(weather.dailyList.size() - 1);
     }
 
     public void setState(int stateTo, boolean animate) {
