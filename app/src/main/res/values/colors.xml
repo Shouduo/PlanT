@@ -19,7 +19,6 @@
 
     <color name="colorNotificationBackground">#263238</color>
 
-    <color name="colorLine">#f1f1f1</color>
     <color name="colorRoot">#fafafa</color>
     <color name="colorTextTitle">@color/colorTextDark</color>
     <color name="colorTextContent">@color/colorTextDark2nd</color>
@@ -36,4 +35,9 @@
     <color name="colorLevel_4">#e52f35</color>
     <color name="colorLevel_5">#99004c</color>
     <color name="colorLevel_6">#7e0023</color>
+
+    <color name="colorChartLine_1">#75becb</color>
+    <color name="colorChartLine_2">#cb7575</color>
+    <color name="colorChartLine_3">#cba575</color>
+    <color name="colorLine">#f1f1f1</color>
 </resources>

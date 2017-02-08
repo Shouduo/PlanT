@@ -296,15 +296,17 @@ public class MainActivity extends BaseActivity
 
 //        History history = new History().mockHistory();
 
-        humidityTrendView.setData(weather.getWeatherFromDatabase());
-        humidityTrendView.setState(TrendItemView.DATA_TYPE_DAILY, false);
+        humidityTrendView.setData(weather.getWeatherFromDatabase(), TrendItemView.VIEW_TYPE_HUM);
+        humidityTrendView.setState(TrendItemView.DATA_TYPE_HOURLY, false);
+//
+        brightnessTrendView.setData(weather.getWeatherFromDatabase(), TrendItemView.VIEW_TYPE_BRIGHT);
+        brightnessTrendView.setState(TrendItemView.DATA_TYPE_HOURLY, false);
 
-        brightnessTrendView.setData(weather.getWeatherFromDatabase());
-        brightnessTrendView.setState(TrendItemView.DATA_TYPE_DAILY, false);
+        temperatureTrendView.setData(weather.getWeatherFromDatabase(), TrendItemView.VIEW_TYPE_TEMP);
+        temperatureTrendView.setState(TrendItemView.DATA_TYPE_HOURLY, false);
 
 
-//        indexListView.setData(locationNow.weather);
-//        humidityTrendView.setData(locationNow.weather, locationNow.history);
+
 
         weatherContainer.setVisibility(View.VISIBLE);
         viewShowAnimator.start();

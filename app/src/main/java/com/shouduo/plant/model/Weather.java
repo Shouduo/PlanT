@@ -1,7 +1,5 @@
 package com.shouduo.plant.model;
 
-import android.util.Log;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.shouduo.plant.utils.HttpUtils;
@@ -11,7 +9,6 @@ import org.litepal.crud.DataSupport;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import okhttp3.Call;
 import okhttp3.Response;
@@ -59,7 +56,7 @@ public class Weather {
 //        for (int i = 0; i < 24; i++) {
 //            Hourly hourly = new Hourly();
 //            hourly.setTime("11:00");
-//            hourly.setTemp(20);
+//            hourly.setTempDiff(20);
 //            hourly.setConsume(30);
 //            hourlyList.add(hourly);
 //        }
@@ -71,17 +68,33 @@ public class Weather {
         HttpUtils.sendOkHttpRequest("http://192.168.1.3/hourly.json", new okhttp3.Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Log.d("Weather", "getWeather: fail");
+//                Toast.makeText(, "Server's down", Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String responseData = response.body().string();
-//                Log.d("Weather", responseData);
                 hourlyList = new Gson().fromJson(responseData, new TypeToken<List<Hourly>>() {
                 }.getType());
                 for (Hourly hourly : hourlyList) {
                     hourly.save();
+                }
+            }
+        });
+
+        HttpUtils.sendOkHttpRequest("http://192.168.1.3/daily.json", new okhttp3.Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+//                Toast.makeText(, "Server's down", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String responseData = response.body().string();
+                dailyList = new Gson().fromJson(responseData, new TypeToken<List<Daily>>() {
+                }.getType());
+                for (Daily daily : dailyList) {
+                    daily.save();
                 }
             }
         });
@@ -99,15 +112,16 @@ public class Weather {
 
     public Weather getWeatherFromDatabase() {
         hourlyList = DataSupport.findAll(Hourly.class);
+        dailyList = DataSupport.findAll(Daily.class);
 
-        Random random = new Random();
-        for (int i = 0; i < 12; i++) {
-            int distance = random.nextInt(6) - 3;
-            Daily daily = new Daily();
-            daily.setTemps(new int[]{15 + distance, 10 + distance});
-            daily.setWeek("sat");
-            dailyList.add(daily);
-        }
+//        Random random = new Random();
+//        for (int i = 0; i < 12; i++) {
+//            int distance = random.nextInt(6) - 3;
+//            Daily daily = new Daily();
+//            daily.setTemps(new int[]{15 + distance, 10 + distance});
+//            daily.setWeek("sat");
+//            dailyList.add(daily);
+//        }
         return this;
     }
 

@@ -24,7 +24,8 @@ public class TrendAdapter extends RecyclerView.Adapter<TrendAdapter.ViewHolder> 
     private Weather weather;
 //    private History history;
     private boolean dayTime;
-    private int state;
+    private int dataType;
+    private int viewType;
     private int highest, lowest;
 
     /** <br> life cycle. */
@@ -32,7 +33,7 @@ public class TrendAdapter extends RecyclerView.Adapter<TrendAdapter.ViewHolder> 
     public TrendAdapter(Context context, Weather weather, OnTrendItemClickListener l) {
         this.context = context;
         this.listener = l;
-        this.setData(weather, TrendItemView.DATA_TYPE_DAILY);
+        this.setData(weather, TrendItemView.DATA_TYPE_DAILY, TrendItemView.VIEW_TYPE_HUM);
     }
 
     /** <br> UI. */
@@ -49,8 +50,8 @@ public class TrendAdapter extends RecyclerView.Adapter<TrendAdapter.ViewHolder> 
         if (weather == null) {
             holder.trendItemView.setNullData();
         } else {
-            holder.trendItemView.setData(weather, state, position, highest, lowest);
-            switch (state) {
+            holder.trendItemView.setData(weather, dataType, viewType, position, highest, lowest);
+            switch (dataType) {
                 case TrendItemView.DATA_TYPE_DAILY:
                     if (position == 0) {
                         holder.textView.setText("Today");
@@ -76,56 +77,149 @@ public class TrendAdapter extends RecyclerView.Adapter<TrendAdapter.ViewHolder> 
 
     /** <br> data. */
 
-    public void setData(Weather weather, int state) {
+    public void setData(Weather weather, int dataType, int viewType) {
         this.weather = weather;
 //        this.history = history;
         this.dayTime = TimeUtils.getInstance(context).isDayTime();
-        this.state = state;
+        this.dataType = dataType;
+        this.viewType = viewType;
 
-        calcTempRange();
+        calcDataRange();
     }
 
-    private void calcTempRange() {
+    private void calcDataRange() {
         if (weather == null) {
             highest = lowest = 0;
         } else {
-            switch (state) {
-                case TrendItemView.DATA_TYPE_DAILY:
+            switch (viewType) {
+                case TrendItemView.VIEW_TYPE_HUM:
+                    switch (dataType) {
+                        case TrendItemView.DATA_TYPE_HOURLY:
+                            highest = weather.hourlyList.get(0).hum;
+                            lowest = weather.hourlyList.get(0).hum;
 
-                    highest = weather.dailyList.get(0).temps[0];
-                    lowest = weather.dailyList.get(0).temps[1];
+                            for (int i = 0; i < weather.hourlyList.size(); i ++) {
+                                if (weather.hourlyList.get(i).hum > highest) {
+                                    highest = weather.hourlyList.get(i).hum;
+                                }
+                                if (weather.hourlyList.get(i).hum < lowest) {
+                                    lowest = weather.hourlyList.get(i).hum;
+                                }
+                            }
+                            break;
+                        case TrendItemView.DATA_TYPE_DAILY:
+                            highest = weather.dailyList.get(0).consume;
+                            lowest = weather.dailyList.get(0).consume;
 
-                    for (int i = 0; i < weather.dailyList.size(); i ++) {
-                        if (weather.dailyList.get(i).temps[0] > highest) {
-                            highest = weather.dailyList.get(i).temps[0];
-                        }
-                        if (weather.dailyList.get(i).temps[1] < lowest) {
-                            lowest = weather.dailyList.get(i).temps[1];
-                        }
+                            for (int i = 0; i < weather.dailyList.size(); i ++) {
+                                if (weather.dailyList.get(i).consume > highest) {
+                                    highest = weather.dailyList.get(i).consume;
+                                }
+                                if (weather.dailyList.get(i).consume < lowest) {
+                                    lowest = weather.dailyList.get(i).consume;
+                                }
+                            }
+                            break;
                     }
                     break;
+                case TrendItemView.VIEW_TYPE_BRIGHT:
+                    switch (dataType) {
+                        case TrendItemView.DATA_TYPE_HOURLY:
+                            highest = weather.hourlyList.get(0).bright;
+                            lowest = weather.hourlyList.get(0).bright;
 
-                case TrendItemView.DATA_TYPE_HOURLY:
+                            for (int i = 0; i < weather.hourlyList.size(); i ++) {
+                                if (weather.hourlyList.get(i).bright > highest) {
+                                    highest = weather.hourlyList.get(i).bright;
+                                }
+                                if (weather.hourlyList.get(i).bright < lowest) {
+                                    lowest = weather.hourlyList.get(i).bright;
+                                }
+                            }
+                            break;
+                        case TrendItemView.DATA_TYPE_DAILY:
+                            highest = weather.dailyList.get(0).bright;
+                            lowest = weather.dailyList.get(0).bright;
 
-                    highest = weather.hourlyList.get(0).temp;
-                    lowest = weather.hourlyList.get(0).temp;
+                            for (int i = 0; i < weather.dailyList.size(); i ++) {
+                                if (weather.dailyList.get(i).bright > highest) {
+                                    highest = weather.dailyList.get(i).bright;
+                                }
+                                if (weather.dailyList.get(i).bright < lowest) {
+                                    lowest = weather.dailyList.get(i).bright;
+                                }
+                            }
+                            break;
+                    }
+                    break;
+                case TrendItemView.VIEW_TYPE_TEMP:
+                    switch (dataType) {
+                        case TrendItemView.DATA_TYPE_HOURLY:
+                            highest = weather.hourlyList.get(0).temp;
+                            lowest = weather.hourlyList.get(0).temp;
 
-                    for (int i = 0; i < weather.hourlyList.size(); i ++) {
-                        if (weather.hourlyList.get(i).temp > highest) {
-                            highest = weather.hourlyList.get(i).temp;
-                        }
-                        if (weather.hourlyList.get(i).temp < lowest) {
-                            lowest = weather.hourlyList.get(i).temp;
-                        }
+                            for (int i = 0; i < weather.hourlyList.size(); i ++) {
+                                if (weather.hourlyList.get(i).temp > highest) {
+                                    highest = weather.hourlyList.get(i).temp;
+                                }
+                                if (weather.hourlyList.get(i).temp < lowest) {
+                                    lowest = weather.hourlyList.get(i).temp;
+                                }
+                            }
+                            break;
+                        case TrendItemView.DATA_TYPE_DAILY:
+                            highest = weather.dailyList.get(0).tempDiff;
+                            lowest = weather.dailyList.get(0).tempDiff;
+
+                            for (int i = 0; i < weather.dailyList.size(); i ++) {
+                                if (weather.dailyList.get(i).tempDiff > highest) {
+                                    highest = weather.dailyList.get(i).tempDiff;
+                                }
+                                if (weather.dailyList.get(i).tempDiff < lowest) {
+                                    lowest = weather.dailyList.get(i).tempDiff;
+                                }
+                            }
+                            break;
                     }
                     break;
             }
+//            switch (dataType) {
+//                case TrendItemView.DATA_TYPE_DAILY:
+//
+//                    highest = weather.dailyList.get(0).temps[0];
+//                    lowest = weather.dailyList.get(0).temps[1];
+//
+//                    for (int i = 0; i < weather.dailyList.size(); i ++) {
+//                        if (weather.dailyList.get(i).temps[0] > highest) {
+//                            highest = weather.dailyList.get(i).temps[0];
+//                        }
+//                        if (weather.dailyList.get(i).temps[1] < lowest) {
+//                            lowest = weather.dailyList.get(i).temps[1];
+//                        }
+//                    }
+//                    break;
+//
+//                case TrendItemView.DATA_TYPE_HOURLY:
+//
+//                    highest = weather.hourlyList.get(0).tempDiff;
+//                    lowest = weather.hourlyList.get(0).tempDiff;
+//
+//                    for (int i = 0; i < weather.hourlyList.size(); i ++) {
+//                        if (weather.hourlyList.get(i).tempDiff > highest) {
+//                            highest = weather.hourlyList.get(i).tempDiff;
+//                        }
+//                        if (weather.hourlyList.get(i).tempDiff < lowest) {
+//                            lowest = weather.hourlyList.get(i).tempDiff;
+//                        }
+//                    }
+//                    break;
+//            }
         }
     }
 
     @Override
     public int getItemCount() {
-        switch (state) {
+        switch (dataType) {
             case TrendItemView.DATA_TYPE_DAILY:
                 return weather == null ? 7 : weather.dailyList.size();
 
@@ -179,7 +273,7 @@ public class TrendAdapter extends RecyclerView.Adapter<TrendAdapter.ViewHolder> 
 
 //                case R.id.item_trend_iconBar:
 //                    WeatherDialog weatherDialog = new WeatherDialog();
-//                    weatherDialog.setData(weather, getAdapterPosition(), state == TrendItemView.DATA_TYPE_DAILY);
+//                    weatherDialog.setData(weather, getAdapterPosition(), dataType == TrendItemView.DATA_TYPE_DAILY);
 //                    weatherDialog.show(
 //                            GeometricWeather.getInstance().getTopActivity().getFragmentManager(),
 //                            null);

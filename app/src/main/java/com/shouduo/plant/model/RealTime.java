@@ -23,7 +23,7 @@ public class RealTime {
 //    public void buildRealTime(Context c, NewRealtimeResult result) {
 //        weather = result.WeatherText;
 //        weatherKind = WeatherHelper.getNewWeatherKind(result.WeatherIcon);
-//        temp = (int) result.Temperature.Metric.Value;
+//        tempDiff = (int) result.Temperature.Metric.Value;
 //        sensibleTemp = (int) result.RealFeelTemperature.Metric.Value;
 //        windDir = result.Wind.Direction.Localized;
 //        windSpeed = result.Wind.Speed.Metric.Value + "km/h";
@@ -37,7 +37,7 @@ public class RealTime {
 //    void buildRealTime(WeatherEntity entity) {
 //        weather = entity.realTimeWeather;
 //        weatherKind = entity.realTimeWeatherKind;
-//        temp = entity.realTimeTemp;
+//        tempDiff = entity.realTimeTemp;
 //        sensibleTemp = entity.realTimeSensibleTemp;
 //        windDir = entity.realTimeWindDir;
 //        windSpeed = entity.realTimeWindSpeed;

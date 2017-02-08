@@ -1,36 +1,68 @@
 package com.shouduo.plant.model;
 
+import org.litepal.crud.DataSupport;
+
 /**
  * Created by 刘亨俊 on 17.2.2.
  */
 
-public class Daily {
+public class Daily extends DataSupport{
     // data
 //    public String date;
     public String week;
 //    public String[] weathers;
 //    public String[] weatherKinds;
-    public int[] temps;
+//    public int[] temps;
 //    public String[] windDirs;
 //    public String[] windSpeeds;
 //    public String[] windLevels;
 //    public String[] astros;
 //    public int[] precipitations;
+    public int consume;
+    public int bright;
+    public int tempDiff;
 
     public Daily() {
     }
 
-    public Daily(String week, int[] temps) {
-        this.week = week;
-        this.temps = temps;
+    public String getWeek() {
+        return week;
     }
 
     public void setWeek(String week) {
         this.week = week;
     }
 
-    public void setTemps(int[] temps) {
-        this.temps = temps;
+//    public int[] getTemps() {
+//        return temps;
+//    }
+//
+//    public void setTemps(int[] temps) {
+//        this.temps = temps;
+//    }
+
+    public int getConsume() {
+        return consume;
+    }
+
+    public void setConsume(int consume) {
+        this.consume = consume;
+    }
+
+    public int getBright() {
+        return bright;
+    }
+
+    public void setBright(int bright) {
+        this.bright = bright;
+    }
+
+    public int getTempDiff() {
+        return tempDiff;
+    }
+
+    public void setTempDiff(int tempDiff) {
+        this.tempDiff = tempDiff;
     }
 
 //    public Daily buildDaily(Context c, NewDailyResult.DailyForecasts forecast) {

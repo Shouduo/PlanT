@@ -13,43 +13,53 @@ public class Hourly extends DataSupport{
 //    public String weather;
 //    public String weatherKind;
     public int hum;
+    public int consume;
     public int bright;
     public int temp;
-    public int consume;
 
     public Hourly() {
     }
 
-    public Hourly(String time, int temp, int consume) {
-        this.time = time;
-        this.temp = temp;
-        this.consume = consume;
-    }
 
     /** <br> life cycle. */
+    public String getTime() {
+        return time;
+    }
 
     public void setTime(String time) {
         this.time = time;
     }
 
-    public void setTemp(int temp) {
-        this.temp = temp;
+    public int getHum() {
+        return hum;
+    }
+
+    public void setHum(int hum) {
+        this.hum = hum;
+    }
+
+    public int getConsume() {
+        return consume;
     }
 
     public void setConsume(int consume) {
         this.consume = consume;
     }
 
-    public String getTime() {
-        return time;
+    public int getBright() {
+        return bright;
+    }
+
+    public void setBright(int bright) {
+        this.bright = bright;
     }
 
     public int getTemp() {
         return temp;
     }
 
-    public int getConsume() {
-        return consume;
+    public void setTemp(int temp) {
+        this.temp = temp;
     }
 
     //    public Hourly buildHourly(Context c, NewHourlyResult result) {
@@ -57,7 +67,7 @@ public class Hourly extends DataSupport{
 //        dayTime = result.IsDaylight;
 //        weather = result.IconPhrase;
 //        weatherKind = WeatherHelper.getNewWeatherKind(result.WeatherIcon);
-//        temp = (int) result.Temperature.Value;
+//        tempDiff = (int) result.Temperature.Value;
 //        consume = result.PrecipitationProbability;
 //        return this;
 //    }
@@ -67,7 +77,7 @@ public class Hourly extends DataSupport{
 //        dayTime = entity.dayTime;
 //        weather = entity.weather;
 //        weatherKind = entity.weatherKind;
-//        temp = entity.temp;
+//        tempDiff = entity.tempDiff;
 //        consume = entity.consume;
 //        return this;
 //    }

@@ -35,13 +35,14 @@ public class TrendView extends FrameLayout
     private Weather weather;
 //    private History history;
 
-    private int state = TrendItemView.DATA_TYPE_DAILY;
+    private int dataType = TrendItemView.DATA_TYPE_DAILY;
 
     private boolean animating = false;
 
     // animator
     private AnimatorSet viewIn;
     private AnimatorSet viewOut;
+    private int viewType;
 
     /** <br> life cycle. */
 
@@ -113,30 +114,31 @@ public class TrendView extends FrameLayout
 
     /** data. */
 
-    public void setData(Weather weather) {
+    public void setData(Weather weather, int viewType) {
         if (weather != null) {
             this.weather = weather;
+            this.viewType = viewType;
 //            this.history = history;
         }
 //        recyclerView.scrollToPosition(weather.dailyList.size() - 1);
     }
 
-    public void setState(int stateTo, boolean animate) {
+    public void setState(int dataType, boolean animate) {
         if (animate) {
-            if (stateTo == state || animating) {
+            if (dataType == this.dataType || animating) {
                 return;
             }
-            this.state = stateTo;
+            this.dataType = dataType;
             viewOut.start();
         } else {
             viewIn.cancel();
             viewOut.cancel();
-            this.state = stateTo;
+            this.dataType = dataType;
 
-            adapter.setData(weather, state);
+            adapter.setData(weather, this.dataType, viewType);
             adapter.notifyDataSetChanged();
 
-            recyclerView.setData(weather, state);
+            recyclerView.setData(weather, this.dataType, viewType);
         }
     }
 
@@ -144,7 +146,7 @@ public class TrendView extends FrameLayout
 
     @Override
     public void onTrendItemClick() {
-        switch (state) {
+        switch (dataType) {
             case TrendItemView.DATA_TYPE_DAILY:
                 setState(TrendItemView.DATA_TYPE_HOURLY, true);
                 break;
@@ -166,10 +168,10 @@ public class TrendView extends FrameLayout
         public void onAnimationEnd(Animator animation) {
             animating = false;
 
-            adapter.setData(weather, state);
+            adapter.setData(weather, dataType, viewType);
             adapter.notifyDataSetChanged();
 
-            recyclerView.setData(weather, state);
+            recyclerView.setData(weather, dataType, viewType);
 
             viewIn.start();
         }

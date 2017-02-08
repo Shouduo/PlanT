@@ -30,14 +30,27 @@ public class TrendItemView extends FrameLayout {
     private Shader shader;
 
     // data.
-    private int temps[] = new int[2];
-    private int[] maxiTempYs = new int[3];
+    private int[] chart1 = new int[3];
+    private int[] chart2 = new int[3];
+    private int[] hourlyHumYs = new int[3];
+    private int[] hourlyConsumeYs = new int[3];
+    private int[] hourlyBrightYs = new int[3];
+    private int[] hourlyTempYs = new int[3];
+    private int[] dailyConsumeYs = new int[3];
+    private int[] dailyBrightYs = new int[3];
+    private int[] dailyTempDiffYs = new int[3];
     private int[] miniTempYs = new int[3];
 
     private int dataType = DATA_TYPE_NULL;
     public static final int DATA_TYPE_NULL = 0;
     public static final int DATA_TYPE_DAILY = 1;
     public static final int DATA_TYPE_HOURLY = -1;
+
+    private int viewType = VIEW_TYPE_NULL;
+    public static final int VIEW_TYPE_NULL = 0;
+    public static final int VIEW_TYPE_HUM = 1;
+    public static final int VIEW_TYPE_BRIGHT = 2;
+    public static final int VIEW_TYPE_TEMP = 3;
 
     private int positionType = POSITION_TYPE_NULL;
     public static final int POSITION_TYPE_NULL = 7;
@@ -90,8 +103,9 @@ public class TrendItemView extends FrameLayout {
         setWillNotDraw(false);
 
         this.lineColors = new int[]{
-                ContextCompat.getColor(getContext(), R.color.lightPrimary_5),
-                ContextCompat.getColor(getContext(), R.color.darkPrimary_1),
+                ContextCompat.getColor(getContext(), R.color.colorChartLine_1),
+                ContextCompat.getColor(getContext(), R.color.colorChartLine_2),
+                ContextCompat.getColor(getContext(), R.color.colorChartLine_3),
                 ContextCompat.getColor(getContext(), R.color.colorLine)};
         this.shadowColors = new int[]{
                 Color.argb(50, 176, 176, 176),
@@ -110,7 +124,6 @@ public class TrendItemView extends FrameLayout {
         this.paint = new Paint();
         paint.setAntiAlias(true);
         paint.setStrokeCap(Paint.Cap.ROUND);
-//        paint.setPathEffect(new CornerPathEffect(100));
 
         this.path = new Path();
 
@@ -134,8 +147,6 @@ public class TrendItemView extends FrameLayout {
         setMeasuredDimension(
                 calcWidth(getContext()),
                 calcHeaderHeight(getContext()) + calcDrawSpecHeight(getContext()));
-//        Log.d("TrendItemView", MeasureSpec.makeMeasureSpec(calcHeaderHeight(getContext()), MeasureSpec.EXACTLY)+"");
-//        Log.d("TrendItemView", calcHeaderHeight(getContext()) + calcDrawSpecHeight(getContext())+"");
     }
 
     // draw.
@@ -143,34 +154,54 @@ public class TrendItemView extends FrameLayout {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        switch (dataType) {
-            case DATA_TYPE_DAILY:
-                drawTimeLine(canvas);
-                drawDailyMaxiTemp(canvas);
-                drawDailyMiniTemp(canvas);
-                break;
 
-            case DATA_TYPE_HOURLY:
-                drawTimeLine(canvas);
-                drawHourlyPrecipitationData(canvas);
-                drawHourlyTemp(canvas);
+        drawTimeLine(canvas);
+        switch (viewType) {
+            case VIEW_TYPE_HUM:
+                switch (dataType) {
+                    case DATA_TYPE_HOURLY:
+                        drawLineChart(canvas, hourlyHumYs, chart1, "%", lineColors[0]);
+                        drawBarChart(canvas, hourlyConsumeYs, chart2, "%", lineColors[0]);
+                        break;
+                    case DATA_TYPE_DAILY:
+                        drawBarChart(canvas, dailyConsumeYs, chart1, "%", lineColors[0]);
+                        break;
+                }
+                break;
+            case VIEW_TYPE_BRIGHT:
+                switch (dataType) {
+                    case DATA_TYPE_HOURLY:
+                        drawLineChart(canvas, hourlyBrightYs, chart1, "lux", lineColors[1]);
+                        break;
+                    case DATA_TYPE_DAILY:
+                        drawBarChart(canvas, dailyBrightYs, chart1, "lux", lineColors[1]);
+                        break;
+                }
+                break;
+            case VIEW_TYPE_TEMP:
+                switch (dataType) {
+                    case DATA_TYPE_HOURLY:
+                        drawLineChart(canvas, hourlyTempYs, chart1, "°C", lineColors[2]);
+                        break;
+                    case DATA_TYPE_DAILY:
+                        drawBarChart(canvas, dailyTempDiffYs, chart1, "°C", lineColors[2]);
+                        break;
+                }
                 break;
         }
     }
-
+    //绘制时间竖线
     private void drawTimeLine(Canvas canvas) {
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(CHART_LINE_SIZE);
-        paint.setColor(lineColors[2]);
+        paint.setColor(lineColors[3]);
         canvas.drawLine(
                 (float) (getMeasuredWidth() / 2.0), MARGIN_TOP,
                 (float) (getMeasuredWidth() / 2.0), getMeasuredHeight() - MARGIN_BOTTOM,
                 paint);
     }
-
-    // daily.
-
-    private void drawDailyMaxiTemp(Canvas canvas) {
+    //绘制折线图
+    private void drawLineChart(Canvas canvas, int[] dataYs, int[] chart, String unit, int lineColor) {
         switch (positionType) {
             case POSITION_TYPE_NULL:
                 return;
@@ -182,8 +213,8 @@ public class TrendItemView extends FrameLayout {
                 paint.setShadowLayer(0, 0, 0, Color.TRANSPARENT);
 
                 path.reset();
-                path.moveTo((float) (getMeasuredWidth() / 2.0), maxiTempYs[1]);
-                path.lineTo(getMeasuredWidth(), maxiTempYs[2]);
+                path.moveTo((float) (getMeasuredWidth() / 2.0), dataYs[1]);
+                path.lineTo(getMeasuredWidth(), dataYs[2]);
                 path.lineTo(getMeasuredWidth(), getMeasuredHeight() - MARGIN_BOTTOM);
                 path.lineTo((float) (getMeasuredWidth() / 2.0), getMeasuredHeight() - MARGIN_BOTTOM);
                 path.close();
@@ -193,12 +224,12 @@ public class TrendItemView extends FrameLayout {
                 paint.setShader(null);
                 paint.setStyle(Paint.Style.STROKE);
                 paint.setStrokeWidth(TREND_LINE_SIZE);
-                paint.setColor(lineColors[0]);
+                paint.setColor(lineColor);
                 paint.setShadowLayer(2, 0, 2, shadowColors[2]);
 
                 path.reset();
-                path.moveTo((float) (getMeasuredWidth() / 2.0), maxiTempYs[1]);
-                path.lineTo(getMeasuredWidth(), maxiTempYs[2]);
+                path.moveTo((float) (getMeasuredWidth() / 2.0), dataYs[1]);
+                path.lineTo(getMeasuredWidth(), dataYs[2]);
                 canvas.drawPath(path, paint);
                 break;
 
@@ -209,8 +240,8 @@ public class TrendItemView extends FrameLayout {
                 paint.setShadowLayer(0, 0, 0, Color.TRANSPARENT);
 
                 path.reset();
-                path.moveTo(0, maxiTempYs[0]);
-                path.lineTo((float) (getMeasuredWidth() / 2.0), maxiTempYs[1]);
+                path.moveTo(0, dataYs[0]);
+                path.lineTo((float) (getMeasuredWidth() / 2.0), dataYs[1]);
                 path.lineTo((float) (getMeasuredWidth() / 2.0), getMeasuredHeight() - MARGIN_BOTTOM);
                 path.lineTo(0, getMeasuredHeight() - MARGIN_BOTTOM);
                 path.close();
@@ -220,12 +251,12 @@ public class TrendItemView extends FrameLayout {
                 paint.setShader(null);
                 paint.setStyle(Paint.Style.STROKE);
                 paint.setStrokeWidth(TREND_LINE_SIZE);
-                paint.setColor(lineColors[0]);
+                paint.setColor(lineColor);
                 paint.setShadowLayer(2, 0, 2, shadowColors[2]);
 
                 path.reset();
-                path.moveTo(0, maxiTempYs[0]);
-                path.lineTo((float) (getMeasuredWidth() / 2.0), maxiTempYs[1]);
+                path.moveTo(0, dataYs[0]);
+                path.lineTo((float) (getMeasuredWidth() / 2.0), dataYs[1]);
                 canvas.drawPath(path, paint);
                 break;
 
@@ -236,12 +267,10 @@ public class TrendItemView extends FrameLayout {
                 paint.setShadowLayer(0, 0, 0, Color.TRANSPARENT);
 
                 path.reset();
-                path.moveTo(0, maxiTempYs[0]);
-//                path.lineTo((float) (getMeasuredWidth() / 2.0), maxiTempYs[1]);
-//                path.lineTo(getMeasuredWidth(), maxiTempYs[2]);
-                path.cubicTo((float) (getMeasuredWidth() / 2.0), maxiTempYs[1],
-                        (float) (getMeasuredWidth() / 2.0), maxiTempYs[1],
-                        getMeasuredWidth(), maxiTempYs[2]);
+                path.moveTo(0, dataYs[0]);
+                path.cubicTo((float) (getMeasuredWidth() / 2.0), dataYs[1],
+                        (float) (getMeasuredWidth() / 2.0), dataYs[1],
+                        getMeasuredWidth(), dataYs[2]);
                 path.lineTo(getMeasuredWidth(), getMeasuredHeight() - MARGIN_BOTTOM);
                 path.lineTo(0, getMeasuredHeight() - MARGIN_BOTTOM);
                 path.close();
@@ -251,18 +280,14 @@ public class TrendItemView extends FrameLayout {
                 paint.setShader(null);
                 paint.setStyle(Paint.Style.STROKE);
                 paint.setStrokeWidth(TREND_LINE_SIZE);
-                paint.setColor(lineColors[0]);
+                paint.setColor(lineColor);
                 paint.setShadowLayer(2, 0, 2, shadowColors[2]);
 
                 path.reset();
-                path.moveTo(0, maxiTempYs[0]);
-//                path.lineTo((float) (getMeasuredWidth() / 2.0), maxiTempYs[1]);
-//                path.lineTo(getMeasuredWidth(), maxiTempYs[2]);
-//                path.quadTo((float) (getMeasuredWidth() / 2.0), maxiTempYs[1],
-//                        getMeasuredWidth(), maxiTempYs[2]);
-                path.cubicTo((float) (getMeasuredWidth() / 2.0), maxiTempYs[1],
-                        (float) (getMeasuredWidth() / 2.0), maxiTempYs[1],
-                        getMeasuredWidth(), maxiTempYs[2]);
+                path.moveTo(0, dataYs[0]);
+                path.cubicTo((float) (getMeasuredWidth() / 2.0), dataYs[1],
+                        (float) (getMeasuredWidth() / 2.0), dataYs[1],
+                        getMeasuredWidth(), dataYs[2]);
                 canvas.drawPath(path, paint);
                 break;
         }
@@ -274,212 +299,38 @@ public class TrendItemView extends FrameLayout {
         paint.setTextSize(WEATHER_TEXT_SIZE);
         paint.setShadowLayer(2, 0, 2, shadowColors[2]);
         canvas.drawText(
-                temps[0] + "%",
+                chart[1] + unit,
                 (float) (getMeasuredWidth() / 2.0),
-                maxiTempYs[1] - paint.getFontMetrics().bottom - MARGIN_TEXT,
+                dataYs[1] - paint.getFontMetrics().bottom - MARGIN_TEXT,
                 paint);
     }
-
-    private void drawDailyMiniTemp(Canvas canvas) {
-        switch (positionType) {
-            case POSITION_TYPE_NULL:
-                return;
-
-            case POSITION_TYPE_LEFT:
-                // line.
-                paint.setShader(null);
-                paint.setStyle(Paint.Style.STROKE);
-                paint.setStrokeWidth(TREND_LINE_SIZE);
-                paint.setColor(lineColors[1]);
-                paint.setShadowLayer(2, 0, 2, shadowColors[2]);
-
-                path.reset();
-                path.moveTo((float) (getMeasuredWidth() / 2.0), miniTempYs[1]);
-                path.lineTo(getMeasuredWidth(), miniTempYs[2]);
-                canvas.drawPath(path, paint);
-                break;
-
-            case POSITION_TYPE_RIGHT:
-                // line.
-                paint.setShader(null);
-                paint.setStyle(Paint.Style.STROKE);
-                paint.setStrokeWidth(TREND_LINE_SIZE);
-                paint.setColor(lineColors[1]);
-                paint.setShadowLayer(2, 0, 2, shadowColors[2]);
-
-                path.reset();
-                path.moveTo(0, miniTempYs[0]);
-                path.lineTo((float) (getMeasuredWidth() / 2.0), miniTempYs[1]);
-                canvas.drawPath(path, paint);
-                break;
-
-            case POSITION_TYPE_CENTER:
-                // line.
-                paint.setShader(null);
-                paint.setStyle(Paint.Style.STROKE);
-                paint.setStrokeWidth(TREND_LINE_SIZE);
-                paint.setColor(lineColors[1]);
-                paint.setShadowLayer(2, 0, 2, shadowColors[2]);
-
-                path.reset();
-                path.moveTo(0, miniTempYs[0]);
-//                path.lineTo((float) (getMeasuredWidth() / 2.0), miniTempYs[1]);
-//                path.lineTo(getMeasuredWidth(), miniTempYs[2]);
-                path.cubicTo((float) (getMeasuredWidth() / 2.0), miniTempYs[1],
-                        (float) (getMeasuredWidth() / 2.0), miniTempYs[1],
-                        getMeasuredWidth(), miniTempYs[2]);
-                canvas.drawPath(path, paint);
-                break;
-        }
-
-        // text.
-        paint.setColor(textColor);
-        paint.setStyle(Paint.Style.FILL);
-        paint.setTextAlign(Paint.Align.CENTER);
-        paint.setTextSize(WEATHER_TEXT_SIZE);
-        paint.setShadowLayer(2, 0, 2, shadowColors[2]);
-        canvas.drawText(
-                temps[1] + "%",
-                (float) (getMeasuredWidth() / 2.0),
-                miniTempYs[1] - paint.getFontMetrics().top + MARGIN_TEXT,
-                paint);
-    }
-
-    // hourly.
-
-    private void drawHourlyTemp(Canvas canvas) {
-        switch (positionType) {
-            case POSITION_TYPE_NULL:
-                return;
-
-            case POSITION_TYPE_LEFT:
-                // shadow.
-                paint.setShader(shader);
-                paint.setStyle(Paint.Style.FILL);
-                paint.setShadowLayer(0, 0, 0, Color.TRANSPARENT);
-
-                path.reset();
-                path.moveTo((float) (getMeasuredWidth() / 2.0), maxiTempYs[1]);
-                path.lineTo(getMeasuredWidth(), maxiTempYs[2]);
-                path.lineTo(getMeasuredWidth(), getMeasuredHeight() - MARGIN_BOTTOM);
-                path.lineTo((float) (getMeasuredWidth() / 2.0), getMeasuredHeight() - MARGIN_BOTTOM);
-                path.close();
-                canvas.drawPath(path, paint);
-
-                // line.
-                paint.setShader(null);
-                paint.setStyle(Paint.Style.STROKE);
-                paint.setStrokeWidth(TREND_LINE_SIZE);
-                paint.setColor(lineColors[0]);
-                paint.setShadowLayer(2, 0, 2, shadowColors[2]);
-
-                path.reset();
-                path.moveTo((float) (getMeasuredWidth() / 2.0), maxiTempYs[1]);
-                path.lineTo(getMeasuredWidth(), maxiTempYs[2]);
-                canvas.drawPath(path, paint);
-                break;
-
-            case POSITION_TYPE_RIGHT:
-                // shadow.
-                paint.setShader(shader);
-                paint.setStyle(Paint.Style.FILL);
-                paint.setShadowLayer(0, 0, 0, Color.TRANSPARENT);
-
-                path.reset();
-                path.moveTo(0, maxiTempYs[0]);
-                path.lineTo((float) (getMeasuredWidth() / 2.0), maxiTempYs[1]);
-                path.lineTo((float) (getMeasuredWidth() / 2.0), getMeasuredHeight() - MARGIN_BOTTOM);
-                path.lineTo(0, getMeasuredHeight() - MARGIN_BOTTOM);
-                path.close();
-                canvas.drawPath(path, paint);
-
-                // line.
-                paint.setShader(null);
-                paint.setStyle(Paint.Style.STROKE);
-                paint.setStrokeWidth(TREND_LINE_SIZE);
-                paint.setColor(lineColors[0]);
-                paint.setShadowLayer(2, 0, 2, shadowColors[2]);
-
-                path.reset();
-                path.moveTo(0, maxiTempYs[0]);
-                path.lineTo((float) (getMeasuredWidth() / 2.0), maxiTempYs[1]);
-                canvas.drawPath(path, paint);
-                break;
-
-            case POSITION_TYPE_CENTER:
-                // shadow.
-                paint.setShader(shader);
-                paint.setStyle(Paint.Style.FILL);
-                paint.setShadowLayer(0, 0, 0, Color.TRANSPARENT);
-
-                path.reset();
-                path.moveTo(0, maxiTempYs[0]);
-//                path.lineTo((float) (getMeasuredWidth() / 2.0), maxiTempYs[1]);
-//                path.lineTo(getMeasuredWidth(), maxiTempYs[2]);
-                path.cubicTo((float) (getMeasuredWidth() / 2.0), maxiTempYs[1],
-                        (float) (getMeasuredWidth() / 2.0), maxiTempYs[1],
-                        getMeasuredWidth(), maxiTempYs[2]);
-                path.lineTo(getMeasuredWidth(), getMeasuredHeight() - MARGIN_BOTTOM);
-                path.lineTo(0, getMeasuredHeight() - MARGIN_BOTTOM);
-                path.close();
-                canvas.drawPath(path, paint);
-
-                // line.
-                paint.setShader(null);
-                paint.setStyle(Paint.Style.STROKE);
-                paint.setStrokeWidth(TREND_LINE_SIZE);
-                paint.setColor(lineColors[0]);
-                paint.setShadowLayer(2, 0, 2, shadowColors[2]);
-
-                path.reset();
-                path.moveTo(0, maxiTempYs[0]);
-//                path.lineTo((float) (getMeasuredWidth() / 2.0), maxiTempYs[1]);
-//                path.lineTo(getMeasuredWidth(), maxiTempYs[2]);
-                path.cubicTo((float) (getMeasuredWidth() / 2.0), maxiTempYs[1],
-                        (float) (getMeasuredWidth() / 2.0), maxiTempYs[1],
-                        getMeasuredWidth(), maxiTempYs[2]);
-                canvas.drawPath(path, paint);
-                break;
-        }
-
-        // text.
-        paint.setColor(textColor);
-        paint.setStyle(Paint.Style.FILL);
-        paint.setTextAlign(Paint.Align.CENTER);
-        paint.setTextSize(WEATHER_TEXT_SIZE);
-        paint.setShadowLayer(2, 0, 2, shadowColors[2]);
-        canvas.drawText(
-                temps[0] + "%",
-                (float) (getMeasuredWidth() / 2.0),
-                maxiTempYs[1] - paint.getFontMetrics().bottom - MARGIN_TEXT,
-                paint);
-    }
-
-    private void drawHourlyPrecipitationData(Canvas canvas) {
+    //绘制柱状图
+    private void drawBarChart(Canvas canvas, int[] dataYs, int[] chart, String unit, int lineColor) {
         paint.setShadowLayer(0, 0, 0, Color.TRANSPARENT);
 
-        paint.setColor(lineColors[1]);
-        paint.setAlpha((int) (255 * 0.25));
+        paint.setColor(lineColor);
+        paint.setAlpha((int) (255 * 0.5));
         paint.setStyle(Paint.Style.FILL);
         canvas.drawRoundRect(
                 new RectF(
                         (float) (getMeasuredWidth() / 2.0 - TREND_LINE_SIZE * 1.5),
-                        miniTempYs[0],
+                        dataYs[0],
                         (float) (getMeasuredWidth() / 2.0 + TREND_LINE_SIZE * 1.5),
                         getMeasuredHeight() - MARGIN_BOTTOM),
                 TREND_LINE_SIZE * 3, TREND_LINE_SIZE * 3,
                 paint);
 
-        if (temps[1] != 0) {
-            paint.setAlpha((int) (255 * 0.25));
-            paint.setTextAlign(Paint.Align.CENTER);
-            paint.setTextSize(POP_TEXT_SIZE);
-            canvas.drawText(
-                    temps[1] + "%",
-                    (float) (getMeasuredWidth() / 2.0),
-                    getMeasuredHeight() - MARGIN_BOTTOM - paint.getFontMetrics().top + MARGIN_TEXT,
-                    paint);
-        }
+//        if (chart1[1] != 0) {
+        paint.setColor(textColor);
+        paint.setAlpha((int) (255 * 0.5));
+        paint.setTextAlign(Paint.Align.CENTER);
+        paint.setTextSize(POP_TEXT_SIZE);
+        canvas.drawText(
+                chart[1] + unit,
+                (float) (getMeasuredWidth() / 2.0),
+                getMeasuredHeight() - MARGIN_BOTTOM - paint.getFontMetrics().top + MARGIN_TEXT,
+                paint);
+//        }
 
         paint.setAlpha(255);
     }
@@ -489,15 +340,16 @@ public class TrendItemView extends FrameLayout {
      */
 
     // init.
-    public void setData(Weather weather, int dataType, int position, int highest, int lowest) {
+    public void setData(Weather weather, int dataType, int viewType, int position, int highest, int lowest) {
         this.dataType = dataType;
+        this.viewType = viewType;
         switch (dataType) {
             case DATA_TYPE_DAILY:
-                setDailyData(weather, position, highest, lowest);
+                setDailyData(weather, viewType, position, highest, lowest);
                 break;
 
             case DATA_TYPE_HOURLY:
-                setHourlyData(weather, position, highest, lowest);
+                setHourlyData(weather, viewType, position, highest, lowest);
                 break;
         }
     }
@@ -507,237 +359,245 @@ public class TrendItemView extends FrameLayout {
     }
 
     // daily.
-
-    private void setDailyData(Weather weather, int position, int highest, int lowest) {
-        this.temps = new int[]{
-                weather.dailyList.get(position).temps[0],
-                weather.dailyList.get(position).temps[1]};
+    private void setDailyData(Weather weather, int viewType, int position, int highest, int lowest) {
         if (position == 0) {
             positionType = POSITION_TYPE_LEFT;
-            setDailyLeftData(weather, position, highest, lowest);
+            switch (viewType) {
+                case VIEW_TYPE_HUM:
+                    this.chart1 = new int[]{
+                            0,
+                            weather.dailyList.get(position).consume,
+                            weather.dailyList.get(position + 1).consume};
+                    dailyConsumeYs = setBarChartData(chart1);
+                    break;
+                case VIEW_TYPE_BRIGHT:
+                    this.chart1 = new int[]{
+                            0,
+                            weather.dailyList.get(position).bright,
+                            weather.dailyList.get(position + 1).bright};
+                    dailyBrightYs = setBarChartData(chart1);
+                    break;
+                case VIEW_TYPE_TEMP:
+                    this.chart1 = new int[]{
+                            0,
+                            weather.dailyList.get(position).tempDiff,
+                            weather.dailyList.get(position + 1).tempDiff};
+                    dailyTempDiffYs = setBarChartData(chart1);
+                    break;
+            }
+
         } else if (position == weather.dailyList.size() - 1) {
             positionType = POSITION_TYPE_RIGHT;
-            setDailyRightData(weather, position, highest, lowest);
+            switch (viewType) {
+                case VIEW_TYPE_HUM:
+                    this.chart1 = new int[]{
+                            weather.dailyList.get(position - 1).consume,
+                            weather.dailyList.get(position).consume,
+                            0};
+                    dailyConsumeYs = setBarChartData(chart1);
+                    break;
+                case VIEW_TYPE_BRIGHT:
+                    this.chart1 = new int[]{
+                            weather.dailyList.get(position - 1).bright,
+                            weather.dailyList.get(position).bright,
+                            0};
+                    dailyBrightYs = setBarChartData(chart1);
+                    break;
+                case VIEW_TYPE_TEMP:
+                    this.chart1 = new int[]{
+                            weather.dailyList.get(position - 1).tempDiff,
+                            weather.dailyList.get(position).tempDiff,
+                            0};
+                    dailyTempDiffYs = setBarChartData(chart1);
+                    break;
+            }
+
         } else {
             positionType = POSITION_TYPE_CENTER;
-            setDailyCenterData(weather, position, highest, lowest);
+            switch (viewType) {
+                case VIEW_TYPE_HUM:
+                    this.chart1 = new int[]{
+                            weather.dailyList.get(position - 1).consume,
+                            weather.dailyList.get(position).consume,
+                            weather.dailyList.get(position + 1).consume};
+                    dailyConsumeYs = setBarChartData(chart1);
+                    break;
+                case VIEW_TYPE_BRIGHT:
+                    this.chart1 = new int[]{
+                            weather.dailyList.get(position - 1).bright,
+                            weather.dailyList.get(position).bright,
+                            weather.dailyList.get(position + 1).bright};
+                    dailyBrightYs = setBarChartData(chart1);
+                    break;
+                case VIEW_TYPE_TEMP:
+                    this.chart1 = new int[]{
+                            weather.dailyList.get(position - 1).tempDiff,
+                            weather.dailyList.get(position).tempDiff,
+                            weather.dailyList.get(position + 1).tempDiff};
+                    dailyTempDiffYs = setBarChartData(chart1);
+                    break;
+            }
         }
-    }
-
-    private void setDailyLeftData(Weather weather, int position, int highest, int lowest) {
-        float[] maxiTemps = new float[]{
-                0,
-                weather.dailyList.get(position).temps[0],
-                (float) ((weather.dailyList.get(position).temps[0] + weather.dailyList.get(position + 1).temps[0]) / 2.0)};
-//        if (GeometricWeather.getInstance().isFahrenheit()) {
-//            for (int i = 0; i < maxiTemps.length; i++) {
-//                maxiTempYs[i] = (int) (calcHeaderHeight(getContext()) + calcDrawSpecHeight(getContext()) - MARGIN_BOTTOM
-//                        - calcDrawSpecUsableHeight(getContext())
-//                        * (ValueUtils.calcFahrenheit(maxiTemps[i]) - ValueUtils.calcFahrenheit(lowest))
-//                        / (ValueUtils.calcFahrenheit(highest) - ValueUtils.calcFahrenheit(lowest)));
-//            }
-//        } else {
-            for (int i = 0; i < maxiTemps.length; i++) {
-                maxiTempYs[i] = (int) (calcHeaderHeight(getContext()) + calcDrawSpecHeight(getContext()) - MARGIN_BOTTOM
-                        - calcDrawSpecUsableHeight(getContext())
-                        * (maxiTemps[i] - lowest)
-                        / (highest - lowest));
-            }
-//        }
-
-        float[] miniTemps = new float[]{
-                0,
-                weather.dailyList.get(position).temps[1],
-                (float) ((weather.dailyList.get(position).temps[1] + weather.dailyList.get(position + 1).temps[1]) / 2.0)};
-//        if (GeometricWeather.getInstance().isFahrenheit()) {
-//            for (int i = 0; i < miniTemps.length; i++) {
-//                miniTempYs[i] = (int) (calcHeaderHeight(getContext()) + calcDrawSpecHeight(getContext()) - MARGIN_BOTTOM
-//                        - calcDrawSpecUsableHeight(getContext())
-//                        * (ValueUtils.calcFahrenheit(miniTemps[i]) - ValueUtils.calcFahrenheit(lowest))
-//                        / (ValueUtils.calcFahrenheit(highest) - ValueUtils.calcFahrenheit(lowest)));
-//            }
-//        } else {
-            for (int i = 0; i < miniTemps.length; i++) {
-                miniTempYs[i] = (int) (calcHeaderHeight(getContext()) + calcDrawSpecHeight(getContext()) - MARGIN_BOTTOM
-                        - calcDrawSpecUsableHeight(getContext())
-                        * (miniTemps[i] - lowest)
-                        / (highest - lowest));
-            }
-//        }
-    }
-
-    private void setDailyRightData(Weather weather, int position, int highest, int lowest) {
-        float[] maxiTemps = new float[]{
-                (float) ((weather.dailyList.get(position - 1).temps[0] + weather.dailyList.get(position).temps[0]) / 2.0),
-                weather.dailyList.get(position).temps[0],
-                0};
-//        if (GeometricWeather.getInstance().isFahrenheit()) {
-//            for (int i = 0; i < maxiTemps.length; i++) {
-//                maxiTempYs[i] = (int) (calcHeaderHeight(getContext()) + calcDrawSpecHeight(getContext()) - MARGIN_BOTTOM
-//                        - calcDrawSpecUsableHeight(getContext())
-//                        * (ValueUtils.calcFahrenheit(maxiTemps[i]) - ValueUtils.calcFahrenheit(lowest))
-//                        / (ValueUtils.calcFahrenheit(highest) - ValueUtils.calcFahrenheit(lowest)));
-//            }
-//        } else {
-            for (int i = 0; i < maxiTemps.length; i++) {
-                maxiTempYs[i] = (int) (calcHeaderHeight(getContext()) + calcDrawSpecHeight(getContext()) - MARGIN_BOTTOM
-                        - calcDrawSpecUsableHeight(getContext())
-                        * (maxiTemps[i] - lowest)
-                        / (highest - lowest));
-            }
-//        }
-
-        float[] miniTemps = new float[]{
-                (float) ((weather.dailyList.get(position - 1).temps[1] + weather.dailyList.get(position).temps[1]) / 2.0),
-                weather.dailyList.get(position).temps[1],
-                0};
-//        if (GeometricWeather.getInstance().isFahrenheit()) {
-//            for (int i = 0; i < miniTemps.length; i++) {
-//                miniTempYs[i] = (int) (calcHeaderHeight(getContext()) + calcDrawSpecHeight(getContext()) - MARGIN_BOTTOM
-//                        - calcDrawSpecUsableHeight(getContext())
-//                        * (ValueUtils.calcFahrenheit(miniTemps[i]) - ValueUtils.calcFahrenheit(lowest))
-//                        / (ValueUtils.calcFahrenheit(highest) - ValueUtils.calcFahrenheit(lowest)));
-//            }
-//        } else {
-            for (int i = 0; i < miniTemps.length; i++) {
-                miniTempYs[i] = (int) (calcHeaderHeight(getContext()) + calcDrawSpecHeight(getContext()) - MARGIN_BOTTOM
-                        - calcDrawSpecUsableHeight(getContext())
-                        * (miniTemps[i] - lowest)
-                        / (highest - lowest));
-            }
-//        }
-    }
-
-    private void setDailyCenterData(Weather weather, int position, int highest, int lowest) {
-        float[] maxiTemps = new float[]{
-                (float) ((weather.dailyList.get(position - 1).temps[0] + weather.dailyList.get(position).temps[0]) / 2.0),
-                weather.dailyList.get(position).temps[0],
-                (float) ((weather.dailyList.get(position).temps[0] + weather.dailyList.get(position + 1).temps[0]) / 2.0)};
-//        if (GeometricWeather.getInstance().isFahrenheit()) {
-//            for (int i = 0; i < maxiTemps.length; i++) {
-//                maxiTempYs[i] = (int) (calcHeaderHeight(getContext()) + calcDrawSpecHeight(getContext()) - MARGIN_BOTTOM
-//                        - calcDrawSpecUsableHeight(getContext())
-//                        * (ValueUtils.calcFahrenheit(maxiTemps[i]) - ValueUtils.calcFahrenheit(lowest))
-//                        / (ValueUtils.calcFahrenheit(highest) - ValueUtils.calcFahrenheit(lowest)));
-//            }
-//        } else {
-            for (int i = 0; i < maxiTemps.length; i++) {
-                maxiTempYs[i] = (int) (calcHeaderHeight(getContext()) + calcDrawSpecHeight(getContext()) - MARGIN_BOTTOM
-                        - calcDrawSpecUsableHeight(getContext())
-                        * (maxiTemps[i] - lowest)
-                        / (highest - lowest));
-            }
-//        }
-
-        float[] miniTemps = new float[]{
-                (float) ((weather.dailyList.get(position - 1).temps[1] + weather.dailyList.get(position).temps[1]) / 2.0),
-                weather.dailyList.get(position).temps[1],
-                (float) ((weather.dailyList.get(position).temps[1] + weather.dailyList.get(position + 1).temps[1]) / 2.0)};
-//        if (GeometricWeather.getInstance().isFahrenheit()) {
-//            for (int i = 0; i < miniTemps.length; i++) {
-//                miniTempYs[i] = (int) (calcHeaderHeight(getContext()) + calcDrawSpecHeight(getContext()) - MARGIN_BOTTOM
-//                        - calcDrawSpecUsableHeight(getContext())
-//                        * (ValueUtils.calcFahrenheit(miniTemps[i]) - ValueUtils.calcFahrenheit(lowest))
-//                        / (ValueUtils.calcFahrenheit(highest) - ValueUtils.calcFahrenheit(lowest)));
-//            }
-//        } else {
-            for (int i = 0; i < miniTemps.length; i++) {
-                miniTempYs[i] = (int) (calcHeaderHeight(getContext()) + calcDrawSpecHeight(getContext()) - MARGIN_BOTTOM
-                        - calcDrawSpecUsableHeight(getContext())
-                        * (miniTemps[i] - lowest)
-                        / (highest - lowest));
-            }
-//        }
     }
 
     // hourly.
+    public void setHourlyData(Weather weather, int viewType, int position, int highest, int lowest) {
 
-    public void setHourlyData(Weather weather, int position, int highest, int lowest) {
-        this.temps = new int[]{
-                weather.hourlyList.get(position).temp,
-                weather.hourlyList.get(position).consume};
         if (position == 0) {
             positionType = POSITION_TYPE_LEFT;
-            setHourlyLeftData(weather, position, highest, lowest);
+            switch (viewType) {
+                case VIEW_TYPE_HUM:
+                    this.chart1 = new int[]{
+                            0,
+                            weather.hourlyList.get(position).hum,
+                            weather.hourlyList.get(position + 1).hum};
+                    hourlyHumYs = setLineChartLeftData(highest, lowest, chart1);
+
+                    this.chart2 = new int[]{
+                            0,
+                            weather.hourlyList.get(position).consume,
+                            weather.hourlyList.get(position + 1).consume};
+                    hourlyConsumeYs = setBarChartData(chart2);
+                    break;
+                case VIEW_TYPE_BRIGHT:
+                    this.chart1 = new int[]{
+                            0,
+                            weather.hourlyList.get(position).bright,
+                            weather.hourlyList.get(position + 1).bright};
+                    hourlyBrightYs = setLineChartLeftData(highest, lowest, chart1);
+                    break;
+                case VIEW_TYPE_TEMP:
+                    this.chart1 = new int[]{
+                            0,
+                            weather.hourlyList.get(position).temp,
+                            weather.hourlyList.get(position + 1).temp};
+                    hourlyTempYs = setLineChartLeftData(highest, lowest, chart1);
+                    break;
+            }
+//            setLineChartLeftData(weather, position, highest, lowest);
+
         } else if (position == weather.hourlyList.size() - 1) {
             positionType = POSITION_TYPE_RIGHT;
-            setHourlyRightData(weather, position, highest, lowest);
+            switch (viewType) {
+                case VIEW_TYPE_HUM:
+                    this.chart1 = new int[]{
+                            weather.hourlyList.get(position - 1).hum,
+                            weather.hourlyList.get(position).hum,
+                            0};
+                    hourlyHumYs = setLineChartRightData(highest, lowest, chart1);
+
+                    this.chart2 = new int[]{
+                            weather.hourlyList.get(position - 1).consume,
+                            weather.hourlyList.get(position).consume,
+                            0};
+                    hourlyConsumeYs = setBarChartData(chart2);
+                    break;
+                case VIEW_TYPE_BRIGHT:
+                    this.chart1 = new int[]{
+                            weather.hourlyList.get(position - 1).bright,
+                            weather.hourlyList.get(position).bright,
+                            0};
+                    hourlyBrightYs = setLineChartRightData(highest, lowest, chart1);
+                    break;
+                case VIEW_TYPE_TEMP:
+                    this.chart1 = new int[]{
+                            weather.hourlyList.get(position - 1).temp,
+                            weather.hourlyList.get(position).temp,
+                            0};
+                    hourlyTempYs = setLineChartRightData(highest, lowest, chart1);
+                    break;
+            }
+//            setLineChartRightData(weather, position, highest, lowest);
+
         } else {
             positionType = POSITION_TYPE_CENTER;
-            setHourlyCenterData(weather, position, highest, lowest);
+            switch (viewType) {
+                case VIEW_TYPE_HUM:
+                    this.chart1 = new int[]{
+                            weather.hourlyList.get(position - 1).hum,
+                            weather.hourlyList.get(position).hum,
+                            weather.hourlyList.get(position + 1).hum};
+                    hourlyHumYs = setLineChartCenterData(highest, lowest, chart1);
+
+                    this.chart2 = new int[]{
+                            weather.hourlyList.get(position - 1).consume,
+                            weather.hourlyList.get(position).consume,
+                            weather.hourlyList.get(position + 1).consume};
+                    hourlyConsumeYs = setBarChartData(chart2);
+                    break;
+                case VIEW_TYPE_BRIGHT:
+                    this.chart1 = new int[]{
+                            weather.hourlyList.get(position - 1).bright,
+                            weather.hourlyList.get(position).bright,
+                            weather.hourlyList.get(position + 1).bright};
+                    hourlyBrightYs = setLineChartCenterData(highest, lowest, chart1);
+                    break;
+                case VIEW_TYPE_TEMP:
+                    this.chart1 = new int[]{
+                            weather.hourlyList.get(position - 1).temp,
+                            weather.hourlyList.get(position).temp,
+                            weather.hourlyList.get(position + 1).temp};
+                    hourlyTempYs = setLineChartCenterData(highest, lowest, chart1);
+                    break;
+            }
+//            setLineChartCenterData(weather, position, highest, lowest);
         }
-        serPrecipitationData(weather, position);
+//        serPrecipitationData(weather, position);
     }
 
-    private void setHourlyLeftData(Weather weather, int position, int highest, int lowest) {
+    private int[] setLineChartLeftData(int highest, int lowest, int[] chart) {
         float[] temps = new float[]{
-                0,
-                weather.hourlyList.get(position).temp,
-                (float) ((weather.hourlyList.get(position).temp + weather.hourlyList.get(position + 1).temp) / 2.0)};
-//        if (GeometricWeather.getInstance().isFahrenheit()) {
-//            for (int i = 0; i < temps.length; i++) {
-//                maxiTempYs[i] = (int) (calcHeaderHeight(getContext()) + calcDrawSpecHeight(getContext()) - MARGIN_BOTTOM
-//                        - calcDrawSpecUsableHeight(getContext())
-//                        * (ValueUtils.calcFahrenheit(temps[i]) - ValueUtils.calcFahrenheit(lowest))
-//                        / (ValueUtils.calcFahrenheit(highest) - ValueUtils.calcFahrenheit(lowest)));
-//            }
-//        } else {
-            for (int i = 0; i < temps.length; i++) {
-                maxiTempYs[i] = (int) (calcHeaderHeight(getContext()) + calcDrawSpecHeight(getContext()) - MARGIN_BOTTOM
-                        - calcDrawSpecUsableHeight(getContext())
-                        * (temps[i] - lowest)
-                        / (highest - lowest));
-            }
-//        }
+                chart[0],
+                chart[1],
+                (float) ((chart[1] + chart[2]) / 2.0)};
+
+        int[] dataYs = new int[3];
+        for (int i = 0; i < temps.length; i++) {
+            dataYs[i] = (int) (calcHeaderHeight(getContext()) + calcDrawSpecHeight(getContext()) - MARGIN_BOTTOM
+                    - calcDrawSpecUsableHeight(getContext())
+                    * (temps[i] - lowest)
+                    / (highest - lowest));
+        }
+        return dataYs;
     }
 
-    private void setHourlyRightData(Weather weather, int position, int highest, int lowest) {
+    private int[] setLineChartRightData(int highest, int lowest, int[] chart) {
         float[] temps = new float[]{
-                (float) ((weather.hourlyList.get(position - 1).temp + weather.hourlyList.get(position).temp) / 2.0),
-                weather.hourlyList.get(position).temp,
-                0};
-//        if (GeometricWeather.getInstance().isFahrenheit()) {
-//            for (int i = 0; i < temps.length; i++) {
-//                maxiTempYs[i] = (int) (calcHeaderHeight(getContext()) + calcDrawSpecHeight(getContext()) - MARGIN_BOTTOM
-//                        - calcDrawSpecUsableHeight(getContext())
-//                        * (ValueUtils.calcFahrenheit(temps[i]) - ValueUtils.calcFahrenheit(lowest))
-//                        / (ValueUtils.calcFahrenheit(highest) - ValueUtils.calcFahrenheit(lowest)));
-//            }
-//        } else {
-            for (int i = 0; i < temps.length; i++) {
-                maxiTempYs[i] = (int) (calcHeaderHeight(getContext()) + calcDrawSpecHeight(getContext()) - MARGIN_BOTTOM
-                        - calcDrawSpecUsableHeight(getContext())
-                        * (temps[i] - lowest)
-                        / (highest - lowest));
-            }
-//        }
+                (float) ((chart[0] + chart[1]) / 2.0),
+                chart[1],
+                chart[2]};
+
+        int[] dataYs = new int[3];
+        for (int i = 0; i < temps.length; i++) {
+            dataYs[i] = (int) (calcHeaderHeight(getContext()) + calcDrawSpecHeight(getContext()) - MARGIN_BOTTOM
+                    - calcDrawSpecUsableHeight(getContext())
+                    * (temps[i] - lowest)
+                    / (highest - lowest));
+        }
+        return dataYs;
     }
 
-    private void setHourlyCenterData(Weather weather, int position, int highest, int lowest) {
+    private int[] setLineChartCenterData(int highest, int lowest, int[] chart) {
         float[] temps = new float[]{
-                (float) ((weather.hourlyList.get(position - 1).temp + weather.hourlyList.get(position).temp) / 2.0),
-                weather.hourlyList.get(position).temp,
-                (float) ((weather.hourlyList.get(position).temp + weather.hourlyList.get(position + 1).temp) / 2.0)};
-//        if (GeometricWeather.getInstance().isFahrenheit()) {
-//            for (int i = 0; i < temps.length; i++) {
-//                maxiTempYs[i] = (int) (calcHeaderHeight(getContext()) + calcDrawSpecHeight(getContext()) - MARGIN_BOTTOM
-//                        - calcDrawSpecUsableHeight(getContext())
-//                        * (ValueUtils.calcFahrenheit(temps[i]) - ValueUtils.calcFahrenheit(lowest))
-//                        / (ValueUtils.calcFahrenheit(highest) - ValueUtils.calcFahrenheit(lowest)));
-//            }
-//        } else {
-            for (int i = 0; i < temps.length; i++) {
-                maxiTempYs[i] = (int) (calcHeaderHeight(getContext()) + calcDrawSpecHeight(getContext()) - MARGIN_BOTTOM
-                        - calcDrawSpecUsableHeight(getContext())
-                        * (temps[i] - lowest)
-                        / (highest - lowest));
-            }
-//        }
+                (float) ((chart[0] + chart[1]) / 2.0),
+                chart[1],
+                (float) ((chart[1] + chart[2]) / 2.0)};
+
+        int[] dataYs = new int[3];
+        for (int i = 0; i < temps.length; i++) {
+            dataYs[i] = (int) (calcHeaderHeight(getContext()) + calcDrawSpecHeight(getContext()) - MARGIN_BOTTOM
+                    - calcDrawSpecUsableHeight(getContext())
+                    * (temps[i] - lowest)
+                    / (highest - lowest));
+        }
+        return dataYs;
     }
 
-    private void serPrecipitationData(Weather weather, int position) {
-        miniTempYs[0] = (int) (calcHeaderHeight(getContext()) + calcDrawSpecHeight(getContext()) - MARGIN_BOTTOM
-                - calcDrawSpecUsableHeight(getContext()) * weather.hourlyList.get(position).consume / 100.0);
+    private int[] setBarChartData(int[] chart) {
+        int[] dataYs = new int[1];
+        dataYs[0] = (int) (calcHeaderHeight(getContext()) + calcDrawSpecHeight(getContext()) - MARGIN_BOTTOM
+                - calcDrawSpecUsableHeight(getContext()) * chart[1] / 100.0);
+        return dataYs;
     }
 
     // size.
