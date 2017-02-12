@@ -3,7 +3,7 @@ package com.shouduo.plant.view.fortest;
 import com.shouduo.plant.R;
 
 /**
- * Weather kind tools.
+ * Data kind tools.
  * */
 
 public class WeatherHelper {
@@ -225,7 +225,7 @@ public class WeatherHelper {
     /** <br> listener. */
 
 /*    public interface OnRequestWeatherListener {
-        void requestWeatherSuccess(Weather weather, Location requestLocation);
+        void requestWeatherSuccess(Data weather, Location requestLocation);
         void requestWeatherFailed(Location requestLocation);
     }*/
 }

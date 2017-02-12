@@ -16,9 +16,10 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.shouduo.plant.R;
-import com.shouduo.plant.model.Weather;
+import com.shouduo.plant.model.Data;
 import com.shouduo.plant.utils.DisplayUtils;
 import com.shouduo.plant.utils.TimeUtils;
 import com.shouduo.plant.view.widget.InkPageIndicator;
@@ -64,6 +65,7 @@ public class MainActivity extends BaseActivity
 
     //data
     private int scrollTrigger;
+    private Data mData;
 
     // animation
     private AnimatorSet viewShowAnimator;
@@ -85,10 +87,10 @@ public class MainActivity extends BaseActivity
             initWidget();
             reset();
         } else if (!swipeRefreshLayout.isRefreshing()) {
-//            Weather memory = DatabaseHelper.getInstance(this).readWeather(locationNow);
-//            if (locationNow.weather != null && memory != null
-//                    && !memory.base.time.equals(locationNow.weather.base.time)) {
-//                locationNow.weather = memory;
+//            Data memory = DatabaseHelper.getInstance(this).readWeather(locationNow);
+//            if (locationNow.mData != null && memory != null
+//                    && !memory.base.time.equals(locationNow.mData.base.time)) {
+//                locationNow.mData = memory;
 //                locationNow.history = DatabaseHelper.getInstance(this).readHistory(memory);
             reset();
 //            }
@@ -230,13 +232,13 @@ public class MainActivity extends BaseActivity
         setRefreshing(false);
         buildUI();
 
-/*        if (locationNow.weather == null) {
-            setRefreshing(true);
-            onRefresh();
-        } else {
-            setRefreshing(false);
-            buildUI();
-        }*/
+//        if (locationNow.mData == null) {
+//            setRefreshing(true);
+//            onRefresh();
+//        } else {
+//            setRefreshing(false);
+//            buildUI();
+//        }
     }
 
     // build UI.
@@ -252,11 +254,11 @@ public class MainActivity extends BaseActivity
 
     @SuppressLint("SetTextI18n")
     private void buildUI() {
-/*        Weather weather = locationNow.weather;
-        if (weather == null) {
+/*        Data mData = locationNow.mData;
+        if (mData == null) {
             return;
         } else {
-            TimeUtils.getInstance(this).getDayTime(this, weather, true);
+            TimeUtils.getInstance(this).getDayTime(this, mData, true);
         }*/
 
 //        setStatusBarColor();
@@ -272,7 +274,7 @@ public class MainActivity extends BaseActivity
 //        refreshTime.setText("normal");
 //        locationText.setText("dayday");
 
-/*        if (weather.alertList.size() == 0) {
+/*        if (mData.alertList.size() == 0) {
             locationIconBtn.setEnabled(false);
             locationIcon.setImageResource(R.drawable.ic_location);
         } else {
@@ -291,19 +293,29 @@ public class MainActivity extends BaseActivity
         }
 
 
-        Weather weather = new Weather();
-        weather.getWeather();
+        mData = new Data(handler);
+        if (mData.getDataFromDatabase()) {
+            humidityTrendView.setData(mData, TrendItemView.VIEW_TYPE_HUM);
+            humidityTrendView.setState(TrendItemView.DATA_TYPE_HOURLY, false);
+
+            brightnessTrendView.setData(mData, TrendItemView.VIEW_TYPE_BRIGHT);
+            brightnessTrendView.setState(TrendItemView.DATA_TYPE_HOURLY, false);
+
+            temperatureTrendView.setData(mData, TrendItemView.VIEW_TYPE_TEMP);
+            temperatureTrendView.setState(TrendItemView.DATA_TYPE_HOURLY, false);
+        }
+//        mData.getWeatherFromServer();
 
 //        History history = new History().mockHistory();
 
-        humidityTrendView.setData(weather.getWeatherFromDatabase(), TrendItemView.VIEW_TYPE_HUM);
-        humidityTrendView.setState(TrendItemView.DATA_TYPE_HOURLY, false);
+//        humidityTrendView.setData(mData, TrendItemView.VIEW_TYPE_HUM);
+//        humidityTrendView.setState(TrendItemView.DATA_TYPE_HOURLY, false);
 //
-        brightnessTrendView.setData(weather.getWeatherFromDatabase(), TrendItemView.VIEW_TYPE_BRIGHT);
-        brightnessTrendView.setState(TrendItemView.DATA_TYPE_HOURLY, false);
-
-        temperatureTrendView.setData(weather.getWeatherFromDatabase(), TrendItemView.VIEW_TYPE_TEMP);
-        temperatureTrendView.setState(TrendItemView.DATA_TYPE_HOURLY, false);
+//        brightnessTrendView.setData(mData, TrendItemView.VIEW_TYPE_BRIGHT);
+//        brightnessTrendView.setState(TrendItemView.DATA_TYPE_HOURLY, false);
+//
+//        temperatureTrendView.setData(mData, TrendItemView.VIEW_TYPE_TEMP);
+//        temperatureTrendView.setState(TrendItemView.DATA_TYPE_HOURLY, false);
 
 
 
@@ -341,7 +353,7 @@ public class MainActivity extends BaseActivity
                 break;
 
 //            case R.id.container_weather_location_iconButton:
-//               IntentHelper.startAlertActivity(this, locationNow.weather);
+//               IntentHelper.startAlertActivity(this, locationNow.mData);
 //                break;
 
 //            case R.id.container_weather_locationContainer:
@@ -355,13 +367,7 @@ public class MainActivity extends BaseActivity
         switch (menuItem.getItemId()) {
             case R.id.action_manage:
 //                IntentHelper.startManageActivityForResult(this);
-//                Weather weather = new Weather();
-//                weather.getWeather();
-////                History history = new History().mockHistory();
-//                humidityTrendView.setData(weather.getWeatherFromDatabase());
-////        humidityTrendView.setData(locationNow.weather, locationNow.history);
-//                humidityTrendView.setState(TrendItemView.DATA_TYPE_DAILY, false);
-//                break;
+//                setRefreshing(false);
 
             case R.id.action_settings:
                 skyView.setWeather();
@@ -409,6 +415,10 @@ public class MainActivity extends BaseActivity
         } else {
             weatherHelper.requestWeather(this, locationNow, this);
         }*/
+
+//        mData.getWeatherFromServer();
+        mData.refreshData();
+
     }
 
     // on scroll changed listener.
@@ -446,5 +456,22 @@ public class MainActivity extends BaseActivity
                 ServiceHelper.startupAllService(this);*//*
                 break;
         }*/
+        switch (message.what) {
+            case Data.SERVER_DOWN:
+                Toast.makeText(this, "Server's down, Try again later", Toast.LENGTH_SHORT).show();
+                break;
+            case Data.SERVER_GOOD:
+                humidityTrendView.setData(mData, TrendItemView.VIEW_TYPE_HUM);
+                humidityTrendView.setState(TrendItemView.DATA_TYPE_HOURLY, false);
+
+                brightnessTrendView.setData(mData, TrendItemView.VIEW_TYPE_BRIGHT);
+                brightnessTrendView.setState(TrendItemView.DATA_TYPE_HOURLY, false);
+
+                temperatureTrendView.setData(mData, TrendItemView.VIEW_TYPE_TEMP);
+                temperatureTrendView.setState(TrendItemView.DATA_TYPE_HOURLY, false);
+
+                break;
+        }
+        setRefreshing(false);
     }
 }

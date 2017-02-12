@@ -10,7 +10,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 import com.shouduo.plant.R;
-import com.shouduo.plant.model.Weather;
+import com.shouduo.plant.model.Data;
 import com.shouduo.plant.utils.DisplayUtils;
 import com.shouduo.plant.view.widget.SwipeSwitchLayout;
 
@@ -24,10 +24,8 @@ public class TrendRecyclerView extends RecyclerView {
     private Paint paint;
 
     // data
-//    private History history;
     private int highest, lowest;
     private int[] tempYs;
-    //    private int TEMPY_OFFSET = 2;
     private boolean canScroll = false;
 
     private float MARGIN_BOTTOM;
@@ -80,7 +78,7 @@ public class TrendRecyclerView extends RecyclerView {
             switch (e.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     if (switchLayout != null) {
-                        switchLayout.requestDisallowInterceptTouchEvent(true);  //禁用switchLayout滑动
+                        switchLayout.requestDisallowInterceptTouchEvent(true);  //禁用外层switchLayout滑动
                     }
                     break;
 
@@ -155,76 +153,49 @@ public class TrendRecyclerView extends RecyclerView {
      * <br> data.
      */
 
-    public void setData(Weather weather, int dataType, int viewType) {
-        if (weather == null) {
+    public void setData(Data data, int dataType, int viewType) {
+        if (data == null) {
             return;
         }
-//        this.history = history;
         if (dataType == TrendItemView.DATA_TYPE_DAILY) {
-            if (canScroll = weather.dailyList.size() > 7) {
-                scrollToPosition(weather.dailyList.size() - 1);
+            if (canScroll = data.dailyList.size() > 7) {
+                scrollToPosition(data.dailyList.size() - 1);
             }
         } else {
-            if (canScroll = dataType == TrendItemView.DATA_TYPE_HOURLY && weather.hourlyList.size() > 7) {
-                scrollToPosition(weather.hourlyList.size() - 1);
+            if (canScroll = dataType == TrendItemView.DATA_TYPE_HOURLY && data.hourlyList.size() > 7) {
+                scrollToPosition(data.hourlyList.size() - 1);
             }
         }
 
-        calcTempYs(weather, dataType, viewType);
+        calcTempYs(data, dataType, viewType);
         invalidate();
     }
 
-    private void calcTempYs(Weather weather, int dataType, int viewType) {
-
-//        int highest = history.maxiTemp;
-//        int lowest = history.miniTemp;
-        highest = -100;
-        lowest = 100;
-        switch (dataType) {
-            case TrendItemView.DATA_TYPE_DAILY:
-//                if (GeometricWeather.getInstance().isFahrenheit()) {
-//                    for (int i = 0; i < weather.dailyList.size(); i ++) {
-//                        if (ValueUtils.calcFahrenheit(weather.dailyList.get(i).temps[0]) > highest) {
-//                            highest = ValueUtils.calcFahrenheit(weather.dailyList.get(i).temps[0]);
-//                        }
-//                        if (ValueUtils.calcFahrenheit(weather.dailyList.get(i).temps[1]) < lowest) {
-//                            lowest = ValueUtils.calcFahrenheit(weather.dailyList.get(i).temps[1]);
-//                        }
+    private void calcTempYs(Data data, int dataType, int viewType) {
+//        highest = lowest = 0;
+//        switch (dataType) {
+//            case TrendItemView.DATA_TYPE_DAILY:
+//                for (int i = 0; i < data.dailyList.size(); i++) {
+//                    if (data.dailyList.get(i).tempDiff > highest) {
+//                        highest = data.dailyList.get(i).tempDiff;
 //                    }
-//                } else {
-                for (int i = 0; i < weather.dailyList.size(); i++) {
-                    if (weather.dailyList.get(i).tempDiff > highest) {
-                        highest = weather.dailyList.get(i).tempDiff;
-                    }
-                    if (weather.dailyList.get(i).tempDiff < lowest) {
-                        lowest = weather.dailyList.get(i).tempDiff;
-                    }
-                }
-//                }
-                break;
-
-            case TrendItemView.DATA_TYPE_HOURLY:
-//                if (GeometricWeather.getInstance().isFahrenheit()) {
-//                    for (int i = 0; i < weather.hourlyList.size(); i ++) {
-//                        if (ValueUtils.calcFahrenheit(weather.hourlyList.get(i).tempDiff) > highest) {
-//                            highest = ValueUtils.calcFahrenheit(weather.hourlyList.get(i).tempDiff);
-//                        }
-//                        if (ValueUtils.calcFahrenheit(weather.hourlyList.get(i).tempDiff) < lowest) {
-//                            lowest = ValueUtils.calcFahrenheit(weather.hourlyList.get(i).tempDiff);
-//                        }
+//                    if (data.dailyList.get(i).tempDiff < lowest) {
+//                        lowest = data.dailyList.get(i).tempDiff;
 //                    }
-//                } else {
-                for (int i = 0; i < weather.hourlyList.size(); i++) {
-                    if (weather.hourlyList.get(i).temp > highest) {
-                        highest = weather.hourlyList.get(i).temp;
-                    }
-                    if (weather.hourlyList.get(i).temp < lowest) {
-                        lowest = weather.hourlyList.get(i).temp;
-                    }
-                }
 //                }
-                break;
-        }
+//                break;
+//
+//            case TrendItemView.DATA_TYPE_HOURLY:
+//                for (int i = 0; i < data.hourlyList.size(); i++) {
+//                    if (data.hourlyList.get(i).temp > highest) {
+//                        highest = data.hourlyList.get(i).temp;
+//                    }
+//                    if (data.hourlyList.get(i).temp < lowest) {
+//                        lowest = data.hourlyList.get(i).temp;
+//                    }
+//                }
+//                break;
+//        }
 
         tempYs = new int[]{
                 (int) (TrendItemView.calcHeaderHeight(getContext()) + TrendItemView.calcDrawSpecHeight(getContext()) - MARGIN_BOTTOM

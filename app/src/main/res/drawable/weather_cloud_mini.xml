@@ -1,4 +1,4 @@
-<!-- drawable/weather-cloudy.xml -->
+<!-- drawable/data-cloudy.xml -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:height="24dp"

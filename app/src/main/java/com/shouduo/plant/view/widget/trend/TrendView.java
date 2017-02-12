@@ -16,7 +16,7 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.FrameLayout;
 
 import com.shouduo.plant.R;
-import com.shouduo.plant.model.Weather;
+import com.shouduo.plant.model.Data;
 import com.shouduo.plant.utils.DisplayUtils;
 import com.shouduo.plant.view.widget.SwipeSwitchLayout;
 
@@ -32,8 +32,7 @@ public class TrendView extends FrameLayout
 
     // data
     private TrendAdapter adapter;
-    private Weather weather;
-//    private History history;
+    private Data mData;
 
     private int dataType = TrendItemView.DATA_TYPE_DAILY;
 
@@ -104,23 +103,15 @@ public class TrendView extends FrameLayout
                 MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY),
                 MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY));
         setMeasuredDimension(width, height);
-
-//        final String TAG = "TrendView";
-//        Log.d(TAG, width + width + "");
-//        Log.d(TAG, width + height + "");
-//        Log.d(TAG, width + MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY) + "");
-//        Log.d(TAG, width + MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY) + "");
     }
 
     /** data. */
 
-    public void setData(Weather weather, int viewType) {
-        if (weather != null) {
-            this.weather = weather;
+    public void setData(Data data, int viewType) {
+        if (data != null) {
+            this.mData = data;
             this.viewType = viewType;
-//            this.history = history;
         }
-//        recyclerView.scrollToPosition(weather.dailyList.size() - 1);
     }
 
     public void setState(int dataType, boolean animate) {
@@ -135,10 +126,10 @@ public class TrendView extends FrameLayout
             viewOut.cancel();
             this.dataType = dataType;
 
-            adapter.setData(weather, this.dataType, viewType);
+            adapter.setData(mData, this.dataType, viewType);
             adapter.notifyDataSetChanged();
 
-            recyclerView.setData(weather, this.dataType, viewType);
+            recyclerView.setData(mData, this.dataType, viewType);
         }
     }
 
@@ -168,10 +159,10 @@ public class TrendView extends FrameLayout
         public void onAnimationEnd(Animator animation) {
             animating = false;
 
-            adapter.setData(weather, dataType, viewType);
+            adapter.setData(mData, dataType, viewType);
             adapter.notifyDataSetChanged();
 
-            recyclerView.setData(weather, dataType, viewType);
+            recyclerView.setData(mData, dataType, viewType);
 
             viewIn.start();
         }

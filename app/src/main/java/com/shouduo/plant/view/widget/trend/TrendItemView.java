@@ -15,7 +15,7 @@ import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
 import com.shouduo.plant.R;
-import com.shouduo.plant.model.Weather;
+import com.shouduo.plant.model.Data;
 import com.shouduo.plant.utils.DisplayUtils;
 
 /**
@@ -39,7 +39,6 @@ public class TrendItemView extends FrameLayout {
     private int[] dailyConsumeYs = new int[3];
     private int[] dailyBrightYs = new int[3];
     private int[] dailyTempDiffYs = new int[3];
-    private int[] miniTempYs = new int[3];
 
     private int dataType = DATA_TYPE_NULL;
     public static final int DATA_TYPE_NULL = 0;
@@ -134,10 +133,6 @@ public class TrendItemView extends FrameLayout {
                 Shader.TileMode.CLAMP);
     }
 
-    /**
-     * <br> UI.
-     */
-
     // measure.
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -150,7 +145,6 @@ public class TrendItemView extends FrameLayout {
     }
 
     // draw.
-
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -190,6 +184,7 @@ public class TrendItemView extends FrameLayout {
                 break;
         }
     }
+
     //绘制时间竖线
     private void drawTimeLine(Canvas canvas) {
         paint.setStyle(Paint.Style.STROKE);
@@ -335,21 +330,17 @@ public class TrendItemView extends FrameLayout {
         paint.setAlpha(255);
     }
 
-    /**
-     * <br> data.
-     */
-
-    // init.
-    public void setData(Weather weather, int dataType, int viewType, int position, int highest, int lowest) {
+    // init.为减少switch嵌套，数据分为setDailyData()和setHourlyData()两个方法
+    public void setData(Data data, int dataType, int viewType, int position, int highest, int lowest) {
         this.dataType = dataType;
         this.viewType = viewType;
         switch (dataType) {
             case DATA_TYPE_DAILY:
-                setDailyData(weather, viewType, position, highest, lowest);
+                setDailyData(data, viewType, position, highest, lowest);
                 break;
 
             case DATA_TYPE_HOURLY:
-                setHourlyData(weather, viewType, position, highest, lowest);
+                setHourlyData(data, viewType, position, highest, lowest);
                 break;
         }
     }
@@ -359,54 +350,54 @@ public class TrendItemView extends FrameLayout {
     }
 
     // daily.
-    private void setDailyData(Weather weather, int viewType, int position, int highest, int lowest) {
+    private void setDailyData(Data data, int viewType, int position, int highest, int lowest) {
         if (position == 0) {
             positionType = POSITION_TYPE_LEFT;
             switch (viewType) {
                 case VIEW_TYPE_HUM:
                     this.chart1 = new int[]{
                             0,
-                            weather.dailyList.get(position).consume,
-                            weather.dailyList.get(position + 1).consume};
+                            data.dailyList.get(position).consume,
+                            data.dailyList.get(position + 1).consume};
                     dailyConsumeYs = setBarChartData(chart1);
                     break;
                 case VIEW_TYPE_BRIGHT:
                     this.chart1 = new int[]{
                             0,
-                            weather.dailyList.get(position).bright,
-                            weather.dailyList.get(position + 1).bright};
+                            data.dailyList.get(position).bright,
+                            data.dailyList.get(position + 1).bright};
                     dailyBrightYs = setBarChartData(chart1);
                     break;
                 case VIEW_TYPE_TEMP:
                     this.chart1 = new int[]{
                             0,
-                            weather.dailyList.get(position).tempDiff,
-                            weather.dailyList.get(position + 1).tempDiff};
+                            data.dailyList.get(position).tempDiff,
+                            data.dailyList.get(position + 1).tempDiff};
                     dailyTempDiffYs = setBarChartData(chart1);
                     break;
             }
 
-        } else if (position == weather.dailyList.size() - 1) {
+        } else if (position == data.dailyList.size() - 1) {
             positionType = POSITION_TYPE_RIGHT;
             switch (viewType) {
                 case VIEW_TYPE_HUM:
                     this.chart1 = new int[]{
-                            weather.dailyList.get(position - 1).consume,
-                            weather.dailyList.get(position).consume,
+                            data.dailyList.get(position - 1).consume,
+                            data.dailyList.get(position).consume,
                             0};
                     dailyConsumeYs = setBarChartData(chart1);
                     break;
                 case VIEW_TYPE_BRIGHT:
                     this.chart1 = new int[]{
-                            weather.dailyList.get(position - 1).bright,
-                            weather.dailyList.get(position).bright,
+                            data.dailyList.get(position - 1).bright,
+                            data.dailyList.get(position).bright,
                             0};
                     dailyBrightYs = setBarChartData(chart1);
                     break;
                 case VIEW_TYPE_TEMP:
                     this.chart1 = new int[]{
-                            weather.dailyList.get(position - 1).tempDiff,
-                            weather.dailyList.get(position).tempDiff,
+                            data.dailyList.get(position - 1).tempDiff,
+                            data.dailyList.get(position).tempDiff,
                             0};
                     dailyTempDiffYs = setBarChartData(chart1);
                     break;
@@ -417,23 +408,23 @@ public class TrendItemView extends FrameLayout {
             switch (viewType) {
                 case VIEW_TYPE_HUM:
                     this.chart1 = new int[]{
-                            weather.dailyList.get(position - 1).consume,
-                            weather.dailyList.get(position).consume,
-                            weather.dailyList.get(position + 1).consume};
+                            data.dailyList.get(position - 1).consume,
+                            data.dailyList.get(position).consume,
+                            data.dailyList.get(position + 1).consume};
                     dailyConsumeYs = setBarChartData(chart1);
                     break;
                 case VIEW_TYPE_BRIGHT:
                     this.chart1 = new int[]{
-                            weather.dailyList.get(position - 1).bright,
-                            weather.dailyList.get(position).bright,
-                            weather.dailyList.get(position + 1).bright};
+                            data.dailyList.get(position - 1).bright,
+                            data.dailyList.get(position).bright,
+                            data.dailyList.get(position + 1).bright};
                     dailyBrightYs = setBarChartData(chart1);
                     break;
                 case VIEW_TYPE_TEMP:
                     this.chart1 = new int[]{
-                            weather.dailyList.get(position - 1).tempDiff,
-                            weather.dailyList.get(position).tempDiff,
-                            weather.dailyList.get(position + 1).tempDiff};
+                            data.dailyList.get(position - 1).tempDiff,
+                            data.dailyList.get(position).tempDiff,
+                            data.dailyList.get(position + 1).tempDiff};
                     dailyTempDiffYs = setBarChartData(chart1);
                     break;
             }
@@ -441,7 +432,7 @@ public class TrendItemView extends FrameLayout {
     }
 
     // hourly.
-    public void setHourlyData(Weather weather, int viewType, int position, int highest, int lowest) {
+    public void setHourlyData(Data data, int viewType, int position, int highest, int lowest) {
 
         if (position == 0) {
             positionType = POSITION_TYPE_LEFT;
@@ -449,100 +440,100 @@ public class TrendItemView extends FrameLayout {
                 case VIEW_TYPE_HUM:
                     this.chart1 = new int[]{
                             0,
-                            weather.hourlyList.get(position).hum,
-                            weather.hourlyList.get(position + 1).hum};
+                            data.hourlyList.get(position).hum,
+                            data.hourlyList.get(position + 1).hum};
                     hourlyHumYs = setLineChartLeftData(highest, lowest, chart1);
 
                     this.chart2 = new int[]{
                             0,
-                            weather.hourlyList.get(position).consume,
-                            weather.hourlyList.get(position + 1).consume};
+                            data.hourlyList.get(position).consume,
+                            data.hourlyList.get(position + 1).consume};
                     hourlyConsumeYs = setBarChartData(chart2);
                     break;
                 case VIEW_TYPE_BRIGHT:
                     this.chart1 = new int[]{
                             0,
-                            weather.hourlyList.get(position).bright,
-                            weather.hourlyList.get(position + 1).bright};
+                            data.hourlyList.get(position).bright,
+                            data.hourlyList.get(position + 1).bright};
                     hourlyBrightYs = setLineChartLeftData(highest, lowest, chart1);
                     break;
                 case VIEW_TYPE_TEMP:
                     this.chart1 = new int[]{
                             0,
-                            weather.hourlyList.get(position).temp,
-                            weather.hourlyList.get(position + 1).temp};
+                            data.hourlyList.get(position).temp,
+                            data.hourlyList.get(position + 1).temp};
                     hourlyTempYs = setLineChartLeftData(highest, lowest, chart1);
                     break;
             }
-//            setLineChartLeftData(weather, position, highest, lowest);
+//            setLineChartLeftData(data, position, highest, lowest);
 
-        } else if (position == weather.hourlyList.size() - 1) {
+        } else if (position == data.hourlyList.size() - 1) {
             positionType = POSITION_TYPE_RIGHT;
             switch (viewType) {
                 case VIEW_TYPE_HUM:
                     this.chart1 = new int[]{
-                            weather.hourlyList.get(position - 1).hum,
-                            weather.hourlyList.get(position).hum,
+                            data.hourlyList.get(position - 1).hum,
+                            data.hourlyList.get(position).hum,
                             0};
                     hourlyHumYs = setLineChartRightData(highest, lowest, chart1);
 
                     this.chart2 = new int[]{
-                            weather.hourlyList.get(position - 1).consume,
-                            weather.hourlyList.get(position).consume,
+                            data.hourlyList.get(position - 1).consume,
+                            data.hourlyList.get(position).consume,
                             0};
                     hourlyConsumeYs = setBarChartData(chart2);
                     break;
                 case VIEW_TYPE_BRIGHT:
                     this.chart1 = new int[]{
-                            weather.hourlyList.get(position - 1).bright,
-                            weather.hourlyList.get(position).bright,
+                            data.hourlyList.get(position - 1).bright,
+                            data.hourlyList.get(position).bright,
                             0};
                     hourlyBrightYs = setLineChartRightData(highest, lowest, chart1);
                     break;
                 case VIEW_TYPE_TEMP:
                     this.chart1 = new int[]{
-                            weather.hourlyList.get(position - 1).temp,
-                            weather.hourlyList.get(position).temp,
+                            data.hourlyList.get(position - 1).temp,
+                            data.hourlyList.get(position).temp,
                             0};
                     hourlyTempYs = setLineChartRightData(highest, lowest, chart1);
                     break;
             }
-//            setLineChartRightData(weather, position, highest, lowest);
+//            setLineChartRightData(data, position, highest, lowest);
 
         } else {
             positionType = POSITION_TYPE_CENTER;
             switch (viewType) {
                 case VIEW_TYPE_HUM:
                     this.chart1 = new int[]{
-                            weather.hourlyList.get(position - 1).hum,
-                            weather.hourlyList.get(position).hum,
-                            weather.hourlyList.get(position + 1).hum};
+                            data.hourlyList.get(position - 1).hum,
+                            data.hourlyList.get(position).hum,
+                            data.hourlyList.get(position + 1).hum};
                     hourlyHumYs = setLineChartCenterData(highest, lowest, chart1);
 
                     this.chart2 = new int[]{
-                            weather.hourlyList.get(position - 1).consume,
-                            weather.hourlyList.get(position).consume,
-                            weather.hourlyList.get(position + 1).consume};
+                            data.hourlyList.get(position - 1).consume,
+                            data.hourlyList.get(position).consume,
+                            data.hourlyList.get(position + 1).consume};
                     hourlyConsumeYs = setBarChartData(chart2);
                     break;
                 case VIEW_TYPE_BRIGHT:
                     this.chart1 = new int[]{
-                            weather.hourlyList.get(position - 1).bright,
-                            weather.hourlyList.get(position).bright,
-                            weather.hourlyList.get(position + 1).bright};
+                            data.hourlyList.get(position - 1).bright,
+                            data.hourlyList.get(position).bright,
+                            data.hourlyList.get(position + 1).bright};
                     hourlyBrightYs = setLineChartCenterData(highest, lowest, chart1);
                     break;
                 case VIEW_TYPE_TEMP:
                     this.chart1 = new int[]{
-                            weather.hourlyList.get(position - 1).temp,
-                            weather.hourlyList.get(position).temp,
-                            weather.hourlyList.get(position + 1).temp};
+                            data.hourlyList.get(position - 1).temp,
+                            data.hourlyList.get(position).temp,
+                            data.hourlyList.get(position + 1).temp};
                     hourlyTempYs = setLineChartCenterData(highest, lowest, chart1);
                     break;
             }
-//            setLineChartCenterData(weather, position, highest, lowest);
+//            setLineChartCenterData(data, position, highest, lowest);
         }
-//        serPrecipitationData(weather, position);
+//        serPrecipitationData(data, position);
     }
 
     private int[] setLineChartLeftData(int highest, int lowest, int[] chart) {
@@ -601,7 +592,6 @@ public class TrendItemView extends FrameLayout {
     }
 
     // size.
-
     public static int calcWidth(Context context) {
         return (int) ((context.getResources().getDisplayMetrics().widthPixels - 2.0 * DisplayUtils.dpToPx(context, 8)) / 7.0);
     }

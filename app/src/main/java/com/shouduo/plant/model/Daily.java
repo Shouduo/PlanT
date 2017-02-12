@@ -25,6 +25,7 @@ public class Daily extends DataSupport{
     public Daily() {
     }
 
+
     public String getWeek() {
         return week;
     }
@@ -32,14 +33,6 @@ public class Daily extends DataSupport{
     public void setWeek(String week) {
         this.week = week;
     }
-
-//    public int[] getTemps() {
-//        return temps;
-//    }
-//
-//    public void setTemps(int[] temps) {
-//        this.temps = temps;
-//    }
 
     public int getConsume() {
         return consume;

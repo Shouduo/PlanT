@@ -18,7 +18,7 @@ public class TimeUtils {
         getLastDayTime(context);
     }
 
-    /*public TimeUtils getDayTime(Context context, Weather weather, boolean writeToPreference) {
+    /*public TimeUtils getDayTime(Context context, Data weather, boolean writeToPreference) {
         int time = 60 * Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
                 + Calendar.getInstance().get(Calendar.MINUTE);
 
