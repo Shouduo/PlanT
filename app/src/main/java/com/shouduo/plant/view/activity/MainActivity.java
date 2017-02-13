@@ -11,6 +11,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -65,7 +66,7 @@ public class MainActivity extends BaseActivity
 
     //data
     private int scrollTrigger;
-    private Data mData;
+    private Data data;
 
     // animation
     private AnimatorSet viewShowAnimator;
@@ -75,12 +76,6 @@ public class MainActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
         if (!isStarted()) {
             setStarted();
             initData();
@@ -88,13 +83,18 @@ public class MainActivity extends BaseActivity
             reset();
         } else if (!swipeRefreshLayout.isRefreshing()) {
 //            Data memory = DatabaseHelper.getInstance(this).readWeather(locationNow);
-//            if (locationNow.mData != null && memory != null
-//                    && !memory.base.time.equals(locationNow.mData.base.time)) {
-//                locationNow.mData = memory;
+//            if (locationNow.data != null && memory != null
+//                    && !memory.base.time.equals(locationNow.data.base.time)) {
+//                locationNow.data = memory;
 //                locationNow.history = DatabaseHelper.getInstance(this).readHistory(memory);
             reset();
 //            }
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 
     @Override
@@ -181,14 +181,14 @@ public class MainActivity extends BaseActivity
                 (TextView) findViewById(R.id.container_weather_realtime_aqiTxt)};
 
         // realTimeWeather card.
-        this.initWeatherCard();
+        this.initTrendView();
 
         //get life info
 //        this.indexListView = (IndexListView) findViewById(R.id.container_weather_lifeInfoView);
     }
 
 
-    private void initWeatherCard() {
+    private void initTrendView() {
 //        this.refreshTime = (TextView) findViewById(R.id.container_weather_time_text_live);
 
 //        findViewById(R.id.container_weather_locationContainer).setOnClickListener(this);
@@ -215,6 +215,10 @@ public class MainActivity extends BaseActivity
 //        this.lifeInfoTitle = (TextView) findViewById(R.id.container_weather_lifeInfoTitle);
     }
 
+    private void setTrendView() {
+
+    }
+
     // reset.
 
     public void reset() {
@@ -223,16 +227,16 @@ public class MainActivity extends BaseActivity
     }
 
     private void resetScrollViewPart() {
-        weatherContainer.setVisibility(View.GONE);
-        nestedScrollView.scrollTo(0, 0);
+//        weatherContainer.setVisibility(View.GONE);
+//        nestedScrollView.scrollTo(0, 0);
 
-        swipeSwitchLayout.reset();
-        swipeSwitchLayout.setEnabled(true);
+//        swipeSwitchLayout.reset();
+//        swipeSwitchLayout.setEnabled(true);
 
         setRefreshing(false);
         buildUI();
 
-//        if (locationNow.mData == null) {
+//        if (locationNow.data == null) {
 //            setRefreshing(true);
 //            onRefresh();
 //        } else {
@@ -254,11 +258,11 @@ public class MainActivity extends BaseActivity
 
     @SuppressLint("SetTextI18n")
     private void buildUI() {
-/*        Data mData = locationNow.mData;
-        if (mData == null) {
+/*        Data data = locationNow.data;
+        if (data == null) {
             return;
         } else {
-            TimeUtils.getInstance(this).getDayTime(this, mData, true);
+            TimeUtils.getInstance(this).getDayTime(this, data, true);
         }*/
 
 //        setStatusBarColor();
@@ -267,14 +271,10 @@ public class MainActivity extends BaseActivity
 
         skyView.setWeather();
 
-        titleTexts[0].setText("Hello");
-        titleTexts[1].setText("world");
-        titleTexts[2].setText("bye~");
-
 //        refreshTime.setText("normal");
 //        locationText.setText("dayday");
 
-/*        if (mData.alertList.size() == 0) {
+/*        if (data.alertList.size() == 0) {
             locationIconBtn.setEnabled(false);
             locationIcon.setImageResource(R.drawable.ic_location);
         } else {
@@ -282,39 +282,44 @@ public class MainActivity extends BaseActivity
             locationIcon.setImageResource(R.drawable.ic_alert);
         }*/
 
-        if (TimeUtils.getInstance(this).isDayTime()) {
+//        if (TimeUtils.getInstance(this).isDayTime()) {
 //            overviewTitle.setTextColor(ContextCompat.getColor(this, R.color.lightPrimary_3));
 //            lifeInfoTitle.setTextColor(ContextCompat.getColor(this, R.color.lightPrimary_3));
-            swipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(this, R.color.lightPrimary_3));
-        } else {
+//            swipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(this, R.color.lightPrimary_3));
+//        } else {
 //            overviewTitle.setTextColor(ContextCompat.getColor(this, R.color.darkPrimary_1));
 //            lifeInfoTitle.setTextColor(ContextCompat.getColor(this, R.color.darkPrimary_1));
-            swipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(this, R.color.darkPrimary_1));
-        }
+//            swipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(this, R.color.darkPrimary_1));
+//        }
 
 
-        mData = new Data(handler);
-        if (mData.getDataFromDatabase()) {
-            humidityTrendView.setData(mData, TrendItemView.VIEW_TYPE_HUM);
+        data = new Data(handler);
+        if (data.getDataFromDatabase()) {
+
+            titleTexts[0].setText(data.calcNumberOfDays() + "");
+            titleTexts[1].setText(data.calcNumberOfDays()>1? "Days" : "Day");
+            titleTexts[2].setText("last sync: " + data.base.refreshTime);
+
+            humidityTrendView.setData(data, TrendItemView.VIEW_TYPE_HUM);
             humidityTrendView.setState(TrendItemView.DATA_TYPE_HOURLY, false);
 
-            brightnessTrendView.setData(mData, TrendItemView.VIEW_TYPE_BRIGHT);
+            brightnessTrendView.setData(data, TrendItemView.VIEW_TYPE_BRIGHT);
             brightnessTrendView.setState(TrendItemView.DATA_TYPE_HOURLY, false);
 
-            temperatureTrendView.setData(mData, TrendItemView.VIEW_TYPE_TEMP);
+            temperatureTrendView.setData(data, TrendItemView.VIEW_TYPE_TEMP);
             temperatureTrendView.setState(TrendItemView.DATA_TYPE_HOURLY, false);
         }
-//        mData.getWeatherFromServer();
+//        data.getWeatherFromServer();
 
 //        History history = new History().mockHistory();
 
-//        humidityTrendView.setData(mData, TrendItemView.VIEW_TYPE_HUM);
+//        humidityTrendView.setData(data, TrendItemView.VIEW_TYPE_HUM);
 //        humidityTrendView.setState(TrendItemView.DATA_TYPE_HOURLY, false);
 //
-//        brightnessTrendView.setData(mData, TrendItemView.VIEW_TYPE_BRIGHT);
+//        brightnessTrendView.setData(data, TrendItemView.VIEW_TYPE_BRIGHT);
 //        brightnessTrendView.setState(TrendItemView.DATA_TYPE_HOURLY, false);
 //
-//        temperatureTrendView.setData(mData, TrendItemView.VIEW_TYPE_TEMP);
+//        temperatureTrendView.setData(data, TrendItemView.VIEW_TYPE_TEMP);
 //        temperatureTrendView.setState(TrendItemView.DATA_TYPE_HOURLY, false);
 
 
@@ -332,10 +337,13 @@ public class MainActivity extends BaseActivity
 
         this.weatherHelper = new WeatherHelper();
         this.locationHelper = new LocationHelper(this);*/
+//        data = new Data(handler);
 
         this.scrollTrigger = (int) (getResources().getDisplayMetrics().widthPixels / 6.8 * 4
                 + DisplayUtils.dpToPx(this, 60)
                 - DisplayUtils.dpToPx(this, 300 - 256));
+
+        Log.d("MainActivity", "initData: " + scrollTrigger);
     }
 
     // on click listener.
@@ -349,11 +357,11 @@ public class MainActivity extends BaseActivity
 
             case R.id.container_weather_touchLayout:
             case R.id.activity_main_toolbar:
-
+                skyView.onClickSky();
                 break;
 
 //            case R.id.container_weather_location_iconButton:
-//               IntentHelper.startAlertActivity(this, locationNow.mData);
+//               IntentHelper.startAlertActivity(this, locationNow.data);
 //                break;
 
 //            case R.id.container_weather_locationContainer:
@@ -367,10 +375,11 @@ public class MainActivity extends BaseActivity
         switch (menuItem.getItemId()) {
             case R.id.action_manage:
 //                IntentHelper.startManageActivityForResult(this);
-//                setRefreshing(false);
+
 
             case R.id.action_settings:
-                skyView.setWeather();
+//                Intent intent = new Intent(this, SettingsActivity.class);
+//                startActivity(intent);
                 break;
 
             case R.id.action_about:
@@ -416,8 +425,8 @@ public class MainActivity extends BaseActivity
             weatherHelper.requestWeather(this, locationNow, this);
         }*/
 
-//        mData.getWeatherFromServer();
-        mData.refreshData();
+//        data.getWeatherFromServer();
+        data.refreshData();
 
     }
 
@@ -458,17 +467,24 @@ public class MainActivity extends BaseActivity
         }*/
         switch (message.what) {
             case Data.SERVER_DOWN:
-                Toast.makeText(this, "Server's down, Try again later", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Sync failed, Try again later", Toast.LENGTH_SHORT).show();
                 break;
             case Data.SERVER_GOOD:
-                humidityTrendView.setData(mData, TrendItemView.VIEW_TYPE_HUM);
-                humidityTrendView.setState(TrendItemView.DATA_TYPE_HOURLY, false);
+                reset();
 
-                brightnessTrendView.setData(mData, TrendItemView.VIEW_TYPE_BRIGHT);
-                brightnessTrendView.setState(TrendItemView.DATA_TYPE_HOURLY, false);
+//                titleTexts[0].setText(data.calcNumberOfDays() + "");
+//                titleTexts[1].setText("Days");
+//                titleTexts[2].setText("last sync: " + data.base.refreshTime);
+//
+//                humidityTrendView.setData(data, TrendItemView.VIEW_TYPE_HUM);
+//                humidityTrendView.setState(TrendItemView.DATA_TYPE_HOURLY, false);
+//
 
-                temperatureTrendView.setData(mData, TrendItemView.VIEW_TYPE_TEMP);
-                temperatureTrendView.setState(TrendItemView.DATA_TYPE_HOURLY, false);
+//                brightnessTrendView.setData(data, TrendItemView.VIEW_TYPE_BRIGHT);
+//                brightnessTrendView.setState(TrendItemView.DATA_TYPE_HOURLY, false);
+//
+//                temperatureTrendView.setData(data, TrendItemView.VIEW_TYPE_TEMP);
+//                temperatureTrendView.setState(TrendItemView.DATA_TYPE_HOURLY, false);
 
                 break;
         }

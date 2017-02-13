@@ -7,5 +7,6 @@
     <list>
         <mapping class="com.shouduo.plant.model.Hourly"></mapping>
         <mapping class="com.shouduo.plant.model.Daily"></mapping>
+        <mapping class="com.shouduo.plant.model.Base"></mapping>
     </list>
 </litepal>

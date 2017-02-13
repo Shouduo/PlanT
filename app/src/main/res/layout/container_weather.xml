@@ -21,10 +21,10 @@
             android:layout_margin="@dimen/normal_margin"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:textSize="@dimen/title_text_size"
+            android:textSize="12dp"
             android:maxLines="1"
             style="@style/large_title_text"
-            tools:text="轻度污染"
+            tools:text="Never Sync"
             tools:ignore="RtlHardcoded" />
 
         <TextView
@@ -35,7 +35,7 @@
             android:layout_alignParentLeft="true"
             android:textSize="@dimen/design_title_text_size"
             style="@style/large_title_text"
-            tools:text="3°"
+            tools:text="N/A"
             tools:ignore="RelativeOverlap,RtlHardcoded" />
 
         <TextView
@@ -47,7 +47,7 @@
             android:layout_toLeftOf="@id/container_weather_realtime_aqiTxt"
             android:maxLines="1"
             style="@style/large_title_text"
-            tools:text="晴"
+            tools:text="days"
             tools:ignore="RelativeOverlap,RtlHardcoded" />
 
     </RelativeLayout>

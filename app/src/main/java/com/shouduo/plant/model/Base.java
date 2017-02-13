@@ -1,19 +1,19 @@
 package com.shouduo.plant.model;
 
+import org.litepal.crud.DataSupport;
+
 /**
  * Created by 刘亨俊 on 17.2.2.
  */
 
-public class Base {
+public class Base extends DataSupport{
     // data
-    public String cityId;
-    public String city;
-    public String date;
-    public String time;
+    public long startTime;
+    public String refreshTime;
 
     /** <br> life cycle. */
 
-    Base() {
+    public Base() {
     }
 
 //    public void buildBase(Location location, NewRealtimeResult result) {

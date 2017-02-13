@@ -159,11 +159,11 @@ public class TrendRecyclerView extends RecyclerView {
         }
         if (dataType == TrendItemView.DATA_TYPE_DAILY) {
             if (canScroll = data.dailyList.size() > 7) {
-                scrollToPosition(data.dailyList.size() - 1);
+                smoothScrollToPosition(data.dailyList.size() - 1);
             }
         } else {
             if (canScroll = dataType == TrendItemView.DATA_TYPE_HOURLY && data.hourlyList.size() > 7) {
-                scrollToPosition(data.hourlyList.size() - 1);
+                smoothScrollToPosition(data.hourlyList.size() - 1);
             }
         }
 

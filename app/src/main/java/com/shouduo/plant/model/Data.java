@@ -10,7 +10,10 @@ import com.shouduo.plant.view.widget.SafeHandler;
 import org.litepal.crud.DataSupport;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -23,8 +26,10 @@ import okhttp3.Response;
 
 public class Data {
     // data
-//    public Base base;
+    public Base base;
     //    public RealTime realTime;
+//    public int days;
+//    public String refreshTime;
     public List<Daily> dailyList;
     public List<Hourly> hourlyList;
 
@@ -50,12 +55,10 @@ public class Data {
      */
 
     public Data(SafeHandler handler) {
+        this.base = new Base();
         this.dailyList = new ArrayList<>();
         this.hourlyList = new ArrayList<>();
-//        this.mainThread = context;
         this.handler = handler;
-
-//        Connector.getDatabase();
         getDataFromDatabase();
 
     }
@@ -104,6 +107,7 @@ public class Data {
             for (Daily daily : dailyList) {
                 daily.save();
             }
+            setRefreshTime();
             message.what = SERVER_GOOD;
         } else {    //更新失败
             getDataFromDatabase();  //恢复hourlyList 或 dailyList
@@ -112,8 +116,47 @@ public class Data {
         }
         handler.sendMessage(message);
         isHourlyDataGot = isDailyDataGot = 0;
-//        tempHourlyList = null;
-//        tempDailyList = null;
+    }
+
+    //设置更新数据时间
+    private void setRefreshTime() {
+        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd  HH:mm");
+        Date currentDate = new Date(System.currentTimeMillis());
+        long startTime = DataSupport.findFirst(Base.class).startTime;
+        DataSupport.deleteAll(Base.class);
+        Base base = new Base();
+        base.startTime = startTime;
+        base.refreshTime = formatter.format(currentDate);
+        base.save();
+    }
+
+    public int calcNumberOfDays() {
+        Base base = DataSupport.findFirst(Base.class);
+
+        Date startDate = new Date(base.startTime);
+        Date endDate = new Date(System.currentTimeMillis());
+
+        Calendar startCalendar = Calendar.getInstance();
+        startCalendar.setTime(startDate);
+        startCalendar.set(Calendar.HOUR_OF_DAY, 0);
+        startCalendar.set(Calendar.MINUTE, 0);
+        startCalendar.set(Calendar.SECOND, 0);
+        startCalendar.set(Calendar.MILLISECOND, 0);
+
+        Calendar endCalendar = Calendar.getInstance();
+        endCalendar.setTime(endDate);
+        endCalendar.set(Calendar.HOUR_OF_DAY, 0);
+        endCalendar.set(Calendar.MINUTE, 0);
+        endCalendar.set(Calendar.SECOND, 0);
+        endCalendar.set(Calendar.MILLISECOND, 0);
+
+        long ONE_DAY_MS = 24 * 60 * 60 * 1000;
+        int days = (int) (((endCalendar.getTimeInMillis() - startCalendar.getTimeInMillis())) / ONE_DAY_MS);
+        return days;
+    }
+
+    private void setNumberOfDays() {
+        Date currentDate = new Date(System.currentTimeMillis());
     }
 
     //从服务器更新数据
@@ -157,6 +200,12 @@ public class Data {
     public boolean getDataFromDatabase() {
         hourlyList = DataSupport.findAll(Hourly.class);
         dailyList = DataSupport.findAll(Daily.class);
+        base = DataSupport.findFirst(Base.class);
+        if (base == null) {
+            Base base = new Base();
+            base.startTime = System.currentTimeMillis();
+            base.save();
+        }
 
         if (hourlyList.size() == 0 || dailyList.size() == 0) {
             return false;
