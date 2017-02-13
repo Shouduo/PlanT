@@ -3,6 +3,7 @@ package com.shouduo.plant.view.activity;
 import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -378,8 +379,8 @@ public class MainActivity extends BaseActivity
 
 
             case R.id.action_settings:
-//                Intent intent = new Intent(this, SettingsActivity.class);
-//                startActivity(intent);
+                Intent intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
                 break;
 
             case R.id.action_about:

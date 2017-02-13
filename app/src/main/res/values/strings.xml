@@ -1,102 +1,71 @@
 <resources>
     <string name="plant">PlanT</string>
     <string name="done">DONE</string>
-    <string name="large_text">
-        "Material is the metaphor.\n\n"
+    <string name="cancel">CANCEL</string>
 
-        "A material metaphor is the unifying theory of a rationalized space and a system of motion."
-        "The material is grounded in tactile reality, inspired by the study of paper and ink, yet "
-        "technologically advanced and open to imagination and magic.\n"
-        "Surfaces and edges of the material provide visual cues that are grounded in reality. The "
-        "use of familiar tactile attributes helps users quickly understand affordances. Yet the "
-        "flexibility of the material creates new affordances that supercede those in the physical "
-        "world, without breaking the rules of physics.\n"
-        "The fundamentals of light, surface, and movement are key to conveying how objects move, "
-        "interact, and exist in space and in relation to each other. Realistic lighting shows "
-        "seams, divides space, and indicates moving parts.\n\n"
-
-        "Bold, graphic, intentional.\n\n"
-
-        "The foundational elements of print based design typography, grids, space, scale, color, "
-        "and use of imagery guide visual treatments. These elements do far more than please the "
-        "eye. They create hierarchy, meaning, and focus. Deliberate color choices, edge to edge "
-        "imagery, large scale typography, and intentional white space create a bold and graphic "
-        "interface that immerse the user in the experience.\n"
-        "An emphasis on user actions makes core functionality immediately apparent and provides "
-        "waypoints for the user.\n\n"
-    </string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_settings">Settings</string>
 
-    <!-- Strings related to Settings -->
 
-    <!-- Example General settings -->
-    <string name="pref_header_general">General</string>
+    <!-- settings -->
+    <string name="settings_category_basic">Basic</string>
+    <string name="settings_title_navigationBar_color">Navigation bar color.</string>
+    <string name="settings_navigationBar_color_on">Show theme color.</string>
+    <string name="settings_navigationBar_color_off">Dark.</string>
+    <string name="settings_language">Language.</string>
+    <string name="settings_title_fahrenheit">Fahrenheit.</string>
+    <string name="settings_title_permanent_service">Permanent service.</string>
+    <string name="settings_category_forecast">Forecast</string>
+    <string name="settings_title_forecast_today">Forecast for today.</string>
+    <string name="settings_title_forecast_today_time">Forecast time for today.</string>
+    <string name="settings_title_forecast_tomorrow">Forecast for tomorrow.</string>
+    <string name="settings_title_forecast_tomorrow_time">Forecast time for tomorrow.</string>
+    <string name="settings_category_widget">Widget</string>
+    <string name="settings_category_notification">Notification</string>
+    <string name="settings_title_notification">Send notification.</string>
+    <string name="settings_title_notification_text_color">Text color.</string>
+    <string name="settings_title_notification_background">Background color.</string>
+    <string name="settings_notification_background_on">Same as control center in AOSP.</string>
+    <string name="settings_notification_background_off">Follow system.</string>
+    <string name="settings_title_notification_can_be_cleared">Can clear.</string>
+    <string name="settings_notification_can_be_cleared_on">Can clear.</string>
+    <string name="settings_notification_can_be_cleared_off">Can not clear.</string>
+    <string name="settings_title_notification_hide_icon">Hide notification icon.</string>
+    <string name="settings_notification_hide_icon_on">Hide.</string>
+    <string name="settings_notification_hide_icon_off">Show.</string>
+    <string name="settings_title_notification_hide_in_lockScreen">Hide in lock screen.</string>
+    <string name="settings_notification_hide_in_lockScreen_on">Hide (need to open in the system settings).</string>
+    <string name="settings_notification_hide_in_lockScreen_off">Show.</string>
+    <string name="settings_title_notification_hide_big_view">Hide big view.</string>
+    <string name="settings_notification_hide_big_view_on">Hide.</string>
+    <string name="settings_notification_hide_big_view_off">Show.</string>
+    <string name="on">ON</string>
+    <string name="off">OFF</string>
 
-    <string name="pref_title_social_recommendations">Enable social recommendations</string>
-    <string name="pref_description_social_recommendations">Recommendations for people to contact
-        based on your message history
-    </string>
-
-    <string name="pref_title_display_name">Display name</string>
-    <string name="pref_default_display_name">John Smith</string>
-
-    <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
-    <string-array name="pref_example_list_titles">
-        <item>Always</item>
-        <item>When possible</item>
-        <item>Never</item>
-    </string-array>
-    <string-array name="pref_example_list_values">
-        <item>1</item>
-        <item>0</item>
-        <item>-1</item>
-    </string-array>
-
-    <!-- Example settings for Data & Sync -->
-    <string name="pref_header_data_sync">Data &amp; sync</string>
-
-    <string name="pref_title_sync_frequency">Sync frequency</string>
-    <string-array name="pref_sync_frequency_titles">
-        <item>15 minutes</item>
-        <item>30 minutes</item>
-        <item>1 hour</item>
-        <item>3 hours</item>
-        <item>6 hours</item>
-        <item>Never</item>
-    </string-array>
-    <string-array name="pref_sync_frequency_values">
-        <item>15</item>
-        <item>30</item>
-        <item>60</item>
-        <item>180</item>
-        <item>360</item>
-        <item>-1</item>
-    </string-array>
-
-    <string-array name="list_preference_entries">
-        <item>Entry 1</item>
-        <item>Entry 2</item>
-        <item>Entry 3</item>
-    </string-array>
-
-    <string-array name="list_preference_entry_values">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-    </string-array>
-
-    <string-array name="multi_select_list_preference_default_value"/>
-
-    <string name="pref_title_system_sync_settings">System sync settings</string>
-
-    <!-- Example settings for Notifications -->
-    <string name="pref_header_notifications">Notifications</string>
-
-    <string name="pref_title_new_message_notifications">New message notifications</string>
-
-    <string name="pref_title_ringtone">Ringtone</string>
-    <string name="pref_ringtone_silent">Silent</string>
-
-    <string name="pref_title_vibrate">Vibrate</string>
+    <!--share preference-->
+    <string name="sp_widget_day_setting">widget_day_setting</string>
+    <string name="sp_widget_week_setting">widget_week_setting</string>
+    <string name="sp_widget_day_week_setting">widget_day_week_setting</string>
+    <string name="sp_widget_clock_day_horizontal_setting">widget_clock_day_horizontal_setting</string>
+    <string name="sp_widget_clock_day_vertical_setting">widget_clock_day_vertical_setting</string>
+    <string name="sp_widget_clock_day_week_setting">widget_clock_day_week_setting</string>
+    <string name="key_view_type">view_type</string>
+    <string name="key_show_card">showCard</string>
+    <string name="key_hide_refresh_time">hide_refresh_time</string>
+    <string name="key_black_text">black_text</string>
+    <string name="key_navigationBar_color">navigation_bar_color_switch</string>
+    <string name="key_language">language</string>
+    <string name="key_fahrenheit">fahrenheit</string>
+    <string name="key_permanent_service">permanent_service</string>
+    <string name="key_forecast_today">timing_forecast_switch_today</string>
+    <string name="key_forecast_today_time">forecast_time_today</string>
+    <string name="key_forecast_tomorrow">timing_forecast_switch_tomorrow</string>
+    <string name="key_forecast_tomorrow_time">forecast_time_tomorrow</string>
+    <string name="key_notification">notification_switch</string>
+    <string name="key_notification_text_color">notification_text_color</string>
+    <string name="key_notification_background">notification_background_color_switch</string>
+    <string name="key_notification_can_be_cleared">notification_can_clear_switch</string>
+    <string name="key_notification_hide_icon">hide_notification_icon</string>
+    <string name="key_notification_hide_in_lockScreen">hide_notification_in_lockScreen</string>
+    <string name="key_notification_hide_big_view">hide_notification_big_view</string>
 </resources>

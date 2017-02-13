@@ -5,6 +5,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.shouduo.plant.utils.DisplayUtils;
+import com.shouduo.plant.view.Dialog.BaseDialogFragment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by 刘亨俊 on 17.1.29.
@@ -12,7 +16,7 @@ import com.shouduo.plant.utils.DisplayUtils;
 
 public abstract class BaseActivity extends AppCompatActivity {
     // widget
-//    private List<GeoDialogFragment> dialogList;
+    private List<BaseDialogFragment> dialogList;
 
     // data
     private boolean started = false;
@@ -28,7 +32,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         DisplayUtils.setStatusBarTranslate(getWindow());
 //        DisplayUtils.setNavigationBarColor(this, TimeUtils.getInstance(this).isDayTime());
 
-//        this.dialogList = new ArrayList<>();
+        this.dialogList = new ArrayList<>();
     }
 
     @Override
@@ -47,7 +51,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public abstract View getSnackbarContainer();
 
-/*    public List<GeoDialogFragment> getDialogList() {
+    public List<BaseDialogFragment> getDialogList() {
         return dialogList;
     }
 
@@ -57,6 +61,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         } else {
             return getSnackbarContainer();
         }
-    }*/
+    }
 
 }
