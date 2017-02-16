@@ -70,6 +70,10 @@ public class PlanT extends Application {
         return activityList.get(activityList.size() - 1);
     }
 
+    public void recreateMainActivity() {
+        activityList.get(0).recreate();
+    }
+
     public boolean isAutoSync() {
         return autoSync;
     }

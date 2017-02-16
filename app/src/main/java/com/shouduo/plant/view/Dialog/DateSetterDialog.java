@@ -60,7 +60,7 @@ public class DateSetterDialog extends BaseDialogFragment
                 final Window window = getDialog().getWindow();
                 lp.copyFrom(window.getAttributes());
                 final View picker = window.findViewById(R.id.dialog_date_setter_date_picker);
-                lp.width = picker.getWidth();
+                lp.width = picker.getWidth() + 80;
 //                lp.height = picker.getHeight();
                 window.setAttributes(lp);
             }

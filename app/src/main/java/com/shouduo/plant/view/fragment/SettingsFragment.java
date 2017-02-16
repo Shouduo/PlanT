@@ -9,6 +9,7 @@ import android.preference.PreferenceScreen;
 
 import com.shouduo.plant.R;
 import com.shouduo.plant.model.Base;
+import com.shouduo.plant.view.Dialog.ClearAllDialog;
 import com.shouduo.plant.view.Dialog.DateSetterDialog;
 import com.shouduo.plant.view.Dialog.TimeSetterDialog;
 
@@ -55,7 +56,6 @@ public class SettingsFragment extends PreferenceFragment
 
         Preference setFirstDay = findPreference("first_day");
         setFirstDay.setOnPreferenceChangeListener(this);
-
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
         String startDate = formatter.format(new Date(DataSupport.findFirst(Base.class).startTime));
         setFirstDay.setSummary(startDate);
@@ -170,10 +170,13 @@ public class SettingsFragment extends PreferenceFragment
                 initNotificationPart(sharedPreferences);
                 break;
             case "first_day":
-                DateSetterDialog dialog = new DateSetterDialog();
-                dialog.setOnDateChangedListener(this);
-                dialog.show(getFragmentManager(), null);
-
+                DateSetterDialog dateSetterDialog = new DateSetterDialog();
+                dateSetterDialog.setOnDateChangedListener(this);
+                dateSetterDialog.show(getFragmentManager(), null);
+                break;
+            case "clear_all":
+                ClearAllDialog clearAllDialog = new ClearAllDialog();
+                clearAllDialog.show(getFragmentManager(), null);
                 break;
             default:
                 break;

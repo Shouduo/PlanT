@@ -74,6 +74,8 @@ public class MainActivity extends BaseActivity
     // animation
     private AnimatorSet viewShowAnimator;
 
+    private static final String TAG = "MainActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -304,6 +306,8 @@ public class MainActivity extends BaseActivity
 
         if (data.getDataFromDatabase()) {
 
+            Log.d(TAG, "buildUI: trendview reset");
+
             titleTexts[0].setText(data.calcNumberOfDays() + "");
             titleTexts[1].setText(data.calcNumberOfDays()>1? "Days" : "Day");
             titleTexts[2].setText("last sync: " + data.base.refreshTime);
@@ -351,7 +355,7 @@ public class MainActivity extends BaseActivity
                 + DisplayUtils.dpToPx(this, 60)
                 - DisplayUtils.dpToPx(this, 300 - 256));
 
-        Log.d("MainActivity", "initData: " + scrollTrigger);
+//        Log.d("MainActivity", "initData: " + scrollTrigger);
     }
 
     // on click listener.
