@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.shouduo.plant.PlanT;
 import com.shouduo.plant.utils.DisplayUtils;
 import com.shouduo.plant.view.Dialog.BaseDialogFragment;
 
@@ -27,7 +28,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        GeometricWeather.getInstance().addActivity(this);
+        PlanT.getInstance().addActivity(this);
         DisplayUtils.setWindowTopColor(this);
         DisplayUtils.setStatusBarTranslate(getWindow());
 //        DisplayUtils.setNavigationBarColor(this, TimeUtils.getInstance(this).isDayTime());
@@ -38,7 +39,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        GeometricWeather.getInstance().removeActivity();
+        PlanT.getInstance().removeActivity();
     }
 
     public void setStarted() {

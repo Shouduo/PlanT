@@ -1,5 +1,6 @@
 package com.shouduo.plant.view.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -49,6 +50,8 @@ public class SettingsActivity extends BaseActivity
     public void onClick(View v) {
         switch (v.getId()) {
             case -1:
+                Intent intent = new Intent();
+                setResult(RESULT_OK, intent);
                 finish();
                 break;
         }

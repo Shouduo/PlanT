@@ -20,6 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.shouduo.plant.PlanT;
 import com.shouduo.plant.R;
 import com.shouduo.plant.model.Data;
 import com.shouduo.plant.utils.DisplayUtils;
@@ -38,6 +39,7 @@ public class MainActivity extends BaseActivity
         SwipeRefreshLayout.OnRefreshListener, NestedScrollView.OnScrollChangeListener,
         SafeHandler.HandlerContainer {
 
+    private static final int SETTINGS_ACTIVITY = 1;
     // widget
     private SafeHandler<MainActivity> handler;
 
@@ -295,6 +297,11 @@ public class MainActivity extends BaseActivity
 
 
         data = new Data(handler);
+
+        if (PlanT.getInstance().isAutoSync()) {
+            data.refreshData();
+        }
+
         if (data.getDataFromDatabase()) {
 
             titleTexts[0].setText(data.calcNumberOfDays() + "");
@@ -380,7 +387,7 @@ public class MainActivity extends BaseActivity
 
             case R.id.action_settings:
                 Intent intent = new Intent(this, SettingsActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, SETTINGS_ACTIVITY);
                 break;
 
             case R.id.action_about:
@@ -390,6 +397,16 @@ public class MainActivity extends BaseActivity
         return true;
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case SETTINGS_ACTIVITY:
+                reset();
+                break;
+            default:
+                break;
+        }
+    }
     // on swipe listener(swipe switch layout).
 
 

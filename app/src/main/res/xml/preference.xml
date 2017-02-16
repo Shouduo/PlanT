@@ -3,110 +3,46 @@
     android:title="@string/action_settings" >
 
     <PreferenceCategory
-        android:title="@string/settings_category_basic"
+        android:title="Basic"
         android:layout="@layout/preference_category" >
 
         <CheckBoxPreference
-            android:title="@string/settings_title_navigationBar_color"
-            android:key="@string/key_navigationBar_color"
-            android:summaryOn="@string/settings_navigationBar_color_on"
-            android:summaryOff="@string/settings_navigationBar_color_off" />
+            android:title="Auto-Sync when launch"
+            android:key="auto_sync"
+            android:summaryOn="Enabled"
+            android:summaryOff="Disabled" />
 
-        <CheckBoxPreference
-            android:title="@string/settings_title_fahrenheit"
-            android:key="@string/key_fahrenheit"
-            android:summaryOn="@string/on"
-            android:summaryOff="@string/off" />
+        <Preference
+            android:title="Set the first day"
+            android:key="first_day"
+            android:summary="2017/2/2"/>
 
-        <CheckBoxPreference
-            android:title="@string/settings_title_permanent_service"
-            android:key="@string/key_permanent_service"
-            android:summaryOn="@string/on"
-            android:summaryOff="@string/off" />
-
-        <ListPreference
-            android:title="@string/settings_language"
-            android:key="@string/key_language"
-            android:entries="@array/languages"
-            android:entryValues="@array/language_values"
-            android:dialogTitle="@string/settings_language"
-            android:defaultValue="follow_system" />
+        <Preference
+            android:title="Clear all data!"
+            android:key="clear_all" />
 
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="@string/settings_category_forecast"
+        android:title="Notification"
         android:layout="@layout/preference_category" >
 
         <CheckBoxPreference
-            android:title="@string/settings_title_forecast_today"
-            android:key="@string/key_forecast_today"
-            android:summaryOn="@string/on"
-            android:summaryOff="@string/off" />
+            android:title="Send notification"
+            android:key="send_notification"
+            android:summaryOn="Enabled"
+            android:summaryOff="Disabled" />
 
         <Preference
-            android:title="@string/settings_title_forecast_today_time"
-            android:key="@string/key_forecast_today_time" />
-
-        <CheckBoxPreference
-            android:title="@string/settings_title_forecast_tomorrow"
-            android:key="@string/key_forecast_tomorrow"
-            android:summaryOn="@string/on"
-            android:summaryOff="@string/off" />
+            android:title="Conditions..."
+            android:key="conditions"
+            android:summary="Humidity below 10% or Temperature below 5°" />
 
         <Preference
-            android:title="@string/settings_title_forecast_tomorrow_time"
-            android:key="@string/key_forecast_tomorrow_time" />
+            android:title="Do not disturb when..."
+            android:key="do_not_disturb"
+            android:summary="00:00 - 08:00"/>
 
     </PreferenceCategory>
 
-    <PreferenceCategory
-        android:title="@string/settings_category_notification"
-        android:layout="@layout/preference_category" >
-
-        <CheckBoxPreference
-            android:title="@string/settings_title_notification"
-            android:key="@string/key_notification"
-            android:summaryOn="@string/on"
-            android:summaryOff="@string/off" />
-
-        <ListPreference
-            android:title="@string/settings_title_notification_text_color"
-            android:key="@string/key_notification_text_color"
-            android:entries="@array/notification_text_colors"
-            android:entryValues="@array/notification_text_color_values"
-            android:dialogTitle="@string/settings_title_notification_text_color"
-            android:defaultValue="grey" />
-
-        <CheckBoxPreference
-            android:title="@string/settings_title_notification_background"
-            android:key="@string/key_notification_background"
-            android:summaryOn="@string/settings_notification_background_on"
-            android:summaryOff="@string/settings_notification_background_off" />
-
-        <CheckBoxPreference
-            android:title="@string/settings_title_notification_can_be_cleared"
-            android:key="@string/key_notification_can_be_cleared"
-            android:summaryOn="@string/settings_notification_can_be_cleared_on"
-            android:summaryOff="@string/settings_notification_can_be_cleared_off" />
-
-        <CheckBoxPreference
-            android:title="@string/settings_title_notification_hide_icon"
-            android:key="@string/key_notification_hide_icon"
-            android:summaryOn="@string/settings_notification_hide_icon_on"
-            android:summaryOff="@string/settings_notification_hide_icon_off" />
-
-        <CheckBoxPreference
-            android:title="@string/settings_title_notification_hide_in_lockScreen"
-            android:key="@string/key_notification_hide_in_lockScreen"
-            android:summaryOn="@string/settings_notification_hide_in_lockScreen_on"
-            android:summaryOff="@string/settings_notification_hide_in_lockScreen_off" />
-
-        <CheckBoxPreference
-            android:title="@string/settings_title_notification_hide_big_view"
-            android:key="@string/key_notification_hide_big_view"
-            android:summaryOn="@string/settings_notification_hide_big_view_on"
-            android:summaryOff="@string/settings_notification_hide_big_view_off" />
-
-    </PreferenceCategory>
 </PreferenceScreen>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dialog_date_setter_container"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <DatePicker
+            android:id="@+id/dialog_date_setter_date_picker"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/dialog_date_setter_done"
+                style="@style/material_button"
+                android:text="@string/done"
+                android:textColor="@color/colorAccent"
+                android:layout_alignParentRight="true"
+                tools:ignore="RtlHardcoded" />
+
+            <Button
+                android:id="@+id/dialog_date_setter_cancel"
+                style="@style/material_button"
+                android:text="@string/cancel"
+                android:textColor="@color/colorTextDark2nd"
+                android:layout_toLeftOf="@id/dialog_date_setter_done"
+                tools:ignore="RtlHardcoded" />
+
+        </RelativeLayout>
+    </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>

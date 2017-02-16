@@ -213,4 +213,11 @@ public class Data {
             return true;
         }
     }
+
+//    public String getStartDate() {
+//        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+//        Date date = new Date(DataSupport.findFirst(Base.class).startTime);
+//        String startDate = formatter.format(date);
+//        return startDate;
+//    }
 }
