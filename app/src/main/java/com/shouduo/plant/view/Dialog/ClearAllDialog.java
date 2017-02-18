@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
+import android.widget.Toast;
 
 import com.shouduo.plant.PlanT;
 import com.shouduo.plant.R;
@@ -22,7 +23,7 @@ import org.litepal.crud.DataSupport;
 public class ClearAllDialog extends BaseDialogFragment
         implements DialogInterface.OnClickListener {
 
-    private static final String TAG = "ClearAllDialog";
+//    private static final String TAG = "ClearAllDialog";
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -60,8 +61,9 @@ public class ClearAllDialog extends BaseDialogFragment
                 DataSupport.deleteAll(Hourly.class);
                 DataSupport.deleteAll(Daily.class);
                 DataSupport.deleteAll(Base.class);
-//                Toast.makeText(getActivity(), "Data Cleared!", Toast.LENGTH_SHORT).show();
-                PlanT.getInstance().recreateMainActivity();
+
+                Toast.makeText(getActivity(), "Data Cleared!", Toast.LENGTH_SHORT).show();
+                PlanT.getInstance().getMainActivity().recreate();
                 break;
             case -2:    //cancel
                 break;

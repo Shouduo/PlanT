@@ -9,6 +9,7 @@ import android.preference.PreferenceScreen;
 
 import com.shouduo.plant.R;
 import com.shouduo.plant.model.Base;
+import com.shouduo.plant.service.NotificationService;
 import com.shouduo.plant.view.Dialog.ClearAllDialog;
 import com.shouduo.plant.view.Dialog.DateSetterDialog;
 import com.shouduo.plant.view.Dialog.TimeSetterDialog;
@@ -166,9 +167,6 @@ public class SettingsFragment extends PreferenceFragment
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         switch (preference.getKey()) {
-            case "send_notification":
-                initNotificationPart(sharedPreferences);
-                break;
             case "first_day":
                 DateSetterDialog dateSetterDialog = new DateSetterDialog();
                 dateSetterDialog.setOnDateChangedListener(this);
@@ -177,6 +175,14 @@ public class SettingsFragment extends PreferenceFragment
             case "clear_all":
                 ClearAllDialog clearAllDialog = new ClearAllDialog();
                 clearAllDialog.show(getFragmentManager(), null);
+                break;
+            case "send_notification":
+                initNotificationPart(sharedPreferences);
+                if (sharedPreferences.getBoolean("send_notification", false)) {
+                    NotificationService.addNotification(0, "hello", "humidity", "lower than 20%");
+                } else {
+                    NotificationService.cleanAllNotification();
+                }
                 break;
             default:
                 break;

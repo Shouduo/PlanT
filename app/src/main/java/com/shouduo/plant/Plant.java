@@ -23,6 +23,9 @@ public class PlanT extends Application {
     // data
     private List<BaseActivity> activityList;
     private boolean autoSync;
+    private int humLimit;
+    private int brightLimit;
+    private int tempLimit;
     private boolean colorNavigationBar;
     private boolean fahrenheit;
 
@@ -51,6 +54,9 @@ public class PlanT extends Application {
 //        LanguageUtils.setLanguage(this, sharedPreferences.getString(getString(R.string.key_language), "follow_system"));
 //        fahrenheit = sharedPreferences.getBoolean(getString(R.string.key_fahrenheit), false);
         autoSync = sharedPreferences.getBoolean("auto_sync", false);
+        humLimit = sharedPreferences.getInt("hum_limit", 0);
+        brightLimit = sharedPreferences.getInt("bright_limit", 0);
+        tempLimit = sharedPreferences.getInt("temp_limit", -50);
     }
 
     /** <br> data. */
@@ -70,12 +76,31 @@ public class PlanT extends Application {
         return activityList.get(activityList.size() - 1);
     }
 
-    public void recreateMainActivity() {
-        activityList.get(0).recreate();
+    public BaseActivity getMainActivity() {
+        if (activityList.size() == 0) {
+            return null;
+        }
+        return activityList.get(0);
     }
+
+//    public void recreateMainActivity() {
+//        activityList.get(0).recreate();
+//    }
 
     public boolean isAutoSync() {
         return autoSync;
+    }
+
+    public int getHumLimit() {
+        return humLimit;
+    }
+
+    public int getBrightLimit() {
+        return brightLimit;
+    }
+
+    public int getTempLimit() {
+        return tempLimit;
     }
 
     public static String getProcessName() {

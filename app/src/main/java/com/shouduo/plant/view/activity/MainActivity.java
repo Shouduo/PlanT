@@ -321,21 +321,6 @@ public class MainActivity extends BaseActivity
             temperatureTrendView.setData(data, TrendItemView.VIEW_TYPE_TEMP);
             temperatureTrendView.setState(TrendItemView.DATA_TYPE_HOURLY, false);
         }
-//        data.getWeatherFromServer();
-
-//        History history = new History().mockHistory();
-
-//        humidityTrendView.setData(data, TrendItemView.VIEW_TYPE_HUM);
-//        humidityTrendView.setState(TrendItemView.DATA_TYPE_HOURLY, false);
-//
-//        brightnessTrendView.setData(data, TrendItemView.VIEW_TYPE_BRIGHT);
-//        brightnessTrendView.setState(TrendItemView.DATA_TYPE_HOURLY, false);
-//
-//        temperatureTrendView.setData(data, TrendItemView.VIEW_TYPE_TEMP);
-//        temperatureTrendView.setState(TrendItemView.DATA_TYPE_HOURLY, false);
-
-
-
 
         weatherContainer.setVisibility(View.VISIBLE);
         viewShowAnimator.start();
