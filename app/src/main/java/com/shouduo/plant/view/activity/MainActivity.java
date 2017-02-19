@@ -80,7 +80,7 @@ public class MainActivity extends BaseActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        
         if (!isStarted()) {
             setStarted();
             initData();
@@ -187,7 +187,6 @@ public class MainActivity extends BaseActivity
 
         // realTimeWeather card.
         this.initTrendView();
-
         //get life info
 //        this.indexListView = (IndexListView) findViewById(R.id.container_weather_lifeInfoView);
     }

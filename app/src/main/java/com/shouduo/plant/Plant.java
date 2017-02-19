@@ -26,6 +26,11 @@ public class PlanT extends Application {
     private int humLimit;
     private int brightLimit;
     private int tempLimit;
+    private int fromTimeHour;
+    private int fromTimeMinute;
+    private int toTimeHour;
+    private int toTimeMinute;
+
     private boolean colorNavigationBar;
     private boolean fahrenheit;
 
@@ -54,9 +59,15 @@ public class PlanT extends Application {
 //        LanguageUtils.setLanguage(this, sharedPreferences.getString(getString(R.string.key_language), "follow_system"));
 //        fahrenheit = sharedPreferences.getBoolean(getString(R.string.key_fahrenheit), false);
         autoSync = sharedPreferences.getBoolean("auto_sync", false);
+
         humLimit = sharedPreferences.getInt("hum_limit", 0);
         brightLimit = sharedPreferences.getInt("bright_limit", 0);
         tempLimit = sharedPreferences.getInt("temp_limit", -50);
+
+        fromTimeHour = sharedPreferences.getInt("from_time_hour", 0);
+        fromTimeMinute = sharedPreferences.getInt("from_time_minute", 0);
+        toTimeHour = sharedPreferences.getInt("to_time_hour", 0);
+        toTimeMinute = sharedPreferences.getInt("to_time_minute", 0);
     }
 
     /** <br> data. */
@@ -101,6 +112,22 @@ public class PlanT extends Application {
 
     public int getTempLimit() {
         return tempLimit;
+    }
+
+    public int getFromTimeHour() {
+        return fromTimeHour;
+    }
+
+    public int getFromTimeMinute() {
+        return fromTimeMinute;
+    }
+
+    public int getToTimeHour() {
+        return toTimeHour;
+    }
+
+    public int getToTimeMinute() {
+        return toTimeMinute;
     }
 
     public static String getProcessName() {

@@ -10,6 +10,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.shouduo.plant.R;
@@ -26,21 +27,37 @@ public class TimeSetterDialog extends BaseDialogFragment
     private CoordinatorLayout container;
     private OnTimeChangedListener listener;
 
+    private View view;
+    private AlertDialog.Builder builder;
+    private TextView title;
+    private TimePicker fromTimePicker;
+    private TimePicker toTimePicker;
+    private Button done;
+    private Button cancel;
+
+    private static final String TAG = "TimeSetterDialog";
+
     // data
     private int hour;
     private int minute;
-    private boolean today = true;
+    private int fromTimeHour;
+    private int fromTimeMinute;
+    private int toTimeHour;
+    private int toTimeMinute;
+    private boolean isFrom = true;
 
-    /** <br> life cycle. */
+    /**
+     * <br> life cycle.
+     */
 
     @SuppressLint("InflateParams")
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_time_setter, null, false);
+        view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_time_setter, null, false);
         this.initData();
         this.initWidget(view);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder = new AlertDialog.Builder(getActivity());
         builder.setView(view);
         return builder.create();
     }
@@ -50,10 +67,12 @@ public class TimeSetterDialog extends BaseDialogFragment
         return container;
     }
 
-    /** <br> data. */
+    /**
+     * <br> data.
+     */
 
-    public void setModel(boolean today) {
-        this.today = today;
+    public void setModel(boolean isFrom) {
+        this.isFrom = isFrom;
     }
 
     private void initData() {
@@ -62,23 +81,37 @@ public class TimeSetterDialog extends BaseDialogFragment
         this.minute = calendar.get(Calendar.MINUTE);
     }
 
-    /** <br> UI. */
+    /**
+     * <br> UI.
+     */
 
     private void initWidget(View view) {
         this.container = (CoordinatorLayout) view.findViewById(R.id.dialog_time_setter_container);
 
-        Button done = (Button) view.findViewById(R.id.dialog_time_setter_done);
+        title = (TextView) view.findViewById(R.id.dialog_time_setter_title);
+
+
+        fromTimePicker = (TimePicker) view.findViewById(R.id.dialog_time_setter_from_time_picker);
+//        fromTimePicker.setIs24HourView(true);
+        fromTimePicker.setOnTimeChangedListener(this);
+
+        toTimePicker = (TimePicker) view.findViewById(R.id.dialog_time_setter_to_time_picker);
+//        toTimePicker.setIs24HourView(true);
+        toTimePicker.setOnTimeChangedListener(this);
+        toTimePicker.setEnabled(false);
+        toTimePicker.setVisibility(View.GONE);
+
+        done = (Button) view.findViewById(R.id.dialog_time_setter_done);
         done.setOnClickListener(this);
+        done.setText("Next");
 
-        Button cancel = (Button) view.findViewById(R.id.dialog_time_setter_cancel);
+        cancel = (Button) view.findViewById(R.id.dialog_time_setter_cancel);
         cancel.setOnClickListener(this);
-
-        TimePicker timePicker = (TimePicker) view.findViewById(R.id.dialog_time_setter_time_picker);
-        timePicker.setIs24HourView(true);
-        timePicker.setOnTimeChangedListener(this);
     }
 
-    /** <br> interface. */
+    /**
+     * <br> interface.
+     */
 
     public interface OnTimeChangedListener {
         void timeChanged();
@@ -91,9 +124,9 @@ public class TimeSetterDialog extends BaseDialogFragment
     // on time changed listener.
 
     @Override
-    public void onTimeChanged(TimePicker timePicker, int i, int i1) {
-        this.hour = i;
-        this.minute = i1;
+    public void onTimeChanged(TimePicker timePicker, int hour, int minute) {
+        this.hour = hour;
+        this.minute = minute;
     }
 
     // on click.
@@ -107,33 +140,34 @@ public class TimeSetterDialog extends BaseDialogFragment
 
             case R.id.dialog_time_setter_done:
                 SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getActivity()).edit();
-                String hourText;
-                String minuteText;
+                if (isFrom) {
+                    fromTimeHour = hour;
+                    fromTimeMinute = minute;
 
-                if (hour < 10) {
-                    hourText = "0" + Integer.toString(hour);
+                    //change timepicker in dialog.
+                    fromTimePicker.setEnabled(false);
+                    fromTimePicker.setVisibility(View.GONE);
+                    toTimePicker.setEnabled(true);
+                    toTimePicker.setVisibility(View.VISIBLE);
+
+                    title.setText("To:");
+
+                    isFrom = false;
                 } else {
-                    hourText = Integer.toString(hour);
-                }
+                    toTimeHour = hour;
+                    toTimeMinute = minute;
 
-                if (minute < 10) {
-                    minuteText = "0" + Integer.toString(minute);
-                } else {
-                    minuteText = Integer.toString(minute);
-                }
+                    editor.putInt("from_time_hour", fromTimeHour);
+                    editor.putInt("from_time_minute", fromTimeMinute);
+                    editor.putInt("to_time_hour", toTimeHour);
+                    editor.putInt("to_time_minute", toTimeMinute);
+                    editor.apply();
 
-                if (today) {
-                    editor.putString(getString(R.string.key_forecast_today_time), hourText + ":" + minuteText);
-                } else {
-                    editor.putString(getString(R.string.key_forecast_tomorrow_time), hourText + ":" + minuteText);
+                    if (listener != null) {
+                        listener.timeChanged();
+                    }
+                    dismiss();
                 }
-                editor.apply();
-
-                if (listener != null) {
-                    listener.timeChanged();
-                }
-
-                dismiss();
                 break;
         }
     }

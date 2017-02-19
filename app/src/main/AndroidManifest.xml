@@ -16,7 +16,8 @@
         <activity
             android:name=".view.activity.MainActivity"
             android:label="PlanT"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -30,6 +31,14 @@
 
         <service
             android:name=".service.NotificationService"
+            android:enabled="true">
+        </service>
+        <service
+            android:name=".service.NotificationService$InnerService"
+            android:enabled="true">
+        </service>
+        <service
+            android:name=".service.NotificationService$MuteService"
             android:enabled="true">
         </service>
     </application>
