@@ -23,6 +23,7 @@ public class PlanT extends Application {
     // data
     private List<BaseActivity> activityList;
     private boolean autoSync;
+    private boolean sendNotification;
     private int humLimit;
     private int brightLimit;
     private int tempLimit;
@@ -34,8 +35,8 @@ public class PlanT extends Application {
     private boolean colorNavigationBar;
     private boolean fahrenheit;
 
-    public static final String DEFAULT_TODAY_FORECAST_TIME = "07:00";
-    public static final String DEFAULT_TOMORROW_FORECAST_TIME = "21:00";
+    public static final int DEFAULT_FROM_TIME_HOUR = 23;
+    public static final int DEFAULT_TO_TIME_HOUR = 8;
 
     /** <br> life cycle. */
 
@@ -59,14 +60,15 @@ public class PlanT extends Application {
 //        LanguageUtils.setLanguage(this, sharedPreferences.getString(getString(R.string.key_language), "follow_system"));
 //        fahrenheit = sharedPreferences.getBoolean(getString(R.string.key_fahrenheit), false);
         autoSync = sharedPreferences.getBoolean("auto_sync", false);
+        sendNotification = sharedPreferences.getBoolean("send_notification", false);
 
         humLimit = sharedPreferences.getInt("hum_limit", 0);
         brightLimit = sharedPreferences.getInt("bright_limit", 0);
         tempLimit = sharedPreferences.getInt("temp_limit", -50);
 
-        fromTimeHour = sharedPreferences.getInt("from_time_hour", 0);
+        fromTimeHour = sharedPreferences.getInt("from_time_hour", DEFAULT_FROM_TIME_HOUR);
         fromTimeMinute = sharedPreferences.getInt("from_time_minute", 0);
-        toTimeHour = sharedPreferences.getInt("to_time_hour", 0);
+        toTimeHour = sharedPreferences.getInt("to_time_hour", DEFAULT_TO_TIME_HOUR);
         toTimeMinute = sharedPreferences.getInt("to_time_minute", 0);
     }
 
@@ -100,6 +102,10 @@ public class PlanT extends Application {
 
     public boolean isAutoSync() {
         return autoSync;
+    }
+
+    public boolean isSendNotification() {
+        return sendNotification;
     }
 
     public int getHumLimit() {

@@ -4,6 +4,7 @@
           package="com.shouduo.plant">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
     <application
         android:name=".PlanT"
@@ -41,6 +42,13 @@
             android:name=".service.NotificationService$MuteService"
             android:enabled="true">
         </service>
+
+        <receiver
+            android:name=".BroadcastReceiver.BootBroadcastReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

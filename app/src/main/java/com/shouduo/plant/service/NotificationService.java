@@ -8,14 +8,17 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.IBinder;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.shouduo.plant.PlanT;
 import com.shouduo.plant.R;
+import com.shouduo.plant.model.Data;
 import com.shouduo.plant.model.Hourly;
 import com.shouduo.plant.view.activity.BaseActivity;
 import com.shouduo.plant.view.activity.MainActivity;
+import com.shouduo.plant.view.widget.SafeHandler;
 
 import org.litepal.crud.DataSupport;
 
@@ -28,18 +31,83 @@ import java.util.TimerTask;
  * Created by 刘亨俊 on 17.2.17.
  */
 
-public class NotificationService extends Service {
+public class NotificationService extends Service implements SafeHandler.HandlerContainer {
+
+    private SafeHandler<NotificationService> handler;
 
     static Timer timer = null;
     static BaseActivity mainActivity = PlanT.getInstance().getMainActivity();
-    long period = 1 * 1 * 30 * 1000;
-    long delay = 0;
-    static long muteUntilTime = System.currentTimeMillis();
-    static long muteDuration = 1 * 1 * 60 * 1000;
+    private final static long period = 1 * 1 * 30 * 1000;
+    private final static long delay = 0;
+    private final static long muteDuration = 1 * 1 * 60 * 1000;
+    private static long muteUntilTime = System.currentTimeMillis();
 
     private final static int NOTIFICATION_SERVICE_ID = 1001;
     private static final String TAG = "NotificationService";
 
+    @Override
+    public void onCreate() {
+        if (timer == null) {
+            timer = new Timer();
+        }
+        if (handler == null) {
+            handler = new SafeHandler<>(NotificationService.this);
+        }
+
+        super.onCreate();
+    }
+
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
+
+    @Override
+    public void onDestroy() {
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
+        if (handler != null) {
+            handler.removeCallbacksAndMessages(null);
+        }
+        super.onDestroy();
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+
+        //灰色保活
+        if (Build.VERSION.SDK_INT < 18) {
+            startForeground(NOTIFICATION_SERVICE_ID, new Notification());
+        } else {    //(sdk25以上已失效)
+            Intent innerIntent = new Intent(this, InnerService.class);
+            startService(innerIntent);
+            startForeground(NOTIFICATION_SERVICE_ID, new Notification());
+        }
+
+        if (timer == null) {
+            timer = new Timer();
+        }
+
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if (!isDoNotDisturb() && !isMute()) {
+
+                    Log.d(TAG, "run: ");
+
+                    Data data = new Data(handler);
+                    data.refreshData();
+                }
+            }
+        }, delay, period);
+
+        return super.onStartCommand(intent, flags, startId);
+    }
+
+    @SuppressWarnings("deprecation")
     private void sendNotification(int id, String tickerText, String contentTitle, String contentText) {
 
         NotificationManager notificationManager = (NotificationManager)
@@ -77,72 +145,6 @@ public class NotificationService extends Service {
         notificationManager.notify(id, notification);
     }
 
-    @Override
-    public void onCreate() {
-        if (timer == null) {
-            timer = new Timer();
-        }
-
-        super.onCreate();
-    }
-
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-
-        //灰色保活
-        if (Build.VERSION.SDK_INT < 18) {
-            startForeground(NOTIFICATION_SERVICE_ID, new Notification());
-        } else {
-            Intent innerIntent = new Intent(this, InnerService.class);
-            startService(innerIntent);
-            startForeground(NOTIFICATION_SERVICE_ID, new Notification());
-        }
-
-        if (timer == null) {
-            timer = new Timer();
-        }
-
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-
-                if (!isDoNotDisturb() && !isMute()) {
-                    Log.d(TAG, "run: " );
-                    Hourly hourly = DataSupport.findLast(Hourly.class);
-                    int humLimit = PlanT.getInstance().getHumLimit();
-                    int brightLimit = PlanT.getInstance().getBrightLimit();
-                    int tempLimit = PlanT.getInstance().getTempLimit();
-
-                    if (hourly.hum < 50) {
-                        sendNotification(1, "Humidity is low",
-                                "The Soil Humidity is lower than " + humLimit,
-                                "Water your plant!");
-                    }
-
-                    if (hourly.bright < brightLimit) {
-                        sendNotification(2, "Brightness is low",
-                                "The Environment Brightness is lower than " + brightLimit,
-                                "Move your plant under the sunshine.");
-                    }
-
-                    if (hourly.temp < tempLimit) {
-                        sendNotification(3, "Temperature is low",
-                                "The Environment Temperature is lower than " + tempLimit,
-                                "Move your plant inside the house");
-                    }
-                }
-            }
-        }, delay, period);
-
-        return super.onStartCommand(intent, flags, startId);
-    }
-
     private boolean isDoNotDisturb() {
         int fromTimeHour = PlanT.getInstance().getFromTimeHour();
         int fromTimeMinute = PlanT.getInstance().getFromTimeMinute();
@@ -158,7 +160,7 @@ public class NotificationService extends Service {
         fromCalendar.set(Calendar.MINUTE, fromTimeMinute);
 
         Calendar toCalendar = Calendar.getInstance();
-        if (fromTimeHour > toTimeHour) {       //from today to tomorrow
+        if (fromTimeHour > toTimeHour) {       //跨越两天
             toCalendar.setTime(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000));
         } else {
             toCalendar.setTime(new Date(System.currentTimeMillis()));
@@ -172,7 +174,7 @@ public class NotificationService extends Service {
 
         if (System.currentTimeMillis() > fromCalendar.getTimeInMillis() &&
                 System.currentTimeMillis() < toCalendar.getTimeInMillis()) {
-            Log.d(TAG, "isDoNotDisturb: true" );
+            Log.d(TAG, "isDoNotDisturb: true");
             return true;
         } else {
             return false;
@@ -180,19 +182,46 @@ public class NotificationService extends Service {
     }
 
     private boolean isMute() {
-//        if (System.currentTimeMillis() < muteUntilTime) {
-//            return true;
-//        }
         return System.currentTimeMillis() < muteUntilTime;
     }
 
     @Override
-    public void onDestroy() {
-        if (timer != null) {
-            timer.cancel();
-            timer = null;
+    public void handleMessage(Message message) {
+
+        Log.d(TAG, "handleMessage: ");
+
+        switch (message.what) {
+            case Data.SERVER_DOWN:
+                break;
+            case Data.SERVER_GOOD:
+
+                Hourly hourly = DataSupport.findLast(Hourly.class);
+                int humLimit = PlanT.getInstance().getHumLimit();
+                int brightLimit = PlanT.getInstance().getBrightLimit();
+                int tempLimit = PlanT.getInstance().getTempLimit();
+
+                if (hourly.hum < 15) {
+                    sendNotification(1, "Humidity is low",
+                            "The Soil Humidity is lower than " + humLimit,
+                            "Water your plant!");
+                }
+
+                if (hourly.bright < brightLimit) {
+                    sendNotification(2, "Brightness is low",
+                            "The Environment Brightness is lower than " + brightLimit,
+                            "Move your plant under the sunshine.");
+                }
+
+                if (hourly.temp < tempLimit) {
+                    sendNotification(3, "Temperature is low",
+                            "The Environment Temperature is lower than " + tempLimit,
+                            "Move your plant inside the house");
+                }
+
+                break;
         }
-        super.onDestroy();
+
+
     }
 
     //灰色保活内部Service

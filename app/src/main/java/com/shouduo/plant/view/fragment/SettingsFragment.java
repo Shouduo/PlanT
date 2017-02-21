@@ -8,6 +8,7 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 
+import com.shouduo.plant.PlanT;
 import com.shouduo.plant.R;
 import com.shouduo.plant.model.Base;
 import com.shouduo.plant.service.NotificationService;
@@ -67,9 +68,9 @@ public class SettingsFragment extends PreferenceFragment
         //do not disturb summary text format.
         String fromTimeText;
         String toTimeText;
-        int fromTimeHour = sharedPreferences.getInt("from_time_hour", 0);
+        int fromTimeHour = sharedPreferences.getInt("from_time_hour", PlanT.DEFAULT_FROM_TIME_HOUR);
         int fromTimeMinute = sharedPreferences.getInt("from_time_minute", 0);
-        int toTimeHour = sharedPreferences.getInt("to_time_hour", 0);
+        int toTimeHour = sharedPreferences.getInt("to_time_hour", PlanT.DEFAULT_TO_TIME_HOUR);
         int toTimeMinute = sharedPreferences.getInt("to_time_minute", 0);
 
         fromTimeText = (fromTimeHour > 12 ? (fromTimeHour - 12) : fromTimeHour) + ":"

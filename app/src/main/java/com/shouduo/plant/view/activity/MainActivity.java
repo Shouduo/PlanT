@@ -80,7 +80,7 @@ public class MainActivity extends BaseActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
+
         if (!isStarted()) {
             setStarted();
             initData();
@@ -464,34 +464,13 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void handleMessage(Message message) {
-        /*switch (message.what) {
-          *//*  case MESSAGE_WHAT_STARTUP_SERVICE:
-                WidgetUtils.refreshWidgetInNewThread(this, locationList.get(0));
-                NotificationUtils.refreshNotificationInNewThread(this, locationList.get(0));
-                ServiceHelper.startupAllService(this);*//*
-                break;
-        }*/
+
         switch (message.what) {
             case Data.SERVER_DOWN:
                 Toast.makeText(this, "Sync failed, Try again later", Toast.LENGTH_SHORT).show();
                 break;
             case Data.SERVER_GOOD:
                 reset();
-
-//                titleTexts[0].setText(data.calcNumberOfDays() + "");
-//                titleTexts[1].setText("Days");
-//                titleTexts[2].setText("last sync: " + data.base.refreshTime);
-//
-//                humidityTrendView.setData(data, TrendItemView.VIEW_TYPE_HUM);
-//                humidityTrendView.setState(TrendItemView.DATA_TYPE_HOURLY, false);
-//
-
-//                brightnessTrendView.setData(data, TrendItemView.VIEW_TYPE_BRIGHT);
-//                brightnessTrendView.setState(TrendItemView.DATA_TYPE_HOURLY, false);
-//
-//                temperatureTrendView.setData(data, TrendItemView.VIEW_TYPE_TEMP);
-//                temperatureTrendView.setState(TrendItemView.DATA_TYPE_HOURLY, false);
-
                 break;
         }
         setRefreshing(false);
