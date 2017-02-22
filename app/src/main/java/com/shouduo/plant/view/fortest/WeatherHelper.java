@@ -75,9 +75,9 @@ public class WeatherHelper {
     public static int[] getWeatherIcon() {
         int[] imageId = new int[4];
 
-            imageId[0] = R.drawable.plant_icon_leave_left;
+            imageId[0] = R.drawable.plant_icon_pot;
             imageId[1] = R.drawable.plant_icon_leave_right;
-            imageId[2] = R.drawable.plant_icon_pot;
+            imageId[2] = R.drawable.plant_icon_leave_left;
             imageId[3] = R.drawable.plant_icon;
 
         return imageId;
@@ -86,9 +86,9 @@ public class WeatherHelper {
     public static int[] getAnimatorId() {
         int[] animatorId = new int[3];
 
-            animatorId[0] = R.animator.weather_cloudy_1;
+            animatorId[0] = 0;
             animatorId[1] = R.animator.weather_cloudy_2;
-            animatorId[2] = 0;
+            animatorId[2] = R.animator.weather_cloudy_1;
 
         return animatorId;
     }

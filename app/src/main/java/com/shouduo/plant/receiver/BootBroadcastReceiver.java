@@ -1,9 +1,8 @@
-package com.shouduo.plant.BroadcastReceiver;
+package com.shouduo.plant.receiver;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import com.shouduo.plant.PlanT;
 import com.shouduo.plant.service.NotificationService;
@@ -21,7 +20,7 @@ public class BootBroadcastReceiver extends BroadcastReceiver {
             Intent notificationService = new Intent(context, NotificationService.class);
             context.startService(notificationService);
 
-            Log.d(TAG, "onReceive: ");
+//            Log.d(TAG, "onReceive: ");
         }
     }
 }

@@ -35,5 +35,6 @@ dependencies {
     compile 'com.github.rahatarmanahmed:circularprogressview:2.5.0'
     compile 'com.android.support:support-v4:25.1.1'
     compile 'com.android.support:support-vector-drawable:25.1.1'
+    compile 'com.github.woxingxiao:BubbleSeekBar:v1.8'
     testCompile 'junit:junit:4.12'
 }

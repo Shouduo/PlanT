@@ -13,6 +13,7 @@ import com.shouduo.plant.R;
 import com.shouduo.plant.model.Base;
 import com.shouduo.plant.service.NotificationService;
 import com.shouduo.plant.view.Dialog.ClearAllDialog;
+import com.shouduo.plant.view.Dialog.ConditionSetterDialog;
 import com.shouduo.plant.view.Dialog.DateSetterDialog;
 import com.shouduo.plant.view.Dialog.TimeSetterDialog;
 
@@ -27,7 +28,7 @@ import java.util.Date;
 
 public class SettingsFragment extends PreferenceFragment
         implements Preference.OnPreferenceChangeListener, TimeSetterDialog.OnTimeChangedListener,
-        DateSetterDialog.OnDateChangedListener {
+        DateSetterDialog.OnDateChangedListener, ConditionSetterDialog.OnLimitChangedListener{
 
     /**
      * <br> life cycle.
@@ -38,7 +39,7 @@ public class SettingsFragment extends PreferenceFragment
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preference);
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(PlanT.getInstance());
         initBasicPart(sharedPreferences);
         initNotificationPart(sharedPreferences);
     }
@@ -63,6 +64,31 @@ public class SettingsFragment extends PreferenceFragment
 
     private void initNotificationPart(SharedPreferences sharedPreferences) {
         Preference conditions = findPreference("conditions");
+        //conditions summary text format.
+        int humLimit = sharedPreferences.getInt("hum_limit", 0);
+        int brightLimit = sharedPreferences.getInt("bright_limit", 0);
+        int tempLimit = sharedPreferences.getInt("temp_limit", -50);
+        String humSummary = "Soil Humidity belows " + humLimit + " %";
+        String brightSummary = "Environment Brightness belows " + brightLimit + " lux";
+        String tempSummary = "Environment Temperature belows " + tempLimit + " °C";
+        StringBuilder summary = new StringBuilder();
+        if (humLimit > 0) {
+            summary.append(humSummary);
+        }
+        if (brightLimit > 0) {
+            if (summary.length() != 0) {
+                summary.append("\n");
+            }
+            summary.append(brightSummary);
+        }
+        if (tempLimit > -50) {
+            if (summary.length() != 0) {
+                summary.append("\n");
+            }
+            summary.append(tempSummary);
+        }
+        conditions.setSummary(summary.toString());
+
 
         Preference doNotDisturb = findPreference("do_not_disturb");
         //do not disturb summary text format.
@@ -98,7 +124,7 @@ public class SettingsFragment extends PreferenceFragment
 
     @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(PlanT.getInstance());
 
         switch (preference.getKey()) {
             case "first_day":
@@ -106,10 +132,12 @@ public class SettingsFragment extends PreferenceFragment
                 dateSetterDialog.setOnDateChangedListener(this);
                 dateSetterDialog.show(getFragmentManager(), null);
                 break;
+
             case "clear_all":
                 ClearAllDialog clearAllDialog = new ClearAllDialog();
                 clearAllDialog.show(getFragmentManager(), null);
                 break;
+
             case "send_notification":
                 initNotificationPart(sharedPreferences);
                 Intent intent = new Intent(getActivity(), NotificationService.class);
@@ -119,13 +147,19 @@ public class SettingsFragment extends PreferenceFragment
                     getActivity().stopService(intent);
                 }
                 break;
+
             case "conditions":
+                ConditionSetterDialog conditionSetterDialog = new ConditionSetterDialog();
+                conditionSetterDialog.setOnLimitChangedListener(this);
+                conditionSetterDialog.show(getFragmentManager(), null);
                 break;
+
             case "do_not_disturb":
                 TimeSetterDialog timeSetterDialog = new TimeSetterDialog();
                 timeSetterDialog.setOnTimeChangedListener(this);
                 timeSetterDialog.show(getFragmentManager(), null);
                 break;
+
             default:
                 break;
         }
@@ -149,21 +183,19 @@ public class SettingsFragment extends PreferenceFragment
 
     @Override
     public void timeChanged() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(PlanT.getInstance());
         this.initNotificationPart(sharedPreferences);
-
-
-//        if (sharedPreferences.getBoolean(getString(R.string.key_forecast_today), false)) {
-//            ServiceHelper.startForecastService(getActivity(), true);
-//        }
-//        if (sharedPreferences.getBoolean(getString(R.string.key_forecast_tomorrow), false)) {
-//            ServiceHelper.startForecastService(getActivity(), false);
-//        }
     }
 
     @Override
     public void dateChanged() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(PlanT.getInstance());
         this.initBasicPart(sharedPreferences);
+    }
+
+    @Override
+    public void limitChanged() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(PlanT.getInstance());
+        this.initNotificationPart(sharedPreferences);
     }
 }

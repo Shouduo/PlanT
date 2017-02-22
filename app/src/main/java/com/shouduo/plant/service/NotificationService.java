@@ -10,7 +10,6 @@ import android.os.Build;
 import android.os.IBinder;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.shouduo.plant.PlanT;
 import com.shouduo.plant.R;
@@ -43,6 +42,7 @@ public class NotificationService extends Service implements SafeHandler.HandlerC
     private static long muteUntilTime = System.currentTimeMillis();
 
     private final static int NOTIFICATION_SERVICE_ID = 1001;
+    private final static int NOTIFICATION_ID = 2001;
     private static final String TAG = "NotificationService";
 
     @Override
@@ -96,7 +96,7 @@ public class NotificationService extends Service implements SafeHandler.HandlerC
             public void run() {
                 if (!isDoNotDisturb() && !isMute()) {
 
-                    Log.d(TAG, "run: ");
+//                    Log.d(TAG, "run: ");
 
                     Data data = new Data(handler);
                     data.refreshData();
@@ -120,19 +120,11 @@ public class NotificationService extends Service implements SafeHandler.HandlerC
         Intent muteIntent = new Intent(this, MuteService.class);
         PendingIntent mutePendingIntent = PendingIntent.getService(this, 0, muteIntent, 0);
 
-        if (id == 1) {
-            builder.setSmallIcon(R.drawable.ic_humidity);
-        } else if (id == 2) {
-            builder.setSmallIcon(R.drawable.ic_brightness);
-        } else if (id == 3) {
-            builder.setSmallIcon(R.drawable.ic_temperature);
-        } else {
-            builder.setSmallIcon(R.mipmap.ic_launcher);
-        }
 
+        builder.setSmallIcon(R.drawable.ic_notification);
+        builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher));
         builder.setContentIntent(contentIntent);
         builder.addAction(R.drawable.ic_notification_paused_white_24dp, "Mute for 8 hours", mutePendingIntent);
-        builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher));
         builder.setTicker(tickerText);
         builder.setContentText(contentText);
         builder.setContentTitle(contentTitle);
@@ -140,6 +132,7 @@ public class NotificationService extends Service implements SafeHandler.HandlerC
         builder.setWhen(System.currentTimeMillis());
         builder.setDefaults(Notification.DEFAULT_ALL);
         builder.setPriority(Notification.PRIORITY_MAX);
+        builder.setStyle(new Notification.BigTextStyle().bigText(contentText));
 
         Notification notification = builder.build();
         notificationManager.notify(id, notification);
@@ -174,7 +167,7 @@ public class NotificationService extends Service implements SafeHandler.HandlerC
 
         if (System.currentTimeMillis() > fromCalendar.getTimeInMillis() &&
                 System.currentTimeMillis() < toCalendar.getTimeInMillis()) {
-            Log.d(TAG, "isDoNotDisturb: true");
+//            Log.d(TAG, "isDoNotDisturb: true");
             return true;
         } else {
             return false;
@@ -188,36 +181,41 @@ public class NotificationService extends Service implements SafeHandler.HandlerC
     @Override
     public void handleMessage(Message message) {
 
-        Log.d(TAG, "handleMessage: ");
+//        Log.d(TAG, "handleMessage: ");
 
         switch (message.what) {
             case Data.SERVER_DOWN:
                 break;
-            case Data.SERVER_GOOD:
 
+            case Data.SERVER_GOOD:
                 Hourly hourly = DataSupport.findLast(Hourly.class);
                 int humLimit = PlanT.getInstance().getHumLimit();
                 int brightLimit = PlanT.getInstance().getBrightLimit();
                 int tempLimit = PlanT.getInstance().getTempLimit();
 
-                if (hourly.hum < 15) {
-                    sendNotification(1, "Humidity is low",
-                            "The Soil Humidity is lower than " + humLimit,
-                            "Water your plant!");
+                StringBuilder contentText = new StringBuilder();
+
+                if (hourly.hum < humLimit) {
+                    contentText.append("The soil humidity is " + hourly.hum + " %");
                 }
 
                 if (hourly.bright < brightLimit) {
-                    sendNotification(2, "Brightness is low",
-                            "The Environment Brightness is lower than " + brightLimit,
-                            "Move your plant under the sunshine.");
+                    if (contentText.length() != 0) {
+                        contentText.append("\n");
+                    }
+                    contentText.append("The environment brightness is " + hourly.bright + " lux");
                 }
 
                 if (hourly.temp < tempLimit) {
-                    sendNotification(3, "Temperature is low",
-                            "The Environment Temperature is lower than " + tempLimit,
-                            "Move your plant inside the house");
+                    if (contentText.length() != 0) {
+                        contentText.append("\n");
+                    }
+                    contentText.append("The environment temperature is " + hourly.temp + " °C");
                 }
 
+                if (contentText.length() != 0) {
+                    sendNotification(NOTIFICATION_ID, "PlanT Alerts", "PlanT Alerts", contentText.toString());
+                }
                 break;
         }
 
@@ -260,7 +258,7 @@ public class NotificationService extends Service implements SafeHandler.HandlerC
 
             NotificationManager notificationManager = (NotificationManager)
                     mainActivity.getSystemService(NOTIFICATION_SERVICE);
-            notificationManager.cancelAll();
+            notificationManager.cancel(NOTIFICATION_ID);
             return super.onStartCommand(intent, flags, startId);
         }
 

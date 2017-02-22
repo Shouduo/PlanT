@@ -1,10 +1,12 @@
 package com.shouduo.plant;
 
 import android.app.Application;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
+import com.shouduo.plant.service.NotificationService;
 import com.shouduo.plant.view.activity.BaseActivity;
 
 import org.litepal.LitePal;
@@ -22,21 +24,31 @@ import java.util.List;
 public class PlanT extends Application {
     // data
     private List<BaseActivity> activityList;
-    private boolean autoSync;
-    private boolean sendNotification;
-    private int humLimit;
-    private int brightLimit;
-    private int tempLimit;
-    private int fromTimeHour;
-    private int fromTimeMinute;
-    private int toTimeHour;
-    private int toTimeMinute;
+    private SharedPreferences sharedPreferences;
+//    private boolean autoSync;
+//    private boolean sendNotification;
+//    private int humLimit;
+//    private int brightLimit;
+//    private int tempLimit;
+//    private int fromTimeHour;
+//    private int fromTimeMinute;
+//    private int toTimeHour;
+//    private int toTimeMinute;
+//
+//    private boolean colorNavigationBar;
+//    private boolean fahrenheit;
 
-    private boolean colorNavigationBar;
-    private boolean fahrenheit;
-
+    public static final boolean DEFAULT_AUTO_SYNC = false;
+    public static final boolean DEFAULT_SEND_NOTIFICATION = false;
+    public static final int DEFAULT_HUM_LIMIT = 0;
+    public static final int DEFAULT_BRIGHT_LIMIT = 0;
+    public static final int DEFAULT_TEMP_LIMIT = -50;
     public static final int DEFAULT_FROM_TIME_HOUR = 23;
+    public static final int DEFAULT_FROM_TIME_MINUTE = 0;
     public static final int DEFAULT_TO_TIME_HOUR = 8;
+    public static final int DEFAULT_TO_TIME_MINUTE = 0;
+
+    private static final String TAG = "PlanT";
 
     /** <br> life cycle. */
 
@@ -48,6 +60,10 @@ public class PlanT extends Application {
                 && processName.equals(this.getPackageName())) {
             initialize();
         }
+        if (isSendNotification()) {
+            Intent notificationService = new Intent(this, NotificationService.class);
+            startService(notificationService);
+        }
     }
 
     private void initialize() {
@@ -55,21 +71,10 @@ public class PlanT extends Application {
         activityList = new ArrayList<>();
         LitePal.initialize(this);
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(PlanT.getInstance());
 //        colorNavigationBar = sharedPreferences.getBoolean(getString(R.string.key_navigationBar_color), false);
 //        LanguageUtils.setLanguage(this, sharedPreferences.getString(getString(R.string.key_language), "follow_system"));
 //        fahrenheit = sharedPreferences.getBoolean(getString(R.string.key_fahrenheit), false);
-        autoSync = sharedPreferences.getBoolean("auto_sync", false);
-        sendNotification = sharedPreferences.getBoolean("send_notification", false);
-
-        humLimit = sharedPreferences.getInt("hum_limit", 0);
-        brightLimit = sharedPreferences.getInt("bright_limit", 0);
-        tempLimit = sharedPreferences.getInt("temp_limit", -50);
-
-        fromTimeHour = sharedPreferences.getInt("from_time_hour", DEFAULT_FROM_TIME_HOUR);
-        fromTimeMinute = sharedPreferences.getInt("from_time_minute", 0);
-        toTimeHour = sharedPreferences.getInt("to_time_hour", DEFAULT_TO_TIME_HOUR);
-        toTimeMinute = sharedPreferences.getInt("to_time_minute", 0);
     }
 
     /** <br> data. */
@@ -101,39 +106,39 @@ public class PlanT extends Application {
 //    }
 
     public boolean isAutoSync() {
-        return autoSync;
+        return sharedPreferences.getBoolean("auto_sync", DEFAULT_AUTO_SYNC);
     }
 
     public boolean isSendNotification() {
-        return sendNotification;
+        return sharedPreferences.getBoolean("send_notification", DEFAULT_SEND_NOTIFICATION);
     }
 
     public int getHumLimit() {
-        return humLimit;
+        return sharedPreferences.getInt("hum_limit", DEFAULT_HUM_LIMIT);
     }
 
     public int getBrightLimit() {
-        return brightLimit;
+        return sharedPreferences.getInt("bright_limit", DEFAULT_BRIGHT_LIMIT);
     }
 
     public int getTempLimit() {
-        return tempLimit;
+        return sharedPreferences.getInt("temp_limit", DEFAULT_TEMP_LIMIT);
     }
 
     public int getFromTimeHour() {
-        return fromTimeHour;
+        return sharedPreferences.getInt("from_time_hour", DEFAULT_FROM_TIME_HOUR);
     }
 
     public int getFromTimeMinute() {
-        return fromTimeMinute;
+        return sharedPreferences.getInt("from_time_minute", DEFAULT_FROM_TIME_MINUTE);
     }
 
     public int getToTimeHour() {
-        return toTimeHour;
+        return sharedPreferences.getInt("to_time_hour", DEFAULT_TO_TIME_HOUR);
     }
 
     public int getToTimeMinute() {
-        return toTimeMinute;
+        return sharedPreferences.getInt("to_time_minute", DEFAULT_TO_TIME_MINUTE);
     }
 
     public static String getProcessName() {

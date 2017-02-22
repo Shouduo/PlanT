@@ -36,7 +36,7 @@
         <Preference
             android:title="Conditions..."
             android:key="conditions"
-            android:summary="Humidity below 10% or Temperature below 5°" />
+            android:summary="Humidity below 10% Temperature below 5°" />
 
         <Preference
             android:title="Do not disturb when..."

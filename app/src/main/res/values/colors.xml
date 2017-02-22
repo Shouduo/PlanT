@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="colorPrimary">#212121</color>
-    <color name="colorPrimaryDark">#1a1a1a</color>
-    <color name="colorAccent">#212121</color>
+    <color name="colorPrimary">#607D8B</color>
+    <color name="colorPrimaryDark">#263238</color>
+    <color name="colorAccent">#607D8B</color>
+
+    <color name="circularSky_1">#cfebf0</color>
+    <color name="circularSky_2">#b6e3e7</color>
+    <color name="circularSky_3">#96d6db</color>
+    <color name="circularSky_4">#7ac7d3</color>
+    <color name="circularSky_5">#75becb</color>
 
     <color name="lightPrimary_1">#cfebf0</color>
     <color name="lightPrimary_2">#b6e3e7</color>

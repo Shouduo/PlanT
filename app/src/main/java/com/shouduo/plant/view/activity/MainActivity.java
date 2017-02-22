@@ -387,6 +387,9 @@ public class MainActivity extends BaseActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != RESULT_OK) {
+            return;
+        }
         switch (requestCode) {
             case SETTINGS_ACTIVITY:
                 reset();
@@ -419,7 +422,6 @@ public class MainActivity extends BaseActivity
     }
 
     // on refresh listener.
-
     @Override
     public void onRefresh() {
 /*        locationHelper.cancel();
@@ -437,34 +439,28 @@ public class MainActivity extends BaseActivity
     }
 
     // on scroll changed listener.
-
     @Override
     public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
         skyView.setTranslationY((float) (-Math.min(1, 1.0 * scrollY / scrollTrigger)
                 * skyView.getMeasuredHeight()));
         toolbar.setTranslationY((float) (-Math.min(1, 1.0 * scrollY / scrollTrigger)
                 * toolbar.getMeasuredHeight()));
-        toolbar.setAlpha((float) (1.0 - scrollY / 400.0));
+        toolbar.setAlpha((float) (1.0 - scrollY / (scrollTrigger - DisplayUtils.dpToPx(this, 75))));
         for (int i = 0; i < 3; i++) {
-            titleTexts[i].setAlpha((float) (1.0 - scrollY / 660.0));
+            titleTexts[i].setAlpha((float) (1.0 - scrollY / (scrollTrigger - DisplayUtils.dpToPx(this, 25))));
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            if (scrollY > 815) {
+            if (scrollY > skyView.getMeasuredHeight() * 0.71) {
                 getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.lightPrimary_5));
             } else {
                 getWindow().setStatusBarColor(Color.TRANSPARENT);
             }
         }
-//
-//        overviewTitle.setText(scrollTrigger + "\n"
-//                + scrollY);
     }
 
-    // handler container.
-
+    // handle data refreshing result.
     @Override
     public void handleMessage(Message message) {
-
         switch (message.what) {
             case Data.SERVER_DOWN:
                 Toast.makeText(this, "Sync failed, Try again later", Toast.LENGTH_SHORT).show();

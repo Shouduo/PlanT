@@ -218,11 +218,11 @@ public class CircularSkyView extends View {
     private void setColor() {
         if (dayTime) {
             colors = new int[] {
-                    ContextCompat.getColor(getContext(), R.color.lightPrimary_1),
-                    ContextCompat.getColor(getContext(), R.color.lightPrimary_2),
-                    ContextCompat.getColor(getContext(), R.color.lightPrimary_3),
-                    ContextCompat.getColor(getContext(), R.color.lightPrimary_4),
-                    ContextCompat.getColor(getContext(), R.color.lightPrimary_5)};
+                    ContextCompat.getColor(getContext(), R.color.circularSky_1),
+                    ContextCompat.getColor(getContext(), R.color.circularSky_2),
+                    ContextCompat.getColor(getContext(), R.color.circularSky_3),
+                    ContextCompat.getColor(getContext(), R.color.circularSky_4),
+                    ContextCompat.getColor(getContext(), R.color.circularSky_5)};
         } else {
             colors = new int[] {
                     ContextCompat.getColor(getContext(), R.color.darkPrimary_1),
