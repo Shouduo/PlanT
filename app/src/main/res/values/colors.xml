@@ -4,6 +4,7 @@
     <color name="colorPrimary">#607D8B</color>
     <color name="colorPrimaryDark">#263238</color>
     <color name="colorAccent">#607D8B</color>
+    <color name="colorSeperate">#cfd8dc</color>
 
     <color name="circularSky_1">#cfebf0</color>
     <color name="circularSky_2">#b6e3e7</color>

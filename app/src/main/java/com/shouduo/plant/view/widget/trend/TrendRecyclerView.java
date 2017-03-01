@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
+import com.shouduo.plant.PlanT;
 import com.shouduo.plant.R;
 import com.shouduo.plant.model.Data;
 import com.shouduo.plant.utils.DisplayUtils;
@@ -26,6 +27,7 @@ public class TrendRecyclerView extends RecyclerView {
     // data
     private int highest, lowest;
     private int[] tempYs;
+    private int limitLineY;
     private boolean canScroll = false;
 
     private float MARGIN_BOTTOM;
@@ -33,12 +35,7 @@ public class TrendRecyclerView extends RecyclerView {
     private float TEXT_SIZE = 10;
     private float MARGIN_TEXT = 2;
 
-    private static final String TAG = "TrendRecyclerView";
-
-    /**
-     * <br> life cycle.
-     */
-
+    /** <br> life cycle. */
     public TrendRecyclerView(Context context) {
         super(context);
         this.initialize();
@@ -68,10 +65,7 @@ public class TrendRecyclerView extends RecyclerView {
         this.MARGIN_TEXT = DisplayUtils.dpToPx(getContext(), (int) MARGIN_TEXT);
     }
 
-    /**
-     * <br> touch.
-     */
-
+    /** <br> touch. */
     @Override
     public boolean onInterceptTouchEvent(MotionEvent e) {
         if (canScroll) {
@@ -93,10 +87,7 @@ public class TrendRecyclerView extends RecyclerView {
         return super.onInterceptTouchEvent(e);
     }
 
-    /**
-     * <br> UI.
-     */
-
+    /** <br> UI. */
     @Override
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -115,44 +106,13 @@ public class TrendRecyclerView extends RecyclerView {
                 0, tempYs[1],
                 getMeasuredWidth(), tempYs[1],
                 paint);
-
-
-//        paint.setStyle(Paint.Style.FILL);
-//        paint.setTextSize(TEXT_SIZE);
-//        paint.setTextAlign(Paint.Align.LEFT);       //标度于图标左侧
-//        paint.setColor(ContextCompat.getColor(getContext(), R.color.colorTextGrey2nd));
-//        canvas.drawText(        //绘制标度数据
-//                (highest - (highest - lowest) / 4) + "%",
-//                2 * MARGIN_TEXT,
-//                tempYs[0] - paint.getFontMetrics().bottom - MARGIN_TEXT,
-//                paint);
-//        canvas.drawText(
-//                (lowest + (highest -lowest) / 4) + "%",
-//                2 * MARGIN_TEXT,
-//                tempYs[1] - paint.getFontMetrics().top + MARGIN_TEXT,
-//                paint);
-
-//        paint.setTextAlign(Paint.Align.RIGHT);
-//        canvas.drawText(
-//                "???",
-//                getMeasuredWidth() - 2 * MARGIN_TEXT,
-//                tempYs[0] - paint.getFontMetrics().bottom - MARGIN_TEXT,
-//                paint);
-//        canvas.drawText(
-//                "???",
-//                getMeasuredWidth() - 2 * MARGIN_TEXT,
-//                tempYs[1] - paint.getFontMetrics().top + MARGIN_TEXT,
-//                paint);
     }
 
     public void setSwitchLayout(SwipeSwitchLayout v) {
         this.switchLayout = v;
     }
 
-    /**
-     * <br> data.
-     */
-
+    /** <br> data. */
     public void setData(Data data, int dataType, int viewType) {
         if (data == null) {
             return;
@@ -172,30 +132,6 @@ public class TrendRecyclerView extends RecyclerView {
     }
 
     private void calcTempYs(Data data, int dataType, int viewType) {
-//        highest = lowest = 0;
-//        switch (dataType) {
-//            case TrendItemView.DATA_TYPE_DAILY:
-//                for (int i = 0; i < data.dailyList.size(); i++) {
-//                    if (data.dailyList.get(i).tempDiff > highest) {
-//                        highest = data.dailyList.get(i).tempDiff;
-//                    }
-//                    if (data.dailyList.get(i).tempDiff < lowest) {
-//                        lowest = data.dailyList.get(i).tempDiff;
-//                    }
-//                }
-//                break;
-//
-//            case TrendItemView.DATA_TYPE_HOURLY:
-//                for (int i = 0; i < data.hourlyList.size(); i++) {
-//                    if (data.hourlyList.get(i).temp > highest) {
-//                        highest = data.hourlyList.get(i).temp;
-//                    }
-//                    if (data.hourlyList.get(i).temp < lowest) {
-//                        lowest = data.hourlyList.get(i).temp;
-//                    }
-//                }
-//                break;
-//        }
 
         tempYs = new int[]{
                 (int) (TrendItemView.calcHeaderHeight(getContext()) + TrendItemView.calcDrawSpecHeight(getContext()) - MARGIN_BOTTOM
@@ -203,6 +139,55 @@ public class TrendRecyclerView extends RecyclerView {
                 (int) (TrendItemView.calcHeaderHeight(getContext()) + TrendItemView.calcDrawSpecHeight(getContext()) - MARGIN_BOTTOM
                         - TrendItemView.calcDrawSpecUsableHeight(getContext()) * 1 / 4)
         };
+    }
+
+    private void calcLimitLineY(Data data, int dataType, int viewType) {
+        if (dataType == TrendItemView.DATA_TYPE_DAILY) {
+            return;
+        }
+
+        highest = lowest = 0;
+        int limit = 0;
+        switch (viewType) {
+            case TrendItemView.VIEW_TYPE_HUM:
+                for (int i = 0; i < data.hourlyList.size(); i++) {
+                    if (data.hourlyList.get(i).hum > highest) {
+                        highest = data.hourlyList.get(i).hum;
+                    }
+                    if (data.hourlyList.get(i).hum < lowest) {
+                        lowest = data.hourlyList.get(i).hum;
+                    }
+                }
+                limit = PlanT.getInstance().getHumLimit();
+                break;
+            case TrendItemView.VIEW_TYPE_BRIGHT:
+                for (int i = 0; i < data.hourlyList.size(); i++) {
+                    if (data.hourlyList.get(i).bright > highest) {
+                        highest = data.hourlyList.get(i).bright;
+                    }
+                    if (data.hourlyList.get(i).bright < lowest) {
+                        lowest = data.hourlyList.get(i).bright;
+                    }
+                }
+                limit = PlanT.getInstance().getBrightLimit();
+                break;
+            case TrendItemView.VIEW_TYPE_TEMP:
+                for (int i = 0; i < data.hourlyList.size(); i++) {
+                    if (data.hourlyList.get(i).temp > highest) {
+                        highest = data.hourlyList.get(i).temp;
+                    }
+                    if (data.hourlyList.get(i).temp < lowest) {
+                        lowest = data.hourlyList.get(i).temp;
+                    }
+                }
+                limit = PlanT.getInstance().getTempLimit();
+                break;
+            default:
+                break;
+        }
+
+        limitLineY = (int) (TrendItemView.calcHeaderHeight(getContext()) + TrendItemView.calcDrawSpecHeight(getContext()) - MARGIN_BOTTOM
+                - TrendItemView.calcDrawSpecUsableHeight(getContext()) * (limit - lowest) / (highest - lowest));
     }
 }
 

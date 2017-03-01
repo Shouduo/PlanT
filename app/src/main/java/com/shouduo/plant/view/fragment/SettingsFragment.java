@@ -30,10 +30,7 @@ public class SettingsFragment extends PreferenceFragment
         implements Preference.OnPreferenceChangeListener, TimeSetterDialog.OnTimeChangedListener,
         DateSetterDialog.OnDateChangedListener, ConditionSetterDialog.OnLimitChangedListener{
 
-    /**
-     * <br> life cycle.
-     */
-
+    /** <br> life cycle. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,10 +41,7 @@ public class SettingsFragment extends PreferenceFragment
         initNotificationPart(sharedPreferences);
     }
 
-    /**
-     * <br> UI.
-     */
-
+    /** <br> UI. */
     private void initBasicPart(SharedPreferences sharedPreferences) {
         Preference autoSync = findPreference("auto_sync");
         autoSync.setOnPreferenceChangeListener(this);
@@ -63,6 +57,7 @@ public class SettingsFragment extends PreferenceFragment
     }
 
     private void initNotificationPart(SharedPreferences sharedPreferences) {
+
         Preference conditions = findPreference("conditions");
         //conditions summary text format.
         int humLimit = sharedPreferences.getInt("hum_limit", 0);
@@ -100,11 +95,11 @@ public class SettingsFragment extends PreferenceFragment
         int toTimeMinute = sharedPreferences.getInt("to_time_minute", 0);
 
         fromTimeText = (fromTimeHour > 12 ? (fromTimeHour - 12) : fromTimeHour) + ":"
-                + (fromTimeMinute > 10 ? fromTimeMinute : ("0" + fromTimeMinute))
+                + (fromTimeMinute > 9 ? fromTimeMinute : ("0" + fromTimeMinute))
                 + (fromTimeHour > 12 ? " PM" : " AM");
 
         toTimeText = (toTimeHour > 12 ? (toTimeHour - 12) : toTimeHour) + ":"
-                + (toTimeMinute > 10 ? toTimeMinute : ("0" + toTimeMinute))
+                + (toTimeMinute > 9 ? toTimeMinute : ("0" + toTimeMinute))
                 + (toTimeHour > 12 ? " PM" : " AM");
 
         doNotDisturb.setSummary(fromTimeText + " - " + toTimeText);
@@ -118,10 +113,7 @@ public class SettingsFragment extends PreferenceFragment
         }
     }
 
-    /**
-     * interface.
-     */
-
+    /** <br> interface. */
     @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(PlanT.getInstance());
@@ -163,21 +155,11 @@ public class SettingsFragment extends PreferenceFragment
             default:
                 break;
         }
-
         return super.onPreferenceTreeClick(preferenceScreen, preference);
     }
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object o) {
-//        if (preference.getKey().equals(getString(R.string.key_language))) {
-//            preference.setSummary(ValueUtils.getLanguage(getActivity(), (String) o));
-//            SnackbarUtils.showSnackbar(getString(R.string.feedback_restart));
-//        } else if (preference.getKey().equals(getString(R.string.key_notification_text_color))) {
-//            // notification text color.
-//            ServiceHelper.startPollingService(getActivity());
-//            SnackbarUtils.showSnackbar(getString(R.string.feedback_refresh_notification_now));
-//            preference.setSummary(ValueUtils.getNotificationTextColor(getActivity(), (String) o));
-//        }
         return true;
     }
 

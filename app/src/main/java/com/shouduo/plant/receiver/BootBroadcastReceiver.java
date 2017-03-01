@@ -13,14 +13,11 @@ import com.shouduo.plant.service.NotificationService;
 
 public class BootBroadcastReceiver extends BroadcastReceiver {
 
-    private static final String TAG = "BootBroadcastReceiver";
     @Override
     public void onReceive(Context context, Intent intent) {
         if (PlanT.getInstance().isSendNotification()) {
             Intent notificationService = new Intent(context, NotificationService.class);
             context.startService(notificationService);
-
-//            Log.d(TAG, "onReceive: ");
         }
     }
 }

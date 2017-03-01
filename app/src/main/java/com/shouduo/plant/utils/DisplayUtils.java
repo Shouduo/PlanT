@@ -3,7 +3,6 @@ package com.shouduo.plant.utils;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -22,15 +21,9 @@ import com.shouduo.plant.view.activity.MainActivity;
 
 public class DisplayUtils {
 
-
     public static float dpToPx(Context context, int dp) {
         int dpi = context.getResources().getDisplayMetrics().densityDpi;
         return (float) (dp * (dpi / 160.0));
-    }
-
-    public static int getStatusBarHeight(Resources r) {
-        int resourceId = r.getIdentifier("status_bar_height", "dimen","android");
-        return r.getDimensionPixelSize(resourceId);
     }
 
     public static void setStatusBarTranslate(Window window) {

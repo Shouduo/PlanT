@@ -23,7 +23,6 @@ public class VerticalSwipeRefreshView extends SwipeRefreshLayout {
     private boolean moveActionStarted = false;
 
     /** <br> life cycle. */
-
     public VerticalSwipeRefreshView(Context context) {
         super(context);
         this.initialize();
@@ -39,7 +38,6 @@ public class VerticalSwipeRefreshView extends SwipeRefreshLayout {
     }
 
     /** <br> touch. */
-
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         boolean result = super.onInterceptTouchEvent(ev);
@@ -94,7 +92,6 @@ public class VerticalSwipeRefreshView extends SwipeRefreshLayout {
     }
 
     /** <br> UI. */
-
     public void setIndicator(InkPageIndicator indicator) {
         this.indicator = indicator;
     }

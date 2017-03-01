@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
 import okhttp3.Call;
 import okhttp3.Response;
@@ -27,14 +26,8 @@ import okhttp3.Response;
 public class Data {
     // data
     public Base base;
-    //    public RealTime realTime;
-//    public int days;
-//    public String refreshTime;
     public List<Daily> dailyList;
     public List<Hourly> hourlyList;
-
-//    private List<Daily> tempDailyList;
-//    private List<Hourly> tempHourlyList;
 
     private SafeHandler handler;
 
@@ -43,16 +36,6 @@ public class Data {
 
     public final static int SERVER_DOWN = -1;
     public final static int SERVER_GOOD = 1;
-//    private Context mainThread;
-
-//    public static boolean isAutoRefresh = false;
-//    public final static String hourlyDataUrl = "http://192.168.1.3/hourly.json";
-//    public final static String dailyDataUrl = "http://192.168.1.3/daily.json";
-
-
-    /**
-     * <br> life cycle.
-     */
 
     public Data(SafeHandler handler) {
         this.base = new Base();
@@ -61,31 +44,6 @@ public class Data {
         this.handler = handler;
         getDataFromDatabase();
 
-    }
-
-    public Data mockWeather() {
-        Random random = new Random();
-        for (int i = 0; i < 10; i++) {
-            int distance = random.nextInt(100) - 50;
-            Daily daily = new Daily();
-            daily.setWeek("sat");
-            daily.setConsume(50 + distance);
-            daily.setBright(50 - distance);
-            daily.setTempDiff(10 + distance / 10);
-            dailyList.add(daily);
-        }
-
-        for (int i = 0; i < 12; i++) {
-            int distance = random.nextInt(100) - 50;
-            Hourly hourly = new Hourly();
-            hourly.setTime("11:00");
-            hourly.setHum(50 + distance);
-            hourly.setConsume(50 - distance);
-            hourly.setBright(50 + distance);
-            hourly.setTemp(15 + distance / 10);
-            hourlyList.add(hourly);
-        }
-        return this;
     }
 
     //将 hourlyList 和 dailyList 的数据保存至本地数据库
@@ -130,6 +88,7 @@ public class Data {
         base.save();
     }
 
+    //计算天数
     public int calcNumberOfDays() {
         Base base = DataSupport.findFirst(Base.class);
 
@@ -153,10 +112,6 @@ public class Data {
         long ONE_DAY_MS = 24 * 60 * 60 * 1000;
         int days = (int) (((endCalendar.getTimeInMillis() - startCalendar.getTimeInMillis())) / ONE_DAY_MS);
         return days;
-    }
-
-    private void setNumberOfDays() {
-        Date currentDate = new Date(System.currentTimeMillis());
     }
 
     //从服务器更新数据
@@ -213,11 +168,4 @@ public class Data {
             return true;
         }
     }
-
-//    public String getStartDate() {
-//        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
-//        Date date = new Date(DataSupport.findFirst(Base.class).startTime);
-//        String startDate = formatter.format(date);
-//        return startDate;
-//    }
 }

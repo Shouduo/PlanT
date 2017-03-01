@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+
+    <TextView
+        android:text="Compile with"
+        android:layout_margin="@dimen/normal_margin"
+        android:textStyle="bold"
+        style="@style/content_text" />
+
+    <LinearLayout
+        android:id="@+id/container_about_thx_location"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:foreground="?attr/selectableItemBackground">
+
+        <TextView
+            android:text="BubbleSeekBar"
+            android:textStyle="bold"
+            android:layout_marginTop="@dimen/normal_margin"
+            android:layout_marginLeft="@dimen/normal_margin"
+            android:layout_marginRight="@dimen/normal_margin"
+            android:layout_marginBottom="2dp"
+            style="@style/content_text" />
+
+        <TextView
+            android:text="A beautiful Android custom seekbar, which has a bubble view with progress appearing upon when seeking. Highly customizable, mostly demands has been considered."
+            android:textSize="@dimen/content_text_size"
+            android:layout_marginLeft="@dimen/normal_margin"
+            android:layout_marginRight="@dimen/normal_margin"
+            android:layout_marginBottom="@dimen/normal_margin"
+            style="@style/subtitle_text"
+            tools:ignore="HardcodedText" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/container_about_thx_glide"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:foreground="?attr/selectableItemBackground">
+
+        <TextView
+            android:text="Glide"
+            android:textStyle="bold"
+            android:layout_marginTop="@dimen/normal_margin"
+            android:layout_marginLeft="@dimen/normal_margin"
+            android:layout_marginRight="@dimen/normal_margin"
+            android:layout_marginBottom="2dp"
+            style="@style/content_text" />
+
+        <TextView
+            android:text="Glide is a fast and efficient open source media management and image loading framework for Android that wraps media decoding, memory and disk caching, and resource pooling into a simple and easy to use interface."
+            android:textSize="@dimen/content_text_size"
+            android:layout_marginLeft="@dimen/normal_margin"
+            android:layout_marginRight="@dimen/normal_margin"
+            android:layout_marginBottom="@dimen/normal_margin"
+            style="@style/subtitle_text" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/container_about_thx_gson"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:foreground="?attr/selectableItemBackground">
+
+        <TextView
+            android:text="Gson"
+            android:textStyle="bold"
+            android:layout_marginTop="@dimen/normal_margin"
+            android:layout_marginLeft="@dimen/normal_margin"
+            android:layout_marginRight="@dimen/normal_margin"
+            android:layout_marginBottom="2dp"
+            style="@style/content_text" />
+
+        <TextView
+            android:text="Gson is a Java library that can be used to convert Java Objects into their JSON representation. It can also be used to convert a JSON string to an equivalent Java object. Gson can work with arbitrary Java objects including pre-existing objects that you do not have source-code of."
+            android:textSize="@dimen/content_text_size"
+            android:layout_marginLeft="@dimen/normal_margin"
+            android:layout_marginRight="@dimen/normal_margin"
+            android:layout_marginBottom="@dimen/normal_margin"
+            style="@style/subtitle_text" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/container_about_thx_greenDAO"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:foreground="?attr/selectableItemBackground">
+
+        <TextView
+            android:text="LitePal"
+            android:textStyle="bold"
+            android:layout_marginTop="@dimen/normal_margin"
+            android:layout_marginLeft="@dimen/normal_margin"
+            android:layout_marginRight="@dimen/normal_margin"
+            android:layout_marginBottom="2dp"
+            style="@style/content_text" />
+
+        <TextView
+            android:text="LitePal is an open source Android library that allows developers to use SQLite database extremely easy. The setup of LitePal is quite simple as well, you can integrate it into your project in less than 5 minutes."
+            android:textSize="@dimen/content_text_size"
+            android:layout_marginLeft="@dimen/normal_margin"
+            android:layout_marginRight="@dimen/normal_margin"
+            android:layout_marginBottom="@dimen/normal_margin"
+            style="@style/subtitle_text" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/container_about_thx_OkHttp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:foreground="?attr/selectableItemBackground">
+
+        <TextView
+            android:text="OkHttp"
+            android:textStyle="bold"
+            android:layout_marginTop="@dimen/normal_margin"
+            android:layout_marginLeft="@dimen/normal_margin"
+            android:layout_marginRight="@dimen/normal_margin"
+            android:layout_marginBottom="2dp"
+            style="@style/content_text" />
+
+        <TextView
+            android:text="HTTP is the way modern applications network. It’s how we exchange data  &amp; media. Doing HTTP efficiently makes your stuff load faster and saves bandwidth."
+            android:textSize="@dimen/content_text_size"
+            android:layout_marginLeft="@dimen/normal_margin"
+            android:layout_marginRight="@dimen/normal_margin"
+            android:layout_marginBottom="@dimen/normal_margin"
+            style="@style/subtitle_text" />
+
+    </LinearLayout>
+</LinearLayout>

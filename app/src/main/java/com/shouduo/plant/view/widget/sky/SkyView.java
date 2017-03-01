@@ -20,7 +20,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.shouduo.plant.R;
 import com.shouduo.plant.utils.TimeUtils;
-import com.shouduo.plant.view.fortest.WeatherHelper;
 import com.shouduo.plant.view.widget.sky.WeatherIconControlView.OnWeatherIconChangingListener;
 
 /**
@@ -136,7 +135,7 @@ public class SkyView extends FrameLayout implements OnWeatherIconChangingListene
 
     public void setWeather() {
 
-        int[] animatorIds = WeatherHelper.getAnimatorId();
+        int[] animatorIds = IconHelper.getAnimatorId();
         iconTouchAnimators = new AnimatorSet[animatorIds.length];
         for (int i = 0; i < iconTouchAnimators.length; i ++) {
             if (animatorIds[i] != 0) {
@@ -158,7 +157,7 @@ public class SkyView extends FrameLayout implements OnWeatherIconChangingListene
             }
         }
 
-        imageIds = WeatherHelper.getWeatherIcon();
+        imageIds = IconHelper.getPlantIcon();
 
         this.showCircles();
         controlView.showWeatherIcon();

@@ -23,7 +23,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     private boolean started = false;
 
     /** <br> life cycle. */
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +30,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         PlanT.getInstance().addActivity(this);
         DisplayUtils.setWindowTopColor(this);
         DisplayUtils.setStatusBarTranslate(getWindow());
-//        DisplayUtils.setNavigationBarColor(this, TimeUtils.getInstance(this).isDayTime());
 
         this.dialogList = new ArrayList<>();
     }

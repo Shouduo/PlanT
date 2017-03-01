@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/little_margin"
                 android:textColor="@color/colorTextDark2nd"
-                android:textStyle="bold"
+                android:textStyle="normal"
                 android:textSize="@dimen/title_text_size"
                 android:text="Soli Humidity :"
                 android:layout_toRightOf="@+id/dialog_condition_setter_humidity_icon"/>
@@ -78,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/little_margin"
                 android:textColor="@color/colorTextDark2nd"
-                android:textStyle="bold"
+                android:textStyle="normal"
                 android:textSize="@dimen/title_text_size"
                 android:text="Environment Brightness :"
                 android:layout_toRightOf="@+id/dialog_condition_setter_brightness_icon"/>
@@ -126,7 +126,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/little_margin"
                 android:textColor="@color/colorTextDark2nd"
-                android:textStyle="bold"
+                android:textStyle="normal"
                 android:textSize="@dimen/title_text_size"
                 android:text="Environment Temperature :"
                 android:layout_toRightOf="@+id/dialog_condition_setter_temperature_icon"/>

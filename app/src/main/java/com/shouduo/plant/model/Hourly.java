@@ -9,9 +9,6 @@ import org.litepal.crud.DataSupport;
 public class Hourly extends DataSupport{
     // data
     public String time;
-//    public boolean dayTime;
-//    public String weather;
-//    public String weatherKind;
     public int hum;
     public int consume;
     public int bright;
@@ -20,8 +17,6 @@ public class Hourly extends DataSupport{
     public Hourly() {
     }
 
-
-    /** <br> life cycle. */
     public String getTime() {
         return time;
     }
@@ -61,25 +56,5 @@ public class Hourly extends DataSupport{
     public void setTemp(int temp) {
         this.temp = temp;
     }
-
-    //    public Hourly buildHourly(Context c, NewHourlyResult result) {
-//        time = result.DateTime.split("T")[1].split(":")[0] + c.getString(R.string.of_clock);
-//        dayTime = result.IsDaylight;
-//        weather = result.IconPhrase;
-//        weatherKind = WeatherHelper.getNewWeatherKind(result.WeatherIcon);
-//        tempDiff = (int) result.Temperature.Value;
-//        consume = result.PrecipitationProbability;
-//        return this;
-//    }
-//
-//    Hourly buildHourly(HourlyEntity entity) {
-//        time = entity.time;
-//        dayTime = entity.dayTime;
-//        weather = entity.weather;
-//        weatherKind = entity.weatherKind;
-//        tempDiff = entity.tempDiff;
-//        consume = entity.consume;
-//        return this;
-//    }
 
 }

@@ -73,10 +73,7 @@ public class TrendItemView extends FrameLayout {
     private static final int DRAW_SPEC_USABLE_HEIGHT = 96;
     private static final int DRAW_SPEC_MARGIN_BOTTOM = 60;
 
-    /**
-     * <br> life cycle.
-     */
-
+    /** <br> life cycle. */
     public TrendItemView(Context context) {
         super(context);
         this.initialize();
@@ -195,6 +192,7 @@ public class TrendItemView extends FrameLayout {
                 (float) (getMeasuredWidth() / 2.0), getMeasuredHeight() - MARGIN_BOTTOM,
                 paint);
     }
+
     //绘制折线图
     private void drawLineChart(Canvas canvas, int[] dataYs, int[] chart, String unit, int lineColor) {
         switch (positionType) {
@@ -315,7 +313,6 @@ public class TrendItemView extends FrameLayout {
                 TREND_LINE_SIZE * 3, TREND_LINE_SIZE * 3,
                 paint);
 
-//        if (chart1[1] != 0) {
         paint.setColor(textColor);
         paint.setAlpha((int) (255 * 0.5));
         paint.setTextAlign(Paint.Align.CENTER);
@@ -325,7 +322,6 @@ public class TrendItemView extends FrameLayout {
                 (float) (getMeasuredWidth() / 2.0),
                 getMeasuredHeight() - MARGIN_BOTTOM - paint.getFontMetrics().top + MARGIN_TEXT,
                 paint);
-//        }
 
         paint.setAlpha(255);
     }
@@ -465,7 +461,6 @@ public class TrendItemView extends FrameLayout {
                     hourlyTempYs = setLineChartLeftData(highest, lowest, chart1);
                     break;
             }
-//            setLineChartLeftData(data, position, highest, lowest);
 
         } else if (position == data.hourlyList.size() - 1) {
             positionType = POSITION_TYPE_RIGHT;
@@ -498,7 +493,6 @@ public class TrendItemView extends FrameLayout {
                     hourlyTempYs = setLineChartRightData(highest, lowest, chart1);
                     break;
             }
-//            setLineChartRightData(data, position, highest, lowest);
 
         } else {
             positionType = POSITION_TYPE_CENTER;
@@ -531,9 +525,7 @@ public class TrendItemView extends FrameLayout {
                     hourlyTempYs = setLineChartCenterData(highest, lowest, chart1);
                     break;
             }
-//            setLineChartCenterData(data, position, highest, lowest);
         }
-//        serPrecipitationData(data, position);
     }
 
     private int[] setLineChartLeftData(int highest, int lowest, int[] chart) {

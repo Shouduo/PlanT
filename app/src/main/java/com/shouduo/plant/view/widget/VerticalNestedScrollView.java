@@ -11,6 +11,7 @@ import android.view.ViewConfiguration;
  */
 
 public class VerticalNestedScrollView extends NestedScrollView {
+
     // widget
     private InkPageIndicator indicator;
 
@@ -23,7 +24,6 @@ public class VerticalNestedScrollView extends NestedScrollView {
     private boolean moveActionStarted = false;
 
     /** <br> life cycle. */
-
     public VerticalNestedScrollView(Context context) {
         super(context);
         this.initialize();
@@ -44,7 +44,6 @@ public class VerticalNestedScrollView extends NestedScrollView {
     }
 
     /** <br> touch. */
-
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         boolean result = super.onInterceptTouchEvent(ev);
@@ -99,7 +98,6 @@ public class VerticalNestedScrollView extends NestedScrollView {
     }
 
     /** <br> UI. */
-
     public void setIndicator(InkPageIndicator indicator) {
         this.indicator = indicator;
     }

@@ -35,8 +35,6 @@ public class TimeSetterDialog extends BaseDialogFragment
     private Button done;
     private Button cancel;
 
-    private static final String TAG = "TimeSetterDialog";
-
     // data
     private int hour;
     private int minute;
@@ -46,10 +44,7 @@ public class TimeSetterDialog extends BaseDialogFragment
     private int toTimeMinute;
     private boolean isFrom = true;
 
-    /**
-     * <br> life cycle.
-     */
-
+    /** <br> life cycle. */
     @SuppressLint("InflateParams")
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -67,10 +62,7 @@ public class TimeSetterDialog extends BaseDialogFragment
         return container;
     }
 
-    /**
-     * <br> data.
-     */
-
+    /** <br> data. */
     public void setModel(boolean isFrom) {
         this.isFrom = isFrom;
     }
@@ -81,10 +73,7 @@ public class TimeSetterDialog extends BaseDialogFragment
         this.minute = calendar.get(Calendar.MINUTE);
     }
 
-    /**
-     * <br> UI.
-     */
-
+    /** <br> UI. */
     private void initWidget(View view) {
         this.container = (CoordinatorLayout) view.findViewById(R.id.dialog_time_setter_container);
 
@@ -92,11 +81,9 @@ public class TimeSetterDialog extends BaseDialogFragment
 
 
         fromTimePicker = (TimePicker) view.findViewById(R.id.dialog_time_setter_from_time_picker);
-//        fromTimePicker.setIs24HourView(true);
         fromTimePicker.setOnTimeChangedListener(this);
 
         toTimePicker = (TimePicker) view.findViewById(R.id.dialog_time_setter_to_time_picker);
-//        toTimePicker.setIs24HourView(true);
         toTimePicker.setOnTimeChangedListener(this);
         toTimePicker.setEnabled(false);
         toTimePicker.setVisibility(View.GONE);
@@ -109,10 +96,7 @@ public class TimeSetterDialog extends BaseDialogFragment
         cancel.setOnClickListener(this);
     }
 
-    /**
-     * <br> interface.
-     */
-
+    /** <br> interface. */
     public interface OnTimeChangedListener {
         void timeChanged();
     }
@@ -122,7 +106,6 @@ public class TimeSetterDialog extends BaseDialogFragment
     }
 
     // on time changed listener.
-
     @Override
     public void onTimeChanged(TimePicker timePicker, int hour, int minute) {
         this.hour = hour;
@@ -130,7 +113,6 @@ public class TimeSetterDialog extends BaseDialogFragment
     }
 
     // on click.
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

@@ -70,7 +70,6 @@ public class CircularSkyView extends View {
     }
 
     /** <br> UI. */
-
     public void showCircle(boolean dayTime) {
         if (this.dayTime != dayTime) {
             doHide(dayTime);
@@ -160,7 +159,6 @@ public class CircularSkyView extends View {
     }
 
     /** <br> measure */
-
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int width = getResources().getDisplayMetrics().widthPixels;
         int height = (int) (width / 6.8 * 4 + DisplayUtils.dpToPx(getContext(), 40 + 16 * 2));
@@ -176,7 +174,6 @@ public class CircularSkyView extends View {
     }
 
     /** <br> draw. */
-
     protected void onDraw(Canvas canvas) {
         drawBackground(canvas);
         drawFourthFloor(canvas);
@@ -234,7 +231,6 @@ public class CircularSkyView extends View {
     }
 
     /** <br> data. */
-
     private void calcRadiusWhenShowing(float animTime) {
         realRadius[0] = (float) (initRadius[0] * (0.5 * animTime + 0.5));
         realRadius[1] = (float) (initRadius[1] * (0.5 * animTime + 0.5));
@@ -319,7 +315,6 @@ public class CircularSkyView extends View {
     }
 
     /** <br> anim. */
-
     private Animation animShow = new Animation() {
         @Override
         protected void applyTransformation(float interpolatedTime, Transformation t) {

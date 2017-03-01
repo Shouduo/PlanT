@@ -36,7 +36,6 @@ public class SettingsActivity extends BaseActivity
     }
 
     /** <br> UI. */
-
     private void initToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.activity_settings_toolbar);
         toolbar.setTitle(getString(R.string.action_settings));
@@ -45,7 +44,6 @@ public class SettingsActivity extends BaseActivity
     }
 
     /** <br> listener. */
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

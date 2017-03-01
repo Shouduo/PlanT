@@ -23,8 +23,6 @@ import org.litepal.crud.DataSupport;
 public class ClearAllDialog extends BaseDialogFragment
         implements DialogInterface.OnClickListener {
 
-//    private static final String TAG = "ClearAllDialog";
-
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -32,7 +30,6 @@ public class ClearAllDialog extends BaseDialogFragment
         builder.setMessage("The operation can not be undo.");
         builder.setPositiveButton("Confirm", this);
         builder.setNegativeButton("Cancel", this);
-//        return builder.create();
 
         AlertDialog dialog = builder.create();
         dialog.show();
@@ -70,6 +67,5 @@ public class ClearAllDialog extends BaseDialogFragment
             default:
                 break;
         }
-//        Log.d(TAG, "onClick: " + which);
     }
 }

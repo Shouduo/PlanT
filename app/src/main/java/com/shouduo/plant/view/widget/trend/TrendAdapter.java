@@ -28,7 +28,6 @@ public class TrendAdapter extends RecyclerView.Adapter<TrendAdapter.ViewHolder> 
     private int highest, lowest;
 
     /** <br> life cycle. */
-
     public TrendAdapter(Context context, Data data, OnTrendItemClickListener l) {
         this.context = context;
         this.listener = l;
@@ -36,7 +35,6 @@ public class TrendAdapter extends RecyclerView.Adapter<TrendAdapter.ViewHolder> 
     }
 
     /** <br> UI. */
-
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
@@ -67,7 +65,6 @@ public class TrendAdapter extends RecyclerView.Adapter<TrendAdapter.ViewHolder> 
     }
 
     /** <br> data. */
-
     public void setData(Data data, int dataType, int viewType) {
         this.mData = data;
         this.dayTime = TimeUtils.getInstance(context).isDayTime();
@@ -198,19 +195,16 @@ public class TrendAdapter extends RecyclerView.Adapter<TrendAdapter.ViewHolder> 
     }
 
     /** <br> interface. */
-
     public interface OnTrendItemClickListener {
         void onTrendItemClick();
     }
 
     /** <br> inner class. */
-
     class ViewHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener {
         // widget
         TrendItemView trendItemView;
         TextView textView;
-//        ImageView imageView;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -219,7 +213,6 @@ public class TrendAdapter extends RecyclerView.Adapter<TrendAdapter.ViewHolder> 
             trendItemView.setOnClickListener(this);
 
             this.textView = (TextView) itemView.findViewById(R.id.item_trend_txt);
-//            this.imageView = (ImageView) itemView.findViewById(R.id.item_trend_icon);
 
             itemView.findViewById(R.id.item_trend_iconBar).setOnClickListener(this);
         }

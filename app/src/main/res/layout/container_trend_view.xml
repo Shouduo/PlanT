@@ -18,7 +18,7 @@
         android:layout_height="match_parent" />
 
     <TextView
-        android:text="thx~"
+        android:id="@+id/container_trend_view_bottom_text"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_margin="@dimen/little_margin"

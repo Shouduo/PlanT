@@ -47,7 +47,6 @@ public class SwipeSwitchLayout extends CoordinatorLayout implements GestureDetec
     private static final String TAG = "SwipeSwitchLayout";
 
     /** <br> life cycle. */
-
     public SwipeSwitchLayout(Context context) {
         super(context);
         this.initialize();
@@ -72,7 +71,6 @@ public class SwipeSwitchLayout extends CoordinatorLayout implements GestureDetec
     }
 
     /** <br> UI. */
-
     public void reset() {
         isBeingDragged = false;
         isHorizontalDragged = false;
@@ -109,7 +107,6 @@ public class SwipeSwitchLayout extends CoordinatorLayout implements GestureDetec
     }
 
     /** <br> touch. */
-
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         return switchListener != null && super.dispatchTouchEvent(ev);
@@ -204,7 +201,6 @@ public class SwipeSwitchLayout extends CoordinatorLayout implements GestureDetec
     }
 
     /** <br> data. */
-
     public void setData(List<Location> locationList, Location locationNow) {
         this.totalCount = locationList.size();
         position = 0;
@@ -258,7 +254,6 @@ public class SwipeSwitchLayout extends CoordinatorLayout implements GestureDetec
     }
 
     /** <br> animate. */
-
     private Animation resetAnimation = new Animation() {
 
         @Override
@@ -345,7 +340,6 @@ public class SwipeSwitchLayout extends CoordinatorLayout implements GestureDetec
     /** <br> interface. */
 
     // on switch listener.
-
     public interface OnSwitchListener {
         void swipeTakeEffect(int direction);
     }
@@ -355,7 +349,6 @@ public class SwipeSwitchLayout extends CoordinatorLayout implements GestureDetec
     }
 
     // on swipe listener.
-
     public interface OnSwipeListener {
 
         void onPageScrolled(int position, float positionOffset, int positionOffsetPixels);
@@ -367,7 +360,6 @@ public class SwipeSwitchLayout extends CoordinatorLayout implements GestureDetec
     }
 
     // on gesture switchListener.
-
     @Override
     public boolean onDown(MotionEvent motionEvent) {
         return false;

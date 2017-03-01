@@ -35,10 +35,7 @@ public class DateSetterDialog extends BaseDialogFragment
     private int month;
     private int day;
 
-    /**
-     * <br> life cycle.
-     */
-
+    /** <br> life cycle. */
     @SuppressLint("InflateParams")
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -48,10 +45,8 @@ public class DateSetterDialog extends BaseDialogFragment
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(view);
-//        return builder.create();
 
         final AlertDialog alertDialog = builder.create();
-
 
         //trim the blank bar at the sides of datePicker.
         alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
@@ -61,11 +56,9 @@ public class DateSetterDialog extends BaseDialogFragment
                 lp.copyFrom(window.getAttributes());
                 final View picker = window.findViewById(R.id.dialog_date_setter_date_picker);
                 lp.width = picker.getWidth() + 80;
-//                lp.height = picker.getHeight();
                 window.setAttributes(lp);
             }
         });
-
         return alertDialog;
     }
 
@@ -74,10 +67,7 @@ public class DateSetterDialog extends BaseDialogFragment
         return container;
     }
 
-    /**
-     * <br> data.
-     */
-
+    /** <br> data. */
     private void initData() {
         Calendar calendar = Calendar.getInstance();
         this.year = calendar.get(Calendar.YEAR);
@@ -85,10 +75,7 @@ public class DateSetterDialog extends BaseDialogFragment
         this.day = calendar.get(Calendar.DATE);
     }
 
-    /**
-     * <br> UI.
-     */
-
+    /** <br> UI. */
     private void initWidget(View view) {
         this.container = (CoordinatorLayout) view.findViewById(R.id.dialog_date_setter_container);
 
@@ -103,10 +90,7 @@ public class DateSetterDialog extends BaseDialogFragment
         datePicker.init(year, month, day, this);
     }
 
-    /**
-     * <br> interface.
-     */
-
+    /** <br> interface. */
     public interface OnDateChangedListener {
         void dateChanged();
     }

@@ -25,18 +25,6 @@ public class PlanT extends Application {
     // data
     private List<BaseActivity> activityList;
     private SharedPreferences sharedPreferences;
-//    private boolean autoSync;
-//    private boolean sendNotification;
-//    private int humLimit;
-//    private int brightLimit;
-//    private int tempLimit;
-//    private int fromTimeHour;
-//    private int fromTimeMinute;
-//    private int toTimeHour;
-//    private int toTimeMinute;
-//
-//    private boolean colorNavigationBar;
-//    private boolean fahrenheit;
 
     public static final boolean DEFAULT_AUTO_SYNC = false;
     public static final boolean DEFAULT_SEND_NOTIFICATION = false;
@@ -51,7 +39,6 @@ public class PlanT extends Application {
     private static final String TAG = "PlanT";
 
     /** <br> life cycle. */
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -72,13 +59,9 @@ public class PlanT extends Application {
         LitePal.initialize(this);
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(PlanT.getInstance());
-//        colorNavigationBar = sharedPreferences.getBoolean(getString(R.string.key_navigationBar_color), false);
-//        LanguageUtils.setLanguage(this, sharedPreferences.getString(getString(R.string.key_language), "follow_system"));
-//        fahrenheit = sharedPreferences.getBoolean(getString(R.string.key_fahrenheit), false);
     }
 
     /** <br> data. */
-
     public void addActivity(BaseActivity a) {
         activityList.add(a);
     }
@@ -101,9 +84,7 @@ public class PlanT extends Application {
         return activityList.get(0);
     }
 
-//    public void recreateMainActivity() {
-//        activityList.get(0).recreate();
-//    }
+    /** <br> preference. */
 
     public boolean isAutoSync() {
         return sharedPreferences.getBoolean("auto_sync", DEFAULT_AUTO_SYNC);
@@ -155,7 +136,6 @@ public class PlanT extends Application {
     }
 
     /** <br> singleton. */
-
     private static PlanT instance;
 
     public static PlanT getInstance() {

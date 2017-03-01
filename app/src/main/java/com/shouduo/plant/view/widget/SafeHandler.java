@@ -34,7 +34,6 @@ public class SafeHandler<T extends SafeHandler.HandlerContainer> extends Handler
     }
 
     /** <br> interface. */
-
     public interface HandlerContainer {
         void handleMessage(Message message);
     }

@@ -44,12 +44,8 @@ public class ConditionSetterDialog extends BaseDialogFragment implements View.On
     private int brightLimit;
     private int tempLimit;
 
-    private static final String TAG = "ConditionSetterDialog";
 
-    /**
-     * <br> life cycle.
-     */
-
+    /** <br> life cycle. */
     @SuppressLint("InflateParams")
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -69,20 +65,14 @@ public class ConditionSetterDialog extends BaseDialogFragment implements View.On
         return container;
     }
 
-    /**
-     * <br> data.
-     */
-
+    /** <br> data. */
     private void initData() {
         humLimit = PlanT.getInstance().getHumLimit();
         brightLimit = PlanT.getInstance().getBrightLimit();
         tempLimit = PlanT.getInstance().getTempLimit();
     }
 
-    /**
-     * <br> UI.
-     */
-
+    /** <br> UI. */
     private void initWidget(View view) {
         this.container = (CoordinatorLayout) view.findViewById(R.id.dialog_condition_setter_container);
 
@@ -121,10 +111,7 @@ public class ConditionSetterDialog extends BaseDialogFragment implements View.On
         cancel.setOnClickListener(this);
     }
 
-    /**
-     * <br> interface.
-     */
-
+    /** <br> interface. */
     public interface OnLimitChangedListener {
         void limitChanged();
     }
@@ -173,7 +160,6 @@ public class ConditionSetterDialog extends BaseDialogFragment implements View.On
 
 
     }
-
 
     //on click
     @Override

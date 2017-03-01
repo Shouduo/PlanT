@@ -12,22 +12,7 @@ public class Base extends DataSupport{
     public String refreshTime;
 
     /** <br> life cycle. */
-
     public Base() {
     }
 
-//    public void buildBase(Location location, NewRealtimeResult result) {
-//        cityId = location.cityId;
-//        city = location.city;
-//        date = result.LocalObservationDateTime.split("T")[0];
-//        time = result.LocalObservationDateTime.split("T")[1].split(":")[0]
-//                + ":" + result.LocalObservationDateTime.split("T")[1].split(":")[1];
-//    }
-//
-//    void buildBase(WeatherEntity entity) {
-//        cityId = entity.cityId;
-//        city = entity.city;
-//        date = entity.date;
-//        time = entity.time;
-//    }
 }

@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.shouduo.plant.R;
 import com.shouduo.plant.model.Data;
@@ -28,6 +29,7 @@ public class TrendView extends FrameLayout
         implements TrendAdapter.OnTrendItemClickListener {
     // widget
     private TrendRecyclerView recyclerView;
+    private TextView bottomText;
     private SwipeSwitchLayout swipeSwitchLayout;
 
     // data
@@ -44,7 +46,6 @@ public class TrendView extends FrameLayout
     private int viewType;
 
     /** <br> life cycle. */
-
     public TrendView(Context context) {
         super(context);
         this.initialize();
@@ -77,6 +78,9 @@ public class TrendView extends FrameLayout
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         recyclerView.setAdapter(adapter);
 
+        this.bottomText = (TextView) findViewById(R.id.container_trend_view_bottom_text);
+        bottomText.setText("--hourly");
+
         viewIn = (AnimatorSet) AnimatorInflater.loadAnimator(getContext(), R.animator.view_in);
         viewIn.setInterpolator(new AccelerateDecelerateInterpolator());
         viewIn.addListener(viewInListener);
@@ -94,7 +98,6 @@ public class TrendView extends FrameLayout
     }
 
     /** <br> UI. */
-
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int width = (int) (getContext().getResources().getDisplayMetrics().widthPixels - 2.0 * DisplayUtils.dpToPx(getContext(), 8));
@@ -106,7 +109,6 @@ public class TrendView extends FrameLayout
     }
 
     /** data. */
-
     public void setData(Data data, int viewType) {
         if (data != null) {
             this.mData = data;
@@ -134,16 +136,17 @@ public class TrendView extends FrameLayout
     }
 
     /** <br> interface. */
-
     @Override
     public void onTrendItemClick() {
         switch (dataType) {
             case TrendItemView.DATA_TYPE_DAILY:
                 setState(TrendItemView.DATA_TYPE_HOURLY, true);
+                bottomText.setText("--hourly");
                 break;
 
             case TrendItemView.DATA_TYPE_HOURLY:
                 setState(TrendItemView.DATA_TYPE_DAILY, true);
+                bottomText.setText("--daily");
                 break;
         }
     }

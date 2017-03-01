@@ -8,26 +8,24 @@
 
     <application
         android:name=".PlanT"
-        android:label="PlanT"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
+        android:label="PlanT"
         android:supportsRtl="true"
-        tools:replace="android:label"
-        android:theme="@style/GeometricWeatherTheme">
+        android:theme="@style/GeometricWeatherTheme"
+        tools:replace="android:label">
         <activity
             android:name=".view.activity.MainActivity"
             android:label="PlanT"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
-        <activity
-            android:name=".view.activity.SettingsActivity">
+        <activity android:name=".view.activity.SettingsActivity">
         </activity>
 
         <service
@@ -43,12 +41,14 @@
             android:enabled="true">
         </service>
 
-        <receiver
-            android:name=".receiver.BootBroadcastReceiver">
+        <receiver android:name=".receiver.BootBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
+
+        <activity android:name=".view.activity.AboutActivity">
+        </activity>
     </application>
 
 </manifest>
