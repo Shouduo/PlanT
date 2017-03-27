@@ -8,7 +8,7 @@ import org.litepal.crud.DataSupport;
 
 public class Daily extends DataSupport{
     // data
-    public String week;
+    public String date;
     public int consume;
     public int bright;
     public int tempDiff;
@@ -16,12 +16,12 @@ public class Daily extends DataSupport{
     public Daily() {
     }
 
-    public String getWeek() {
-        return week;
+    public String getDate() {
+        return date;
     }
 
-    public void setWeek(String week) {
-        this.week = week;
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public int getConsume() {

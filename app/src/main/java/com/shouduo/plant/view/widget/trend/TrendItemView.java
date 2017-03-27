@@ -297,6 +297,7 @@ public class TrendItemView extends FrameLayout {
                 dataYs[1] - paint.getFontMetrics().bottom - MARGIN_TEXT,
                 paint);
     }
+
     //绘制柱状图
     private void drawBarChart(Canvas canvas, int[] dataYs, int[] chart, String unit, int lineColor) {
         paint.setShadowLayer(0, 0, 0, Color.TRANSPARENT);
@@ -355,21 +356,21 @@ public class TrendItemView extends FrameLayout {
                             0,
                             data.dailyList.get(position).consume,
                             data.dailyList.get(position + 1).consume};
-                    dailyConsumeYs = setBarChartData(chart1);
+                    dailyConsumeYs = setBarChartData(highest, lowest, chart1);
                     break;
                 case VIEW_TYPE_BRIGHT:
                     this.chart1 = new int[]{
                             0,
                             data.dailyList.get(position).bright,
                             data.dailyList.get(position + 1).bright};
-                    dailyBrightYs = setBarChartData(chart1);
+                    dailyBrightYs = setBarChartData(highest, lowest, chart1);
                     break;
                 case VIEW_TYPE_TEMP:
                     this.chart1 = new int[]{
                             0,
                             data.dailyList.get(position).tempDiff,
                             data.dailyList.get(position + 1).tempDiff};
-                    dailyTempDiffYs = setBarChartData(chart1);
+                    dailyTempDiffYs = setBarChartData(highest, lowest, chart1);
                     break;
             }
 
@@ -381,21 +382,21 @@ public class TrendItemView extends FrameLayout {
                             data.dailyList.get(position - 1).consume,
                             data.dailyList.get(position).consume,
                             0};
-                    dailyConsumeYs = setBarChartData(chart1);
+                    dailyConsumeYs = setBarChartData(highest, lowest, chart1);
                     break;
                 case VIEW_TYPE_BRIGHT:
                     this.chart1 = new int[]{
                             data.dailyList.get(position - 1).bright,
                             data.dailyList.get(position).bright,
                             0};
-                    dailyBrightYs = setBarChartData(chart1);
+                    dailyBrightYs = setBarChartData(highest, lowest, chart1);
                     break;
                 case VIEW_TYPE_TEMP:
                     this.chart1 = new int[]{
                             data.dailyList.get(position - 1).tempDiff,
                             data.dailyList.get(position).tempDiff,
                             0};
-                    dailyTempDiffYs = setBarChartData(chart1);
+                    dailyTempDiffYs = setBarChartData(highest, lowest, chart1);
                     break;
             }
 
@@ -407,21 +408,21 @@ public class TrendItemView extends FrameLayout {
                             data.dailyList.get(position - 1).consume,
                             data.dailyList.get(position).consume,
                             data.dailyList.get(position + 1).consume};
-                    dailyConsumeYs = setBarChartData(chart1);
+                    dailyConsumeYs = setBarChartData(highest, lowest, chart1);
                     break;
                 case VIEW_TYPE_BRIGHT:
                     this.chart1 = new int[]{
                             data.dailyList.get(position - 1).bright,
                             data.dailyList.get(position).bright,
                             data.dailyList.get(position + 1).bright};
-                    dailyBrightYs = setBarChartData(chart1);
+                    dailyBrightYs = setBarChartData(highest, lowest, chart1);
                     break;
                 case VIEW_TYPE_TEMP:
                     this.chart1 = new int[]{
                             data.dailyList.get(position - 1).tempDiff,
                             data.dailyList.get(position).tempDiff,
                             data.dailyList.get(position + 1).tempDiff};
-                    dailyTempDiffYs = setBarChartData(chart1);
+                    dailyTempDiffYs = setBarChartData(highest, lowest, chart1);
                     break;
             }
         }
@@ -444,7 +445,7 @@ public class TrendItemView extends FrameLayout {
                             0,
                             data.hourlyList.get(position).consume,
                             data.hourlyList.get(position + 1).consume};
-                    hourlyConsumeYs = setBarChartData(chart2);
+                    hourlyConsumeYs = setBarChartData(highest, lowest, chart2);
                     break;
                 case VIEW_TYPE_BRIGHT:
                     this.chart1 = new int[]{
@@ -476,7 +477,7 @@ public class TrendItemView extends FrameLayout {
                             data.hourlyList.get(position - 1).consume,
                             data.hourlyList.get(position).consume,
                             0};
-                    hourlyConsumeYs = setBarChartData(chart2);
+                    hourlyConsumeYs = setBarChartData(highest, lowest, chart2);
                     break;
                 case VIEW_TYPE_BRIGHT:
                     this.chart1 = new int[]{
@@ -508,7 +509,7 @@ public class TrendItemView extends FrameLayout {
                             data.hourlyList.get(position - 1).consume,
                             data.hourlyList.get(position).consume,
                             data.hourlyList.get(position + 1).consume};
-                    hourlyConsumeYs = setBarChartData(chart2);
+                    hourlyConsumeYs = setBarChartData(highest, lowest, chart2);
                     break;
                 case VIEW_TYPE_BRIGHT:
                     this.chart1 = new int[]{
@@ -576,10 +577,12 @@ public class TrendItemView extends FrameLayout {
         return dataYs;
     }
 
-    private int[] setBarChartData(int[] chart) {
+    private int[] setBarChartData(int highest, int lowest, int[] chart) {
         int[] dataYs = new int[1];
         dataYs[0] = (int) (calcHeaderHeight(getContext()) + calcDrawSpecHeight(getContext()) - MARGIN_BOTTOM
-                - calcDrawSpecUsableHeight(getContext()) * chart[1] / 100.0);
+                - calcDrawSpecUsableHeight(getContext())
+                * (chart[1] - 0.0)
+                / (highest - 0.0));
         return dataYs;
     }
 

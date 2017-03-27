@@ -50,15 +50,19 @@ public class TrendAdapter extends RecyclerView.Adapter<TrendAdapter.ViewHolder> 
             holder.trendItemView.setData(mData, dataType, viewType, position, highest, lowest);
             switch (dataType) {
                 case TrendItemView.DATA_TYPE_DAILY:
-                    if (position == 0) {
+                    if (position == mData.dailyList.size() - 1) {
                         holder.textView.setText("Today");
                     } else {
-                        holder.textView.setText(mData.dailyList.get(position).week);
+                        holder.textView.setText(mData.dailyList.get(position).date);
                     }
                     break;
 
                 case TrendItemView.DATA_TYPE_HOURLY:
-                    holder.textView.setText(mData.hourlyList.get(position).time);
+                    if (position == mData.hourlyList.size() - 1) {
+                        holder.textView.setText("Now");
+                    } else {
+                        holder.textView.setText(mData.hourlyList.get(position).time);
+                    }
                     break;
             }
         }

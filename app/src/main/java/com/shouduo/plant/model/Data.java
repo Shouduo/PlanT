@@ -36,6 +36,7 @@ public class Data {
 
     public final static int SERVER_DOWN = -1;
     public final static int SERVER_GOOD = 1;
+    public final static String SERVER_ADDRESS = "http://192.168.191.1:8080/PlanT/";
 
     public Data(SafeHandler handler) {
         this.base = new Base();
@@ -116,7 +117,7 @@ public class Data {
 
     //从服务器更新数据
     public void refreshData() {
-        HttpUtils.sendOkHttpRequest("http://192.168.191.1/hourly.json", new okhttp3.Callback() {
+        HttpUtils.sendOkHttpRequest(SERVER_ADDRESS + "Hourly", new okhttp3.Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 isHourlyDataGot = -1;
@@ -133,7 +134,7 @@ public class Data {
             }
         });
 
-        HttpUtils.sendOkHttpRequest("http://192.168.191.1/daily.json", new okhttp3.Callback() {
+        HttpUtils.sendOkHttpRequest(SERVER_ADDRESS + "Daily", new okhttp3.Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 isDailyDataGot = -1;
