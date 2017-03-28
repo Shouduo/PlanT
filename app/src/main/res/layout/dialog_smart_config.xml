@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dialog_config_container"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    <com.shouduo.plant.view.widget.sky.SkyView
+        android:id="@+id/activity_main_skyView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/normal_margin"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/dialog_smart_config_ssid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=" Connect to:  JieBaoWiFi640"
+                android:textColor="@color/colorTextContent"
+                android:textSize="18dp"
+                android:maxLines="1"/>
+
+            <EditText
+                android:id="@+id/dialog_smart_config_password_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Password"
+                android:imeOptions="actionDone"
+                android:inputType="textPassword"
+                android:maxLines="1"/>
+
+            <CheckBox
+                android:id="@+id/dialog_smart_config_show_password_checkbox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Show Password"
+                android:textColor="@color/colorTextContent"/>
+
+            <CheckBox
+                android:id="@+id/dialog_smart_config_is_ssid_hidden_checkbox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Is SSID Hidden ?"
+                android:textColor="@color/colorTextContent"/>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/dialog_smart_config_done"
+                style="@style/material_button"
+                android:layout_alignParentRight="true"
+                android:text="@string/done"
+                android:textColor="@color/colorAccent"
+                tools:ignore="RtlHardcoded"/>
+
+            <Button
+                android:id="@+id/dialog_smart_config_cancel"
+                style="@style/material_button"
+                android:layout_toLeftOf="@id/dialog_smart_config_done"
+                android:text="@string/cancel"
+                android:textColor="@color/colorTextDark2nd"
+                tools:ignore="RtlHardcoded"/>
+
+        </RelativeLayout>
+    </LinearLayout>
+
+
+</ScrollView>
