@@ -25,6 +25,7 @@ import com.shouduo.plant.model.Data;
 import com.shouduo.plant.model.Hourly;
 import com.shouduo.plant.utils.DisplayUtils;
 import com.shouduo.plant.utils.TimeUtils;
+import com.shouduo.plant.view.Dialog.ConfigDialog;
 import com.shouduo.plant.view.widget.InkPageIndicator;
 import com.shouduo.plant.view.widget.SafeHandler;
 import com.shouduo.plant.view.widget.SwipeSwitchLayout;
@@ -267,7 +268,9 @@ public class MainActivity extends BaseActivity
     public boolean onMenuItemClick(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.action_manage:
-//                IntentHelper.startManageActivityForResult(this);
+//                startActivity(new Intent(this, ConfigActivity.class));
+                ConfigDialog configDialog = new ConfigDialog();
+                configDialog.show(getFragmentManager(), null);
                 break;
 
             case R.id.action_settings:

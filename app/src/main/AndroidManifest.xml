@@ -27,6 +27,8 @@
         </activity>
         <activity android:name=".view.activity.SettingsActivity">
         </activity>
+        <activity android:name=".view.activity.AboutActivity">
+        </activity>
 
         <service
             android:name=".service.NotificationService"
@@ -47,8 +49,7 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".view.activity.AboutActivity">
-        </activity>
+
     </application>
 
 </manifest>
