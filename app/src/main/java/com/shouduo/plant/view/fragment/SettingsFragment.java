@@ -12,10 +12,10 @@ import com.shouduo.plant.PlanT;
 import com.shouduo.plant.R;
 import com.shouduo.plant.model.Base;
 import com.shouduo.plant.service.NotificationService;
-import com.shouduo.plant.view.Dialog.ClearAllDialog;
-import com.shouduo.plant.view.Dialog.ConditionSetterDialog;
-import com.shouduo.plant.view.Dialog.DateSetterDialog;
-import com.shouduo.plant.view.Dialog.TimeSetterDialog;
+import com.shouduo.plant.view.dialog.ClearAllDialog;
+import com.shouduo.plant.view.dialog.ConditionSetterDialog;
+import com.shouduo.plant.view.dialog.DateSetterDialog;
+import com.shouduo.plant.view.dialog.TimeSetterDialog;
 
 import org.litepal.crud.DataSupport;
 

@@ -1,4 +1,4 @@
-package com.shouduo.plant.view.Dialog;
+package com.shouduo.plant.view.dialog;
 
 import android.app.Dialog;
 import android.app.DialogFragment;

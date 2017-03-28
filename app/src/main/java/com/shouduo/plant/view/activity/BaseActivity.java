@@ -6,7 +6,7 @@ import android.view.View;
 
 import com.shouduo.plant.PlanT;
 import com.shouduo.plant.utils.DisplayUtils;
-import com.shouduo.plant.view.Dialog.BaseDialogFragment;
+import com.shouduo.plant.view.dialog.BaseDialogFragment;
 
 import java.util.ArrayList;
 import java.util.List;
