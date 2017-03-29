@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.content.ContextCompat;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -76,7 +77,7 @@ public class SmartConfigDialog extends BaseDialogFragment
             SSIDTextView.setText(" Connect to:  " + apSSID);
             done.setEnabled(true);
         } else {
-            SSIDTextView.setText("Connect Your Phone to an Available Wi-Fi Network First !");
+            SSIDTextView.setText("Connect your phone to an available Wi-Fi network first !");
             SSIDTextView.setMaxLines(2);
             passwordEditText.setVisibility(View.GONE);
             showPasswordCheckBox.setVisibility(View.GONE);
@@ -192,6 +193,7 @@ public class SmartConfigDialog extends BaseDialogFragment
         // 3. Oops, the task should be cancelled, but it is running
         private final Object mLock = new Object();
         private Handler Task2Handler;
+        private boolean isSuccessful = false;
 
         public EsptouchAsyncTask2(Handler handler){
             Task2Handler = handler;
@@ -199,8 +201,8 @@ public class SmartConfigDialog extends BaseDialogFragment
 
         @Override
         protected void onPreExecute() {
-            mProgressDialog = new ProgressDialog(getActivity());
-            mProgressDialog.setMessage("Esptouch is configuring, please wait for a moment...");
+            mProgressDialog = new ProgressDialog(getActivity(), R.style.AppCompatAlertDialogStyle);
+            mProgressDialog.setMessage("Pot is connecting, please wait for a minute...");
             mProgressDialog.setCanceledOnTouchOutside(false);
             mProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
                 @Override
@@ -216,14 +218,26 @@ public class SmartConfigDialog extends BaseDialogFragment
                 }
             });
             mProgressDialog.setButton(DialogInterface.BUTTON_POSITIVE,
-                    "Waiting...", new DialogInterface.OnClickListener() {
+                    "Connecting...", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+                            switch (which) {
+                                case DialogInterface.BUTTON_POSITIVE:
+                                    if (isSuccessful) {
+                                        alertDialog.dismiss();
+                                    }
+                                    break;
+                                default:
+                                    break;
+                            }
                         }
                     });
             mProgressDialog.show();
             mProgressDialog.getButton(DialogInterface.BUTTON_POSITIVE)
+                    .setTextColor(ContextCompat.getColor(getActivity(), R.color.colorAccent));
+            mProgressDialog.getButton(DialogInterface.BUTTON_POSITIVE)
                     .setEnabled(false);
+
         }
 
         @Override
@@ -253,11 +267,14 @@ public class SmartConfigDialog extends BaseDialogFragment
             // it is unnecessary at the moment, add here just to show how to use isCancelled()
             if (!result.isCancelled()) {
                 if (result.isSuc()) {
-                    mProgressDialog.setMessage("Esptouch success, bssid = "
-                            + result.getBssid() + ",InetAddress = "
+                    isSuccessful = true;
+                    mProgressDialog.setMessage("Connect successfully. \n"
+                            + "Pot's IP Address is: \n"
                             + result.getInetAddress().getHostAddress());
                 } else {
-                    mProgressDialog.setMessage("Esptouch fail");
+                    isSuccessful = false;
+                    mProgressDialog.setMessage("Connect fail. \n"
+                            + "Please hit the RESET button at the bottom of the pot and try again.");
                 }
             }
         }
