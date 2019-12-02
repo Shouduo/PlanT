@@ -27,7 +27,7 @@ PlanT是一款智能家居产品，主要功能是能够帮助用户感知和监
 
 ![img](/Img/smartConfig.png "Smart Config")
 
-![img](/Img/otherActivities.png "Main Activity")
+![img](/Img/otherActivities.png "Settings Activity")
 
 ## Q&A
 
